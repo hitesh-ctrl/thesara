@@ -12,14 +12,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #080809;
-      --bg2:     #0e0e10;
+      --bg:      #07070c;
+      --bg2:     #0d0d14;
       --border:  rgba(255,255,255,0.07);
-      --borderB: rgba(255,255,255,0.13);
-      --text:    #f0f0f2;
-      --muted:   #55555e;
-      --faint:   #1e1e22;
-      --accent:  #c9a96e;
+      --borderB: rgba(255,255,255,0.12);
+      --text:    #ececf0;
+      --muted:   #52525e;
+      --faint:   #18181f;
+      --accent:  #6c6af5;
+      --accentL: rgba(108,106,245,0.15);
+      --accentG: rgba(108,106,245,0.4);
+      --green:   #22d3a0;
       --white:   #ffffff;
       --D: "Telma", Georgia, serif;
       --B: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -54,7 +57,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       height: 58px; padding: 0 40px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(8,8,9,0.85);
+      background: rgba(7,7,12,0.88);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       animation: slideDown 0.6s cubic-bezier(0.22,1,0.36,1) both;
@@ -134,7 +137,7 @@
 
     .hero-label-dot {
       width: 5px; height: 5px; border-radius: 50%;
-      background: #4ade80;
+      background: #22d3a0;
       animation: breathe 2.5s ease-in-out infinite;
     }
 
@@ -405,7 +408,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(108,106,245,0.05) 0%, transparent 60%);
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -429,7 +432,7 @@
     }
 
     .feat:hover .feat-bg-num {
-      -webkit-text-stroke-color: rgba(201,169,110,0.08);
+      -webkit-text-stroke-color: rgba(108,106,245,0.1);
     }
 
     .feat-tag {
@@ -559,7 +562,7 @@
     .tt-rule { height: 1px; background: rgba(255,255,255,0.07); margin: 10px 0; }
     .tt-lbl  { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: #484852; margin-bottom: 4px; }
     .tt-def  { font-size: 12px; color: #999; line-height: 1.6; margin-bottom: 10px; }
-    .tt-slbl { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: #4ade80; margin-bottom: 4px; }
+    .tt-slbl { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: #22d3a0; margin-bottom: 4px; }
     .tt-scene{ font-size: 12px; color: #999; line-height: 1.6; font-style: italic; }
 
     .mock-subs {
@@ -576,6 +579,28 @@
     .sub-word {
       border-bottom: 2px solid var(--accent);
       padding-bottom: 1px;
+      position: relative;
+    }
+
+    /* Animated cursor hovering over the subtitle word */
+    .mock-cursor {
+      position: absolute;
+      bottom: -2px; left: 50%;
+      transform: translateX(-30%);
+      pointer-events: none;
+      animation: cursorHover 4s ease-in-out infinite;
+    }
+
+    .mock-cursor svg {
+      width: clamp(16px, 2vw, 22px);
+      height: clamp(16px, 2vw, 22px);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+
+    @keyframes cursorHover {
+      0%        { transform: translateX(-30%) translateY(4px); opacity: 0; }
+      15%       { transform: translateX(-30%) translateY(0px); opacity: 1; }
+      80%,100%  { transform: translateX(-30%) translateY(0px); opacity: 1; }
     }
 
     .mock-ctrl {
@@ -628,7 +653,7 @@
     .cta-bg {
       position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(201,169,110,0.04) 0%, transparent 60%);
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(108,106,245,0.05) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -697,10 +722,10 @@
       font-size: 13px; color: var(--muted);
       transition: all 0.15s; cursor: none;
     }
-    .plat.live { color: var(--text); border-color: rgba(74,222,128,0.25); background: rgba(74,222,128,0.04); }
+    .plat.live { color: var(--text); border-color: rgba(34,211,160,0.2); background: rgba(34,211,160,0.04); }
     .plat:hover { transform: translateY(-2px); border-color: var(--borderB); color: var(--text); }
     .pdot { width: 6px; height: 6px; border-radius: 50%; }
-    .plat.live .pdot { background: #4ade80; }
+    .plat.live .pdot { background: #22d3a0; }
     .plat:not(.live) .pdot { background: var(--faint); }
 
     @media (max-width: 768px) {
@@ -916,7 +941,7 @@
           <div class="tt-scene">Walter isn't describing a risk — he's declaring himself the most powerful and terrifying force in the room, a claim of total dominance over Skyler.</div>
         </div>
         <div class="mock-subs">
-          <span class="sub-line">I am </span><span class="sub-line sub-word">the danger</span><span class="sub-line">.</span>
+          <span class="sub-line">I am </span><span class="sub-line sub-word">the danger<span class="mock-cursor"><svg viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2L2 20L7.5 14.5L11 21L13.5 20L10 13.5H17L2 2Z" fill="white" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></svg></span></span><span class="sub-line">.</span>
         </div>
         <div class="mock-ctrl">
           <div class="mock-prog"><div class="mock-prog-fill"></div></div>
