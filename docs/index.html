@@ -518,6 +518,99 @@
       text-decoration: none; transition: color 0.15s;
     }
     .footer-links a:hover { color: var(--text); }
+
+    /* ── Animations ─────────────────────────────────────────── */
+
+    /* Nav slide down */
+    nav {
+      animation: nav-in 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes nav-in {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+
+    /* Hero staggered entrance */
+    .hero-eyebrow,
+    .hero h1,
+    .hero-sub,
+    .hero-actions {
+      opacity: 0;
+      animation: fade-up 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .hero-eyebrow  { animation-delay: 0.1s; }
+    .hero h1       { animation-delay: 0.22s; }
+    .hero-sub      { animation-delay: 0.36s; }
+    .hero-actions  { animation-delay: 0.48s; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll reveal base state */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger delay helpers */
+    .reveal-d1 { transition-delay: 0.05s; }
+    .reveal-d2 { transition-delay: 0.12s; }
+    .reveal-d3 { transition-delay: 0.19s; }
+    .reveal-d4 { transition-delay: 0.26s; }
+    .reveal-d5 { transition-delay: 0.33s; }
+    .reveal-d6 { transition-delay: 0.40s; }
+
+    /* Demo tooltip float */
+    .demo-tooltip {
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    /* Button press */
+    .btn:active { transform: scale(0.97) translateY(0) !important; }
+
+    /* Platform chips hover lift */
+    .platform:hover {
+      border-color: var(--border-hi);
+      color: var(--text);
+      transform: translateY(-2px);
+      transition: all 0.15s;
+    }
+
+    /* Stat count-up — numbers start faint and sharpen */
+    .stat-n {
+      transition: color 0.4s ease;
+    }
+
+    /* Accent underline on nav links */
+    .nav-links a:not(.nav-cta) {
+      position: relative;
+    }
+    .nav-links a:not(.nav-cta)::after {
+      content: '';
+      position: absolute;
+      bottom: 1px; left: 12px; right: 12px;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s cubic-bezier(0.22,1,0.36,1);
+    }
+    .nav-links a:not(.nav-cta):hover::after {
+      transform: scaleX(1);
+    }
   </style>
 </head>
 <body>
@@ -559,20 +652,20 @@
 
 <!-- Stats -->
 <div class="statbar">
-  <div class="stat">
-    <span class="stat-n">14,400</span>
+  <div class="stat reveal">
+    <span class="stat-n" data-count="14400" data-suffix="">14,400</span>
     <span class="stat-l">Free AI calls per day</span>
   </div>
-  <div class="stat">
+  <div class="stat reveal reveal-d1">
     <span class="stat-n">&lt;1s</span>
     <span class="stat-l">Tooltip latency</span>
   </div>
-  <div class="stat">
-    <span class="stat-n">0</span>
+  <div class="stat reveal reveal-d2">
+    <span class="stat-n" data-count="0" data-suffix="">0</span>
     <span class="stat-l">Server-side storage</span>
   </div>
-  <div class="stat">
-    <span class="stat-n">100%</span>
+  <div class="stat reveal reveal-d3">
+    <span class="stat-n" data-count="100" data-suffix="%">100%</span>
     <span class="stat-l">Open source</span>
   </div>
 </div>
@@ -585,32 +678,32 @@
     <p class="section-label">Features</p>
     <h2 class="section-title">Built for how<br>you actually <em>watch.</em></h2>
     <div class="feat-list">
-      <div class="feat">
+      <div class="feat reveal reveal-d1">
         <p class="feat-num">01</p>
         <h3>Instant definitions</h3>
         <p>Hover any subtitle word for its definition, part of speech, and synonyms — without leaving the screen.</p>
       </div>
-      <div class="feat">
+      <div class="feat reveal reveal-d2">
         <p class="feat-num">02</p>
         <h3>Scene-aware AI</h3>
         <p>"Cook" in Breaking Bad isn't about food. The AI knows the show, the scene, and the moment — and explains accordingly.</p>
       </div>
-      <div class="feat">
+      <div class="feat reveal reveal-d3">
         <p class="feat-num">03</p>
         <h3>Idiom detection</h3>
         <p>Automatically identifies phrases like "call it a day" or "give it up" and explains them as a single unit of meaning.</p>
       </div>
-      <div class="feat">
+      <div class="feat reveal reveal-d4">
         <p class="feat-num">04</p>
         <h3>Dialogue context</h3>
         <p>The last 6 subtitle lines are passed to the AI, so it understands the conversation — not just the sentence you hovered.</p>
       </div>
-      <div class="feat">
+      <div class="feat reveal reveal-d5">
         <p class="feat-num">05</p>
         <h3>Private by design</h3>
         <p>Only the subtitle you hover ever leaves your device. No history, no profiling, no accounts required.</p>
       </div>
-      <div class="feat">
+      <div class="feat reveal reveal-d6">
         <p class="feat-num">06</p>
         <h3>Zero configuration</h3>
         <p>Install and it works. No API key needed to start. A shared quota is provided free. Bring your own key if it runs out.</p>
@@ -627,22 +720,22 @@
     <p class="section-label">How it works</p>
     <h2 class="section-title">Three seconds to<br><em>understand anything.</em></h2>
     <div class="steps">
-      <div class="step">
+      <div class="step reveal reveal-d1">
         <div class="step-num">01</div>
         <h3>Watch normally</h3>
         <p>Thesara runs silently. Nothing changes until you choose to interact.</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d2">
         <div class="step-num">02</div>
         <h3>Hover a word</h3>
         <p>Move your cursor over any subtitle word or detected phrase.</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d3">
         <div class="step-num">03</div>
         <h3>Read the card</h3>
         <p>Definition, synonyms, and a scene-aware explanation appear instantly.</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d4">
         <div class="step-num">04</div>
         <h3>Keep watching</h3>
         <p>Dismiss and the video resumes exactly where you left off.</p>
@@ -684,12 +777,12 @@
     <p class="section-label">Platforms</p>
     <h2 class="section-title">Starting with streaming.<br><em>Not stopping there.</em></h2>
     <div class="platform-grid">
-      <div class="platform live"><span class="p-dot"></span> Netflix</div>
-      <div class="platform"><span class="p-dot"></span> Prime Video</div>
-      <div class="platform"><span class="p-dot"></span> Disney+</div>
-      <div class="platform"><span class="p-dot"></span> YouTube</div>
-      <div class="platform"><span class="p-dot"></span> Apple TV+</div>
-      <div class="platform"><span class="p-dot"></span> HBO Max</div>
+      <div class="platform live reveal reveal-d1"><span class="p-dot"></span> Netflix</div>
+      <div class="platform reveal reveal-d2"><span class="p-dot"></span> Prime Video</div>
+      <div class="platform reveal reveal-d3"><span class="p-dot"></span> Disney+</div>
+      <div class="platform reveal reveal-d4"><span class="p-dot"></span> YouTube</div>
+      <div class="platform reveal reveal-d5"><span class="p-dot"></span> Apple TV+</div>
+      <div class="platform reveal reveal-d6"><span class="p-dot"></span> HBO Max</div>
     </div>
   </div>
 </section>
@@ -720,5 +813,59 @@
   </div>
 </footer>
 
+<script>
+  // ── Scroll reveal ───────────────────────────────────────────
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  document.querySelectorAll(".reveal").forEach((el) => {
+    revealObserver.observe(el);
+  });
+
+  // ── Count-up numbers ────────────────────────────────────────
+  function countUp(el, target, suffix, duration) {
+    const start = performance.now();
+    const hasComma = target >= 1000;
+
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+      el.textContent = (hasComma ? current.toLocaleString() : current) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  const countObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || "";
+        if (!isNaN(target)) countUp(el, target, suffix, 1200);
+        countObserver.unobserve(el);
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  document.querySelectorAll("[data-count]").forEach((el) => {
+    countObserver.observe(el);
+  });
+</script>
 </body>
 </html>
