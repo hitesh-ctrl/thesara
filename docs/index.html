@@ -12,14 +12,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #10101a;
-      --bg2:     #14141f;
-      --bg3:     #1c1c2a;
+      --bg:      #080810;
+      --bg2:     #0e0e1a;
+      --bg3:     #14142020;
       --border:  rgba(255,255,255,0.08);
-      --borderB: rgba(255,255,255,0.14);
-      --text:    #e8e8ef;
-      --muted:   #606070;
-      --faint:   #22222e;
+      --borderB: rgba(255,255,255,0.13);
+      --text:    #e8e8f0;
+      --muted:   #58586a;
       --accent:  #7b79ff;
       --green:   #34d39a;
       --white:   #ffffff;
@@ -39,10 +38,10 @@
 
     /* ── Nav ─────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
       height: 60px; padding: 0 48px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(16,16,26,0.88);
+      background: rgba(8,8,16,0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       animation: navIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
@@ -53,8 +52,12 @@
       to   { transform: translateY(0); opacity: 1; }
     }
 
-    .logo { text-decoration: none; }
-    .logo-img { height: 28px; width: auto; filter: invert(1); opacity: 0.88; }
+    .nav-logo {
+      font-family: var(--D);
+      font-size: 17px; font-weight: 400;
+      color: var(--white); text-decoration: none;
+      letter-spacing: -0.3px;
+    }
 
     .nav-right { display: flex; align-items: center; gap: 4px; }
 
@@ -68,88 +71,124 @@
 
     .nav-cta {
       background: var(--white) !important;
-      color: #0f0f19 !important;
+      color: #08080f !important;
       font-weight: 600 !important;
       padding: 7px 18px !important;
       border-radius: 6px !important;
       margin-left: 6px;
+      transition: background 0.15s !important;
     }
 
     .nav-cta:hover { background: #e4e4f0 !important; }
 
-    /* ── Hero ────────────────────────────────── */
+    /* ── Hero with floating phrases ──────────── */
     .hero {
-      padding: 148px 64px 80px;
-      border-bottom: 1px solid var(--border);
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 32px 80px;
+      overflow: hidden;
     }
 
-    .hero-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr auto;
-      align-items: end; gap: 64px;
+    /* Night sky gradient */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(40,35,100,0.35) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(20,20,60,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 80% 60%, rgba(30,25,80,0.15) 0%, transparent 60%);
+      pointer-events: none;
     }
 
-    .hero-tag {
+    /* Floating phrases container */
+    #phrases {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .phrase {
+      position: absolute;
+      font-family: var(--B);
+      color: rgba(255,255,255,0.055);
+      white-space: nowrap;
+      user-select: none;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      0%   { transform: translateY(0) translateX(0); }
+      25%  { transform: translateY(-12px) translateX(6px); }
+      50%  { transform: translateY(-4px) translateX(-8px); }
+      75%  { transform: translateY(-14px) translateX(4px); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+
+    /* Hero content */
+    .hero-content {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 11px; color: var(--muted);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 28px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 32px;
       opacity: 0; animation: fadeUp 0.6s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
-    .htag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    .eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
 
-    h1 {
+    .hero-title {
       font-family: var(--D);
-      font-size: clamp(48px, 7vw, 88px);
-      font-weight: 400; letter-spacing: -3px; line-height: 1.0;
-      color: var(--white); margin-bottom: 24px;
-      opacity: 0; animation: fadeUp 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
+      font-size: clamp(80px, 16vw, 200px);
+      font-weight: 700;
+      letter-spacing: -6px;
+      line-height: 0.9;
+      color: var(--white);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
-    h1 em { font-style: italic; color: var(--accent); }
-
-    .hero-sub {
-      font-size: 15px; color: var(--muted);
-      max-width: 400px; line-height: 1.8; margin-bottom: 36px;
-      opacity: 0; animation: fadeUp 0.7s 0.3s cubic-bezier(0.22,1,0.36,1) forwards;
+    .hero-tagline {
+      font-family: var(--D);
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: -0.5px;
+      margin-bottom: 44px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
     }
+
+    .hero-tagline em { font-style: italic; color: var(--accent); font-weight: 400; }
 
     .hero-btns {
-      display: flex; gap: 10px; flex-wrap: wrap;
-      opacity: 0; animation: fadeUp 0.7s 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      opacity: 0; animation: fadeUp 0.7s 0.48s cubic-bezier(0.22,1,0.36,1) forwards;
     }
-
-    /* Hero stats — right side */
-    .hero-stats {
-      display: flex; flex-direction: column; gap: 28px;
-      padding-bottom: 8px;
-      opacity: 0; animation: fadeUp 0.7s 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
-    }
-
-    .hstat-n {
-      font-family: var(--D);
-      font-size: 36px; font-weight: 300;
-      letter-spacing: -1.5px; color: var(--white);
-      display: block; margin-bottom: 4px;
-    }
-
-    .hstat-l { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
+      from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ── Buttons ─────────────────────────────── */
     .btn {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 11px 22px; border-radius: 7px;
+      padding: 12px 24px; border-radius: 7px;
       font-family: var(--B); font-size: 13px; font-weight: 500;
       text-decoration: none; transition: all 0.15s; border: none;
     }
 
-    .btn-white { background: var(--white); color: #0f0f19; }
+    .btn-white { background: var(--white); color: #08080f; }
     .btn-white:hover { background: #e4e4f0; transform: translateY(-1px); }
 
     .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--borderB); }
@@ -157,21 +196,38 @@
 
     /* ── Demo ────────────────────────────────── */
     .demo-section {
-      padding: 72px 64px;
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       background: var(--bg2);
     }
 
-    .demo-section .container { max-width: 1100px; margin: 0 auto; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .sec-label {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 14px;
+    }
+
+    .sec-h {
+      font-family: var(--D);
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 400; letter-spacing: -1.5px;
+      line-height: 1.05; color: var(--white);
+      margin-bottom: 48px;
+    }
+
+    .sec-h em { font-style: italic; color: var(--accent); }
 
     .mock-outer {
       border-radius: 12px; overflow: hidden;
       border: 1px solid var(--borderB);
-      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
     }
 
     .mock-browser {
-      background: #1c1c28; padding: 10px 16px;
+      background: #1a1a26; padding: 10px 16px;
       display: flex; align-items: center; gap: 8px;
       border-bottom: 1px solid rgba(255,255,255,0.07);
     }
@@ -182,17 +238,14 @@
     .mdot:nth-child(3) { background: #27c93f; }
 
     .mbar {
-      flex: 1; margin: 0 10px; background: #262630;
+      flex: 1; margin: 0 10px; background: #242432;
       border-radius: 4px; height: 22px;
       display: flex; align-items: center; padding: 0 10px;
     }
 
     .mbar span { font-size: 11px; color: #555; font-family: var(--B); }
 
-    .mock-player {
-      position: relative; background: #000;
-      aspect-ratio: 16/9; overflow: hidden;
-    }
+    .mock-player { position: relative; background: #000; aspect-ratio: 16/9; overflow: hidden; }
 
     .mock-scene {
       position: absolute; inset: 0;
@@ -213,9 +266,8 @@
     .nfx-ep { font-size: 10px; color: rgba(255,255,255,0.5); font-family: var(--B); }
 
     .mock-tooltip {
-      position: absolute; bottom: 23%; left: 50%;
-      transform: translateX(-50%);
-      background: rgba(14,14,22,0.97);
+      position: absolute; bottom: 23%; left: 50%; transform: translateX(-50%);
+      background: rgba(12,12,20,0.97);
       border: 1px solid rgba(255,255,255,0.13);
       border-radius: 10px; padding: 16px 18px; width: 256px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.8);
@@ -253,7 +305,7 @@
     .mock-cursor svg { width: clamp(14px, 1.8vw, 20px); height: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
 
     @keyframes cursorIn {
-      0%       { opacity: 0; transform: translate(4px, 6px); }
+      0%       { opacity: 0; transform: translate(4px,6px); }
       18%      { opacity: 1; transform: translate(0,0); }
       85%,100% { opacity: 1; transform: translate(0,0); }
     }
@@ -275,11 +327,9 @@
 
     /* ── Features ────────────────────────────── */
     .features-section {
-      padding: 80px 64px;
+      padding: 80px 48px;
       border-bottom: 1px solid var(--border);
     }
-
-    .features-section .container { max-width: 1100px; margin: 0 auto; }
 
     .feat-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -290,11 +340,10 @@
 
     .feat {
       background: var(--bg2); padding: 36px 32px;
-      transition: background 0.2s;
-      position: relative; overflow: hidden;
+      transition: background 0.2s; position: relative; overflow: hidden;
     }
 
-    .feat:hover { background: var(--bg3); }
+    .feat:hover { background: #16162a; }
 
     .feat::before {
       content: ''; position: absolute;
@@ -306,57 +355,74 @@
 
     .feat:hover::before { transform: scaleY(1); }
 
-    .feat-n {
-      font-size: 10px; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 18px;
-    }
+    .feat-n { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
 
-    .feat h3 {
-      font-family: var(--D);
-      font-size: 20px; font-weight: 400;
-      color: var(--white); letter-spacing: -0.4px;
-      margin-bottom: 10px; line-height: 1.2;
-    }
+    .feat h3 { font-family: var(--D); font-size: 20px; font-weight: 400; color: var(--white); letter-spacing: -0.4px; margin-bottom: 10px; line-height: 1.2; }
 
     .feat p { font-size: 13px; color: var(--muted); line-height: 1.75; }
 
-    /* ── CTA ─────────────────────────────────── */
-    .cta {
-      padding: 100px 64px;
+    /* ── Contact ─────────────────────────────── */
+    .contact-section {
+      padding: 80px 48px;
+      border-bottom: 1px solid var(--border);
       background: var(--bg2);
     }
 
-    .cta .container {
+    .contact-inner {
       max-width: 1100px; margin: 0 auto;
       display: flex; align-items: center;
       justify-content: space-between; gap: 48px; flex-wrap: wrap;
     }
 
-    .cta h2 {
+    .contact-left h2 {
       font-family: var(--D);
-      font-size: clamp(36px, 5vw, 64px);
-      font-weight: 400; letter-spacing: -2.5px;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; letter-spacing: -2px;
       line-height: 1.05; color: var(--white);
-      max-width: 560px;
+      margin-bottom: 12px;
     }
 
-    .cta h2 em { font-style: italic; color: var(--accent); }
+    .contact-left h2 em { font-style: italic; color: var(--accent); }
 
-    .cta-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; flex-shrink: 0; }
+    .contact-left p { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 380px; }
 
-    .cta-note { font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 220px; }
+    .contact-right {
+      display: flex; flex-direction: column; gap: 12px;
+      align-items: flex-start; flex-shrink: 0;
+    }
+
+    .contact-email {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 15px; font-weight: 500;
+      color: var(--white); text-decoration: none;
+      background: rgba(123,121,255,0.1);
+      border: 1px solid rgba(123,121,255,0.25);
+      padding: 14px 24px; border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .contact-email:hover {
+      background: rgba(123,121,255,0.18);
+      border-color: rgba(123,121,255,0.4);
+      transform: translateY(-1px);
+    }
+
+    .contact-email svg { width: 16px; height: 16px; opacity: 0.7; }
+
+    .contact-note { font-size: 12px; color: var(--muted); }
 
     /* ── Footer ──────────────────────────────── */
     footer {
-      padding: 24px 64px;
-      border-top: 1px solid var(--border);
+      padding: 24px 48px;
       display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
 
-    .foot-logo { text-decoration: none; }
-    .foot-logo-img { height: 20px; width: auto; filter: invert(1); opacity: 0.35; }
+    .foot-name {
+      font-family: var(--D);
+      font-size: 15px; font-weight: 400;
+      color: var(--muted);
+    }
 
     footer p { font-size: 12px; color: var(--muted); }
 
@@ -372,19 +438,17 @@
     }
 
     .reveal.in { opacity: 1; transform: translateY(0); }
-    .d1 { transition-delay: 0.07s; }
-    .d2 { transition-delay: 0.14s; }
-    .d3 { transition-delay: 0.21s; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
 
     /* ── Responsive ──────────────────────────── */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
-      .hero { padding: 120px 24px 64px; }
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-      .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 24px; }
-      .demo-section, .features-section, .cta { padding: 56px 24px; }
+      .hero { padding: 100px 24px 64px; }
+      .hero-title { letter-spacing: -3px; }
+      .demo-section, .features-section, .contact-section { padding: 56px 24px; }
       .feat-grid { grid-template-columns: 1fr; }
-      .cta .container { flex-direction: column; }
+      .contact-inner { flex-direction: column; }
       footer { padding: 20px 24px; }
     }
   </style>
@@ -393,47 +457,45 @@
 
 <!-- Nav -->
 <nav>
-  <a href="#" class="logo"><img src="logo.png" alt="Thesara" class="logo-img" /></a>
+  <a href="#" class="nav-logo">thesara</a>
   <div class="nav-right">
+    <a href="#demo">Demo</a>
     <a href="#features">Features</a>
+    <a href="#contact">Contact</a>
     <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
-    <a href="privacy.html">Privacy</a>
     <a href="https://chrome.google.com/webstore" class="nav-cta">Add to Chrome</a>
   </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-inner">
-    <div>
-      <div class="hero-tag"><span class="htag-dot"></span>v1.0 · Free · Open source</div>
-      <h1>Every word.<br><em>In context.</em></h1>
-      <p class="hero-sub">Hover any subtitle word while streaming to see its definition, synonyms, and what it actually means in that scene.</p>
-      <div class="hero-btns">
-        <a href="https://chrome.google.com/webstore" class="btn btn-white">Add to Chrome — free</a>
-        <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank">View on GitHub</a>
-      </div>
+  <div id="phrases"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      Chrome Extension · Free · Open source
     </div>
-    <div class="hero-stats">
-      <div>
-        <span class="hstat-n" data-count="14400">14,400</span>
-        <span class="hstat-l">Free AI calls / day</span>
-      </div>
-      <div>
-        <span class="hstat-n">&lt;1s</span>
-        <span class="hstat-l">Tooltip latency</span>
-      </div>
-      <div>
-        <span class="hstat-n">100%</span>
-        <span class="hstat-l">Open source</span>
-      </div>
+
+    <div class="hero-title">THESARA</div>
+
+    <p class="hero-tagline">
+      Understand every word you watch.<br>
+      <em>Definition, context, meaning — instantly.</em>
+    </p>
+
+    <div class="hero-btns">
+      <a href="https://chrome.google.com/webstore" class="btn btn-white">Add to Chrome — free</a>
+      <a href="#demo" class="btn btn-ghost">See it in action</a>
     </div>
   </div>
 </section>
 
 <!-- Demo -->
-<section class="demo-section">
+<section class="demo-section" id="demo">
   <div class="container">
+    <p class="sec-label reveal">In action</p>
+    <h2 class="sec-h reveal">Hover a word.<br><em>Understand the scene.</em></h2>
     <div class="mock-outer reveal">
       <div class="mock-browser">
         <div class="mdot"></div><div class="mdot"></div><div class="mdot"></div>
@@ -479,6 +541,8 @@
 <!-- Features -->
 <section class="features-section" id="features">
   <div class="container">
+    <p class="sec-label reveal">Features</p>
+    <h2 class="sec-h reveal">Everything you need.<br><em>Nothing you don't.</em></h2>
     <div class="feat-grid">
       <div class="feat reveal">
         <p class="feat-n">01 · Dictionary</p>
@@ -488,66 +552,108 @@
       <div class="feat reveal d1">
         <p class="feat-n">02 · AI</p>
         <h3>Scene-aware context</h3>
-        <p>"Cook" in Breaking Bad isn't about food. The AI knows the show, the characters, and reads the last 6 lines of dialogue.</p>
+        <p>"Cook" in Breaking Bad isn't about food. The AI reads the show, the characters, and the last 6 lines of dialogue.</p>
       </div>
       <div class="feat reveal d2">
         <p class="feat-n">03 · NLP</p>
         <h3>Idiom detection</h3>
-        <p>Automatically clusters phrases like "call it a day" and explains them as a single unit of meaning.</p>
+        <p>Automatically detects phrases like "call it a day" and explains them as a single unit — not word by word.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta">
-  <div class="container">
-    <h2 class="reveal">Start understanding<br><em>everything</em> you watch.</h2>
-    <div class="cta-right reveal d1">
-      <a href="https://chrome.google.com/webstore" class="btn btn-white" style="padding:13px 28px; font-size:14px;">Add to Chrome — free</a>
-      <p class="cta-note">Works on Netflix. More platforms coming. No account required.</p>
+<!-- Contact -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <h2>Got a thought?<br><em>Say hello.</em></h2>
+      <p>Feedback, bugs, collaborations, or just want to talk about language learning and film — we're listening.</p>
+    </div>
+    <div class="contact-right reveal d1">
+      <a href="mailto:talktothesara@gmail.com" class="contact-email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        talktothesara@gmail.com
+      </a>
+      <p class="contact-note">We reply to everything.</p>
     </div>
   </div>
 </section>
 
 <footer>
   <div style="display:flex; align-items:center; gap:16px;">
-    <a href="#" class="foot-logo"><img src="logo.png" alt="Thesara" class="foot-logo-img" /></a>
+    <span class="foot-name">thesara</span>
     <p>Open source</p>
   </div>
   <div class="foot-links">
     <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
     <a href="privacy.html">Privacy</a>
-    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">Issues</a>
   </div>
 </footer>
 
 <script>
+  // ── Floating movie phrases ─────────────────────────────────
+  const quotes = [
+    "I am the danger.", "Here's looking at you, kid.",
+    "You can't handle the truth!", "I'll be back.",
+    "May the Force be with you.", "Why so serious?",
+    "To infinity and beyond!", "Life is like a box of chocolates.",
+    "I see dead people.", "You had me at hello.",
+    "After all this time? Always.", "I am your father.",
+    "Make him an offer he can't refuse.", "You talking to me?",
+    "Go ahead, make my day.", "Bond. James Bond.",
+    "There's no place like home.", "My precious.",
+    "Hasta la vista, baby.", "Show me the money!",
+    "I'm the king of the world!", "Elementary, my dear Watson.",
+    "Just keep swimming.", "We're not in Kansas anymore.",
+    "I drink your milkshake.", "Frankly, my dear, I don't give a damn.",
+    "With great power comes great responsibility.",
+    "To boldly go where no man has gone before.",
+    "Keep your friends close, but your enemies closer.",
+    "I feel the need — the need for speed!",
+    "You is kind, you is smart, you is important.",
+    "Winter is coming.", "A Lannister always pays his debts.",
+  ];
+
+  const container = document.getElementById('phrases');
+  const count = 28;
+
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'phrase';
+
+    const q = quotes[i % quotes.length];
+    el.textContent = q;
+
+    // Random position
+    el.style.left  = (Math.random() * 100) + '%';
+    el.style.top   = (Math.random() * 100) + '%';
+
+    // Random size — smaller feels more like distant stars
+    const size = 9 + Math.random() * 9;
+    el.style.fontSize = size + 'px';
+
+    // Random opacity — very subtle
+    el.style.color = `rgba(255,255,255,${0.03 + Math.random() * 0.05})`;
+
+    // Random rotation — slight tilt adds life
+    const rot = (Math.random() - 0.5) * 20;
+    el.style.transform = `rotate(${rot}deg)`;
+
+    // Random drift animation duration
+    const dur = 18 + Math.random() * 28;
+    const delay = -(Math.random() * dur);
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = delay + 's';
+
+    container.appendChild(el);
+  }
+
+  // ── Scroll reveal ──────────────────────────────────────────
   const ro = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
-
-  // Count-up for hero stats
-  function countUp(el, target, dur) {
-    const t0 = performance.now();
-    const comma = target >= 1000;
-    (function tick(now) {
-      const p = Math.min((now - t0) / dur, 1);
-      const v = Math.round((1 - Math.pow(1-p, 3)) * target);
-      el.textContent = (comma ? v.toLocaleString() : v);
-      if (p < 1) requestAnimationFrame(tick);
-    })(t0);
-  }
-
-  // Fire count-up after hero entrance animation
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.querySelectorAll('[data-count]').forEach(el => {
-        countUp(el, parseInt(el.dataset.count, 10), 1600);
-      });
-    }, 600);
-  });
 </script>
 </body>
 </html>
