@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Thesara — Understand every word you watch." />
-  <title>Thesara — Understand Every Word You Watch</title>
+  <meta name="description" content="Thesara. Understand every word you watch." />
+  <title>Thesara. Understand Every Word You Watch</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Telma:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Cormorant+SC:wght@300;400;600;700&family=Telma:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,7 +22,7 @@
       --accent:  #7b79ff;
       --green:   #34d39a;
       --white:   #ffffff;
-      --D: "Telma", Georgia, serif;
+      --D: "Cormorant", "Cormorant SC", Georgia, serif;
       --B: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -53,10 +53,10 @@
     }
 
     .nav-logo {
-      font-family: var(--D);
-      font-size: 17px; font-weight: 400;
+      font-family: "Cormorant SC", "Cormorant", Georgia, serif;
+      font-size: 20px; font-weight: 600;
       color: var(--white); text-decoration: none;
-      letter-spacing: -0.3px;
+      letter-spacing: 0.08em;
     }
 
     .nav-right { display: flex; align-items: center; gap: 4px; }
@@ -140,24 +140,51 @@
 
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; color: var(--muted);
-      letter-spacing: 0.12em; text-transform: uppercase;
-      margin-bottom: 32px;
+      flex-wrap: wrap; justify-content: center;
+      margin-bottom: 36px;
       opacity: 0; animation: fadeUp 0.6s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
-    .eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+    .eyebrow-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+    }
+
+    .eyebrow-pill.live {
+      color: var(--green);
+      border-color: rgba(52,211,154,0.3);
+      background: rgba(52,211,154,0.07);
+    }
+
+    .eyebrow-pill.live::before {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--green);
+      animation: breathe 2s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
+    }
 
     .hero-title {
-      font-family: var(--D);
-      font-size: clamp(80px, 16vw, 200px);
-      font-weight: 700;
-      letter-spacing: -6px;
-      line-height: 0.9;
+      font-family: "Cormorant SC", "Cormorant", Georgia, serif;
+      font-size: clamp(80px, 17vw, 220px);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      line-height: 0.88;
       color: var(--white);
-      margin-bottom: 28px;
+      margin-bottom: 32px;
       opacity: 0;
-      animation: fadeUp 0.8s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
+      animation: fadeUp 0.9s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
+      /* High-contrast Cormorant at this scale is breathtaking */
     }
 
     .hero-tagline {
@@ -422,8 +449,9 @@
     }
 
     .foot-name {
-      font-family: var(--D);
-      font-size: 15px; font-weight: 400;
+      font-family: "Cormorant SC", "Cormorant", Georgia, serif;
+      font-size: 17px; font-weight: 600;
+      letter-spacing: 0.08em;
       color: var(--muted);
     }
 
@@ -476,19 +504,20 @@
 
   <div class="hero-content">
     <div class="hero-eyebrow">
-      <span class="eyebrow-dot"></span>
-      Chrome Extension · Free · Open source
+      <span class="eyebrow-pill live">Chrome Extension</span>
+      <span class="eyebrow-pill">Free</span>
+      <span class="eyebrow-pill">Open source</span>
     </div>
 
     <div class="hero-title">THESARA</div>
 
     <p class="hero-tagline">
       Understand every word you watch.<br>
-      <em>Definition, context, meaning — instantly.</em>
+      <em>Definition, context, meaning. Instantly.</em>
     </p>
 
     <div class="hero-btns">
-      <a href="https://chrome.google.com/webstore" class="btn btn-white">Add to Chrome — free</a>
+      <a href="https://chrome.google.com/webstore" class="btn btn-white">Add to Chrome, free</a>
       <a href="#demo" class="btn btn-ghost">See it in action</a>
     </div>
   </div>
@@ -509,7 +538,7 @@
       <div>
         <p style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); margin-bottom:8px;">Step 2</p>
         <p style="font-size:14px; color:var(--text); font-weight:500; margin-bottom:6px;">A card appears instantly</p>
-        <p style="font-size:13px; color:var(--muted); line-height:1.7;">Definition and synonyms load immediately. The AI explanation follows — scene-aware, character-aware, show-aware.</p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7;">Definition and synonyms load immediately. The AI explanation follows. Scene-aware, character-aware, show-aware.</p>
       </div>
       <div>
         <p style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); margin-bottom:8px;">Step 3</p>
@@ -540,7 +569,7 @@
           <div class="tt-d">A source of harm; something or someone likely to cause damage.</div>
           <div class="tt-hr"></div>
           <div class="tt-sl">In this scene</div>
-          <div class="tt-s">Walter isn't describing a risk — he's declaring himself the most powerful and terrifying force in the room, a claim of total dominance over Skyler.</div>
+          <div class="tt-s">Walter isn't describing a risk. He's declaring himself the most powerful and terrifying force in the room, a claim of total dominance over Skyler.</div>
         </div>
         <div class="mock-subs">
           <span class="sub">I am </span><span class="sub sub-hl">the danger<span class="mock-cursor"><svg viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2L2 20L7.5 14.5L11 21L13.5 20L10 13.5H17L2 2Z" fill="white" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></svg></span></span><span class="sub">.</span>
@@ -569,7 +598,7 @@
       <div class="feat reveal">
         <p class="feat-n">01 · Dictionary</p>
         <h3>Instant definitions</h3>
-        <p>Definition, part of speech, and synonyms on hover — without leaving the screen or breaking focus.</p>
+        <p>Definition, part of speech, and synonyms on hover, without leaving the screen or breaking focus.</p>
       </div>
       <div class="feat reveal d1">
         <p class="feat-n">02 · AI</p>
@@ -579,7 +608,7 @@
       <div class="feat reveal d2">
         <p class="feat-n">03 · NLP</p>
         <h3>Idiom detection</h3>
-        <p>Automatically detects phrases like "call it a day" and explains them as a single unit — not word by word.</p>
+        <p>Automatically detects phrases like "call it a day" and explains them as a single unit, not word by word.</p>
       </div>
     </div>
   </div>
@@ -590,7 +619,7 @@
   <div class="contact-inner">
     <div class="contact-left reveal">
       <h2>Got a thought?<br><em>Say hello.</em></h2>
-      <p>Feedback, bugs, collaborations, or just want to talk about language learning and film — we're listening.</p>
+      <p>Feedback, bugs, collaborations, or just want to talk about language learning and film. We're listening.</p>
     </div>
     <div class="contact-right reveal d1">
       <a href="mailto:talktothesara@gmail.com" class="contact-email">
@@ -631,7 +660,7 @@
     "Frankly, my dear, I don't give a damn.",
     "With great power comes great responsibility.",
     "Keep your friends close, but your enemies closer.",
-    "I feel the need — the need for speed!",
+    "I feel the need. The need for speed!",
     "Winter is coming.", "A Lannister always pays his debts.",
     "You is kind, you is smart, you is important.",
     "It's not who I am underneath, but what I do that defines me.",
