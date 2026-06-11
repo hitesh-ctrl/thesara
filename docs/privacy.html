@@ -7,34 +7,35 @@
   <title>Privacy Policy — Thesara</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --accent: #7c6aff;
-      --accent-dim: rgba(124,106,255,0.1);
-      --accent-2: #00e5a0;
-      --bg: #060608;
-      --bg-2: #0c0c10;
-      --surface: #111116;
-      --surface-2: #16161c;
-      --border: rgba(255,255,255,0.06);
-      --border-bright: rgba(255,255,255,0.1);
-      --text: #eeeef2;
-      --body: #aaaaaf;
-      --muted: #666670;
-      --faint: #2e2e36;
-      --mono: "JetBrains Mono", "Fira Code", monospace;
+      --bg:        #0f0f10;
+      --bg-2:      #141415;
+      --surface:   #1a1a1b;
+      --surface-2: #1f1f21;
+      --border:    rgba(255,255,255,0.065);
+      --border-2:  rgba(255,255,255,0.11);
+      --text:      #f0f0f2;
+      --text-2:    #c8c8cc;
+      --muted:     #6e6e76;
+      --faint:     #2a2a2e;
+      --white:     #ffffff;
+      --blue:      #5b8dee;
+      --blue-dim:  rgba(91,141,238,0.1);
+      --green:     #4ade80;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: "Inter", sans-serif;
+      font-family: "Inter", -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
     }
 
     ::-webkit-scrollbar { width: 5px; }
@@ -44,147 +45,145 @@
     /* ─── Nav ─── */
     nav {
       position: sticky; top: 0; z-index: 200;
-      height: 60px;
-      padding: 0 40px;
+      height: 56px; padding: 0 32px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(6,6,8,0.85);
-      backdrop-filter: blur(20px);
+      background: rgba(15,15,16,0.85);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
 
     .nav-logo {
-      font-family: var(--mono);
       font-size: 15px; font-weight: 700;
-      color: var(--text); text-decoration: none;
+      color: var(--white); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
     }
 
-    .nav-links { display: flex; gap: 8px; }
+    .nav-logo-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--blue); box-shadow: 0 0 8px var(--blue);
+    }
+
+    .nav-links { display: flex; gap: 4px; }
 
     .nav-links a {
-      font-size: 13px; color: var(--muted);
-      text-decoration: none; padding: 6px 12px;
-      border-radius: 6px; transition: all 0.15s;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      padding: 5px 10px; border-radius: 5px;
+      transition: color 0.15s, background 0.15s;
     }
 
-    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a:hover { color: var(--text-2); background: var(--surface); }
 
     /* ─── Layout ─── */
     .page {
       display: grid;
-      grid-template-columns: 220px 1fr;
-      max-width: 1000px;
+      grid-template-columns: 200px 1fr;
+      max-width: 960px;
       margin: 0 auto;
       padding: 56px 40px 96px;
       gap: 56px;
       align-items: start;
     }
 
-    @media (max-width: 768px) {
-      .page { grid-template-columns: 1fr; }
+    @media (max-width: 720px) {
+      .page { grid-template-columns: 1fr; padding: 40px 20px 80px; }
       .toc { display: none; }
-      nav { padding: 0 20px; }
     }
 
     /* ─── TOC ─── */
-    .toc { position: sticky; top: 80px; }
+    .toc { position: sticky; top: 76px; }
 
     .toc-label {
-      font-family: var(--mono);
-      font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      color: var(--muted); margin-bottom: 16px;
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--muted); margin-bottom: 14px;
     }
 
     .toc a {
       display: block;
       font-size: 12px; font-weight: 500;
       color: var(--muted); text-decoration: none;
-      padding: 5px 0 5px 14px;
-      border-left: 2px solid var(--faint);
-      margin-bottom: 2px;
+      padding: 5px 0 5px 12px;
+      border-left: 1.5px solid var(--border-2);
+      margin-bottom: 1px;
       transition: all 0.15s;
     }
 
-    .toc a:hover { color: var(--text); border-left-color: var(--accent); }
+    .toc a:hover { color: var(--text-2); border-left-color: var(--blue); }
 
     /* ─── Content ─── */
-    .content {}
-
     .page-label {
-      font-family: var(--mono);
-      font-size: 11px; font-weight: 500;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      color: var(--accent); margin-bottom: 14px;
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); margin-bottom: 12px;
     }
 
     h1 {
-      font-size: 38px; font-weight: 800;
+      font-size: 36px; font-weight: 800;
       letter-spacing: -1.5px; line-height: 1.1;
-      color: #fff; margin-bottom: 20px;
+      color: var(--white); margin-bottom: 18px;
     }
 
-    .meta-bar {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      margin-bottom: 40px; padding-bottom: 36px;
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 36px; padding-bottom: 32px;
       border-bottom: 1px solid var(--border);
     }
 
     .meta-tag {
-      font-family: var(--mono);
       font-size: 11px; font-weight: 500;
       color: var(--muted);
       background: var(--surface);
-      border: 1px solid var(--border-bright);
-      padding: 4px 12px; border-radius: 5px;
+      border: 1px solid var(--border-2);
+      padding: 3px 10px; border-radius: 5px;
     }
 
     .tldr {
       background: var(--surface);
-      border: 1px solid var(--border-bright);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 10px 10px 0;
-      padding: 20px 24px;
-      margin-bottom: 48px;
+      border: 1px solid var(--border-2);
+      border-left: 2px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 20px;
+      margin-bottom: 44px;
     }
 
     .tldr-label {
-      font-family: var(--mono);
       font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--accent); margin-bottom: 10px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--blue); margin-bottom: 8px;
     }
 
-    .tldr p { font-size: 14px; color: var(--body); line-height: 1.75; }
+    .tldr p { font-size: 13px; color: var(--text-2); line-height: 1.75; }
 
     h2 {
-      font-size: 20px; font-weight: 700;
-      letter-spacing: -0.4px; color: #fff;
-      margin-top: 52px; margin-bottom: 16px;
-      padding-top: 52px;
+      font-size: 17px; font-weight: 700;
+      color: var(--white); letter-spacing: -0.3px;
+      margin-top: 48px; margin-bottom: 14px;
+      padding-top: 48px;
       border-top: 1px solid var(--border);
       display: flex; align-items: center; gap: 10px;
     }
 
     h2:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
 
-    h2 .h2-num {
-      font-family: var(--mono);
-      font-size: 12px; font-weight: 500;
-      color: var(--accent); background: var(--accent-dim);
-      padding: 2px 8px; border-radius: 4px;
-      flex-shrink: 0;
+    .h2-n {
+      font-size: 11px; font-weight: 600;
+      color: var(--muted);
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
+      padding: 2px 7px; border-radius: 4px;
     }
 
     p {
-      font-size: 14px; color: var(--body);
-      margin-bottom: 16px; line-height: 1.85;
+      font-size: 14px; color: var(--muted);
+      margin-bottom: 14px; line-height: 1.85;
     }
 
-    ul { list-style: none; margin-bottom: 20px; }
+    ul { list-style: none; margin-bottom: 18px; }
 
     li {
-      font-size: 14px; color: var(--body); line-height: 1.75;
-      padding: 10px 0 10px 20px;
+      font-size: 14px; color: var(--muted); line-height: 1.75;
+      padding: 9px 0 9px 18px;
       border-bottom: 1px solid var(--faint);
       position: relative;
     }
@@ -192,172 +191,152 @@
     li:last-child { border-bottom: none; }
 
     li::before {
-      content: '▸';
+      content: '–';
       position: absolute; left: 0;
-      color: var(--accent); font-size: 10px;
-      top: 13px;
+      color: var(--muted);
     }
 
-    li strong { color: var(--text); font-weight: 600; }
+    li strong { color: var(--text-2); font-weight: 600; }
 
-    /* ─── Data table ─── */
-    .data-table {
+    table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 24px;
-      border: 1px solid var(--border-bright);
-      border-radius: 10px;
-      overflow: hidden;
       font-size: 13px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-2);
+      border-radius: 8px;
+      overflow: hidden;
     }
 
-    .data-table th {
+    th {
       background: var(--surface-2);
-      padding: 11px 16px;
+      padding: 10px 14px;
       text-align: left;
-      font-family: var(--mono);
       font-size: 10px; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.1em;
       color: var(--muted);
-      border-bottom: 1px solid var(--border-bright);
+      border-bottom: 1px solid var(--border-2);
     }
 
-    .data-table td {
-      padding: 12px 16px;
-      color: var(--body);
+    td {
+      padding: 11px 14px;
+      color: var(--muted);
       border-bottom: 1px solid var(--border);
       vertical-align: top; line-height: 1.6;
     }
 
-    .data-table tr:last-child td { border-bottom: none; }
-
-    .data-table td strong { color: var(--text); }
+    tr:last-child td { border-bottom: none; }
+    td strong { color: var(--text-2); font-weight: 500; }
 
     code {
-      font-family: var(--mono);
-      font-size: 12px;
+      font-size: 12px; font-family: "SF Mono", Consolas, monospace;
       background: var(--surface-2);
-      border: 1px solid var(--border-bright);
-      padding: 2px 7px; border-radius: 4px;
-      color: #ff7eb3;
+      border: 1px solid var(--border-2);
+      padding: 1px 6px; border-radius: 4px;
+      color: var(--text-2);
     }
 
-    a { color: var(--accent); text-decoration: none; }
+    a { color: var(--blue); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* ─── Contact card ─── */
     .contact-card {
       background: var(--surface);
-      border: 1px solid var(--border-bright);
-      border-radius: 12px;
-      padding: 24px 28px;
+      border: 1px solid var(--border-2);
+      border-radius: 10px;
+      padding: 20px 24px;
       display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 16px;
-      margin-top: 16px;
+      justify-content: space-between; flex-wrap: wrap; gap: 14px;
+      margin-top: 14px;
     }
 
-    .contact-card p { font-size: 14px; color: var(--body); margin: 0; }
-    .contact-card strong { color: var(--text); }
+    .contact-card p { font-size: 13px; color: var(--muted); margin: 0; }
+    .contact-card strong { color: var(--text-2); }
 
-    .contact-btn {
+    .btn-sm {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--accent);
-      color: #fff; font-size: 13px; font-weight: 600;
-      padding: 9px 18px; border-radius: 7px;
+      background: var(--white);
+      color: #0a0a0b; font-size: 12px; font-weight: 600;
+      padding: 8px 16px; border-radius: 6px;
       text-decoration: none;
-      transition: all 0.2s;
-      box-shadow: 0 0 20px rgba(124,106,255,0.3);
+      transition: background 0.15s;
     }
 
-    .contact-btn:hover {
-      background: #8b7aff;
-      transform: translateY(-1px);
-      text-decoration: none;
-    }
+    .btn-sm:hover { background: #e8e8ec; text-decoration: none; }
 
     /* ─── Footer ─── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 24px 40px;
+      padding: 22px 40px;
       display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
 
-    footer p { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+    footer p { font-size: 12px; color: var(--muted); }
 
-    .footer-links { display: flex; gap: 20px; }
-
+    .footer-links { display: flex; gap: 18px; }
     .footer-links a {
       font-size: 12px; color: var(--muted);
-      text-decoration: none; font-family: var(--mono);
-      transition: color 0.2s;
+      text-decoration: none; transition: color 0.15s;
     }
-
-    .footer-links a:hover { color: var(--text); }
+    .footer-links a:hover { color: var(--text-2); }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">thesara</a>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    thesara
+  </a>
   <div class="nav-links">
-    <a href="index.html">← home</a>
-    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">github</a>
+    <a href="index.html">← Home</a>
+    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
   </div>
 </nav>
 
 <div class="page">
 
-  <!-- TOC -->
   <aside class="toc">
-    <p class="toc-label">// on this page</p>
-    <a href="#tldr">tl;dr</a>
-    <a href="#collected">data collected</a>
-    <a href="#not-collected">not collected</a>
-    <a href="#third-parties">third parties</a>
-    <a href="#api-key">your api key</a>
-    <a href="#permissions">permissions</a>
-    <a href="#retention">retention</a>
-    <a href="#children">children</a>
-    <a href="#changes">changes</a>
-    <a href="#contact">contact</a>
+    <p class="toc-label">On this page</p>
+    <a href="#tldr">Summary</a>
+    <a href="#collected">Data collected</a>
+    <a href="#not-collected">Not collected</a>
+    <a href="#third-parties">Third parties</a>
+    <a href="#api-key">Your API key</a>
+    <a href="#permissions">Permissions</a>
+    <a href="#retention">Retention</a>
+    <a href="#children">Children</a>
+    <a href="#changes">Changes</a>
+    <a href="#contact">Contact</a>
   </aside>
 
-  <!-- Content -->
-  <main class="content">
-
-    <p class="page-label">// legal.privacy</p>
+  <main>
+    <p class="page-label">Legal</p>
     <h1>Privacy Policy</h1>
 
-    <div class="meta-bar">
-      <span class="meta-tag">last_updated: June 2026</span>
-      <span class="meta-tag">status: effective</span>
-      <span class="meta-tag">source: open</span>
+    <div class="meta">
+      <span class="meta-tag">Last updated: June 2026</span>
+      <span class="meta-tag">Status: Effective</span>
+      <span class="meta-tag">Source: Open</span>
     </div>
 
-    <!-- TL;DR -->
     <div class="tldr" id="tldr">
-      <p class="tldr-label">tl;dr</p>
+      <p class="tldr-label">Summary</p>
       <p>
-        Thesara only sends data when you hover a word — specifically the subtitle text
-        and show name, sent to an AI to generate an explanation. We store nothing on
-        our servers. No accounts, no analytics, no ads. Your data is not our product.
+        Thesara only sends data when you hover a word — the subtitle text and show name,
+        sent to an AI to generate an explanation. Nothing is stored on our servers.
+        No accounts, no analytics, no ads. Your data is not our product.
       </p>
     </div>
 
-    <!-- 1 -->
-    <h2 id="collected"><span class="h2-num">01</span> Data collected during use</h2>
+    <h2 id="collected"><span class="h2-n">01</span> Data collected during use</h2>
     <p>
-      Thesara is passive by default. No data leaves your device until you hover
-      a word. The following is transmitted exclusively at that moment:
+      Thesara is passive by default. No data leaves your device until you hover a word.
+      The following is transmitted exclusively at that moment:
     </p>
-    <table class="data-table">
+    <table>
       <thead>
-        <tr>
-          <th>Data</th>
-          <th>Destination</th>
-          <th>Purpose</th>
-        </tr>
+        <tr><th>Data</th><th>Destination</th><th>Purpose</th></tr>
       </thead>
       <tbody>
         <tr>
@@ -378,139 +357,123 @@
         <tr>
           <td><strong>Show title + episode title</strong></td>
           <td>Groq via Cloudflare Worker</td>
-          <td>Help AI understand show world, characters, and tone</td>
+          <td>Help AI understand the show's world and tone</td>
         </tr>
       </tbody>
     </table>
-    <p>
-      This data is processed transiently. It is not stored, logged, or retained
-      on any server operated by Thesara.
-    </p>
+    <p>This data is processed transiently and not stored on any Thesara-operated server.</p>
 
-    <!-- 2 -->
-    <h2 id="not-collected"><span class="h2-num">02</span> Data we do not collect</h2>
+    <h2 id="not-collected"><span class="h2-n">02</span> Data we do not collect</h2>
     <ul>
-      <li><strong>Account credentials</strong> — Thesara never reads or accesses your login details for any platform.</li>
-      <li><strong>Viewing history</strong> — We have no access to what you watch, when, or for how long.</li>
+      <li><strong>Account credentials</strong> — Thesara never reads your login details for any platform.</li>
+      <li><strong>Viewing history</strong> — No access to what you watch, when, or for how long.</li>
       <li><strong>Payment information</strong> — Never accessed, never transmitted.</li>
-      <li><strong>IP address or device identifiers</strong> — Not collected by Thesara at any point.</li>
-      <li><strong>Personal identifiers</strong> — No name, email, age, or any demographic data.</li>
-      <li><strong>Usage analytics</strong> — No tracking of which words you hover, usage frequency, or behavioural patterns.</li>
-      <li><strong>Crash reports or telemetry</strong> — The extension contains zero telemetry code. Verify this in the source.</li>
+      <li><strong>IP address or device identifiers</strong> — Not collected by Thesara.</li>
+      <li><strong>Personal identifiers</strong> — No name, email, age, or demographic data.</li>
+      <li><strong>Usage analytics</strong> — No tracking of hover patterns, usage frequency, or behaviour.</li>
+      <li><strong>Crash reports or telemetry</strong> — The extension contains zero telemetry code. Verify in the source.</li>
     </ul>
 
-    <!-- 3 -->
-    <h2 id="third-parties"><span class="h2-num">03</span> Third-party services</h2>
-    <p>Thesara uses three external services. Each is governed by its own privacy policy.</p>
+    <h2 id="third-parties"><span class="h2-n">03</span> Third-party services</h2>
+    <p>Thesara uses three external services, each governed by their own privacy policy.</p>
     <ul>
       <li>
         <strong>Groq, Inc.</strong> — Subtitle text and show context are sent to Groq's inference API
-        to generate explanations via the Llama 3 language model.
+        to generate explanations using the Llama 3 language model.
         <a href="https://groq.com/privacy-policy" target="_blank">groq.com/privacy-policy →</a>
       </li>
       <li>
-        <strong>Free Dictionary API</strong> — Individual words are sent to this public API
-        for definitions, part of speech, and synonyms. No personal data is involved.
+        <strong>Free Dictionary API</strong> — Individual words are sent for definitions and synonyms.
+        No personal data is involved.
         <a href="https://dictionaryapi.dev" target="_blank">dictionaryapi.dev →</a>
       </li>
       <li>
-        <strong>Cloudflare, Inc.</strong> — Groq requests are proxied through a Cloudflare
-        Worker to keep the developer's API key off your device. Cloudflare may log request
-        metadata per their own policy.
+        <strong>Cloudflare, Inc.</strong> — Groq requests are routed through a Cloudflare Worker
+        to protect the developer's API key. Cloudflare may log request metadata per their own policy.
         <a href="https://www.cloudflare.com/privacypolicy/" target="_blank">cloudflare.com/privacypolicy →</a>
       </li>
     </ul>
 
-    <!-- 4 -->
-    <h2 id="api-key"><span class="h2-num">04</span> Your optional API key</h2>
+    <h2 id="api-key"><span class="h2-n">04</span> Your optional API key</h2>
     <p>
-      When the shared daily quota is exhausted, you may choose to add your own Groq API key.
+      When the shared daily quota is exhausted, you may optionally add your own Groq API key.
       If you do, the following guarantees apply:
     </p>
     <ul>
       <li><strong>Stored locally only</strong> — saved in <code>chrome.storage.local</code> on your device, nowhere else.</li>
-      <li><strong>Never sent to Thesara</strong> — the developer has no access to your key at any time, ever.</li>
+      <li><strong>Never sent to Thesara</strong> — the developer has no access to your key at any time.</li>
       <li><strong>Only transmitted to Groq</strong> — used solely to authenticate requests to <code>api.groq.com</code>.</li>
       <li><strong>Not cloud-synced</strong> — <code>chrome.storage.local</code> is not synced to Google or any other device.</li>
-      <li><strong>Extension-sandboxed</strong> — no website or other extension can read it. Chrome enforces this.</li>
+      <li><strong>Extension-sandboxed</strong> — no website or other extension can read it.</li>
       <li><strong>Revocable anytime</strong> — clear it from the Settings page or uninstall the extension.</li>
     </ul>
     <p>
-      You are shown a full disclosure screen — including a link to Groq's pricing page — before
+      You are shown a full disclosure screen — including Groq's pricing page — before
       you are asked to enter a key. No key is accepted without your explicit, informed action.
     </p>
 
-    <!-- 5 -->
-    <h2 id="permissions"><span class="h2-num">05</span> Chrome permissions</h2>
+    <h2 id="permissions"><span class="h2-n">05</span> Chrome permissions</h2>
     <p>Thesara requests the minimum permissions necessary. Each is used only as described.</p>
-    <table class="data-table">
+    <table>
       <thead>
-        <tr>
-          <th>Permission</th>
-          <th>Why it's needed</th>
-        </tr>
+        <tr><th>Permission</th><th>Why it's needed</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><code>storage</code></td>
-          <td>To optionally save your personal Groq API key locally on your device.</td>
+          <td>To optionally save your Groq API key locally on your device.</td>
         </tr>
         <tr>
-          <td><code>netflix.com</code> (host)</td>
-          <td>To read subtitle text from the video player when you hover a word. The extension only runs on <code>/watch/</code> URLs — not the homepage or account pages.</td>
+          <td><code>netflix.com</code></td>
+          <td>To read subtitle text from the video player. Only runs on <code>/watch/</code> URLs.</td>
         </tr>
         <tr>
-          <td><code>api.groq.com</code> (host)</td>
+          <td><code>api.groq.com</code></td>
           <td>To send requests directly to Groq when a personal API key is configured.</td>
         </tr>
         <tr>
-          <td><code>dictionaryapi.dev</code> (host)</td>
+          <td><code>dictionaryapi.dev</code></td>
           <td>To fetch word definitions and synonyms.</td>
         </tr>
         <tr>
-          <td><code>thesara-proxy.thesara.workers.dev</code> (host)</td>
-          <td>To route requests through the Cloudflare Worker when using the shared developer quota.</td>
+          <td><code>thesara-proxy.thesara.workers.dev</code></td>
+          <td>To route requests through the Cloudflare Worker when using the shared quota.</td>
         </tr>
       </tbody>
     </table>
 
-    <!-- 6 -->
-    <h2 id="retention"><span class="h2-num">06</span> Data retention</h2>
+    <h2 id="retention"><span class="h2-n">06</span> Data retention</h2>
     <p>
       Thesara operates no databases and retains no user data. The Cloudflare Worker
-      processes requests in memory without logging request content. The only data
-      persisted locally is your optional API key in <code>chrome.storage.local</code>,
-      which remains until you clear it or uninstall the extension.
+      processes requests in memory without logging content. The only data persisted
+      locally is your optional API key in <code>chrome.storage.local</code>, which
+      remains until you clear it or uninstall the extension.
     </p>
 
-    <!-- 7 -->
-    <h2 id="children"><span class="h2-num">07</span> Children's privacy</h2>
+    <h2 id="children"><span class="h2-n">07</span> Children's privacy</h2>
     <p>
       Thesara is not directed at children under 13 and does not knowingly collect
-      personal data from minors. If you believe a child has used this extension in
-      a way that raises a privacy concern, please contact us via GitHub.
+      personal data from minors. If you have a concern, please contact us via GitHub.
     </p>
 
-    <!-- 8 -->
-    <h2 id="changes"><span class="h2-num">08</span> Changes to this policy</h2>
+    <h2 id="changes"><span class="h2-n">08</span> Changes to this policy</h2>
     <p>
-      Material changes will be reflected on this page with an updated date.
-      Because Thesara is fully open source, every revision to this policy is
-      permanently and publicly visible in the repository's commit history.
+      Material changes will be reflected here with an updated date. Because Thesara
+      is fully open source, every revision to this policy is permanently visible in
+      the repository's commit history.
     </p>
 
-    <!-- 9 -->
-    <h2 id="contact"><span class="h2-num">09</span> Contact</h2>
+    <h2 id="contact"><span class="h2-n">09</span> Contact</h2>
     <p>
-      Questions or concerns about this policy? Open an issue on GitHub — it's the
-      most transparent channel and ensures nothing gets lost in a private inbox.
+      Questions or concerns about this policy? GitHub Issues is the most transparent
+      channel — public, tracked, and nothing gets lost.
     </p>
     <div class="contact-card">
       <div>
         <p><strong>GitHub Issues</strong></p>
-        <p>Public, transparent, and tracked. The right place for privacy questions.</p>
+        <p>Open and tracked. The right place for privacy questions.</p>
       </div>
-      <a href="https://github.com/hitesh-ctrl/thesara/issues/new" target="_blank" class="contact-btn">
+      <a href="https://github.com/hitesh-ctrl/thesara/issues/new" target="_blank" class="btn-sm">
         Open an issue →
       </a>
     </div>
@@ -519,11 +482,11 @@
 </div>
 
 <footer>
-  <p>© 2026 thesara · open source · free forever</p>
+  <p>© 2026 Thesara · Open source · Free forever</p>
   <div class="footer-links">
-    <a href="index.html">home</a>
-    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">github</a>
-    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">issues</a>
+    <a href="index.html">Home</a>
+    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
+    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">Issues</a>
   </div>
 </footer>
 

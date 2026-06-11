@@ -3,686 +3,609 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Thesara — Hover any subtitle word to instantly understand it. AI-powered vocabulary for every streaming platform." />
+  <meta name="description" content="Thesara — Hover any subtitle word to instantly understand it." />
   <title>Thesara — Understand Every Word You Watch</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --accent: #7c6aff;
-      --accent-dim: rgba(124, 106, 255, 0.12);
-      --accent-glow: rgba(124, 106, 255, 0.3);
-      --accent-2: #00e5a0;
-      --bg: #060608;
-      --bg-2: #0c0c10;
-      --surface: #111116;
-      --surface-2: #16161c;
-      --border: rgba(255,255,255,0.06);
-      --border-bright: rgba(255,255,255,0.12);
-      --text: #eeeef2;
-      --muted: #777780;
-      --faint: #333338;
-      --mono: "JetBrains Mono", "Fira Code", monospace;
+      --bg:        #0f0f10;
+      --bg-2:      #141415;
+      --surface:   #1a1a1b;
+      --surface-2: #1f1f21;
+      --border:    rgba(255,255,255,0.065);
+      --border-2:  rgba(255,255,255,0.11);
+      --text:      #f0f0f2;
+      --text-2:    #c8c8cc;
+      --muted:     #6e6e76;
+      --faint:     #2a2a2e;
+      --white:     #ffffff;
+      --blue:      #5b8dee;
+      --blue-dim:  rgba(91,141,238,0.1);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: "Inter", sans-serif;
+      font-family: "Inter", -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
-    /* ─── Scrollbar ─────────────────────────────────── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 3px; }
-
-    /* ─── Nav ─────────────────────────────────────────── */
+    /* ─── Nav ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      padding: 0 40px;
-      height: 60px;
+      height: 56px;
+      padding: 0 32px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(6,6,8,0.8);
-      backdrop-filter: blur(20px);
+      background: rgba(15,15,16,0.8);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
 
     .nav-logo {
-      font-family: var(--mono);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.5px;
+      font-size: 15px; font-weight: 700;
+      color: var(--white); text-decoration: none;
+      letter-spacing: -0.3px;
       display: flex; align-items: center; gap: 8px;
     }
 
-    .nav-logo .cursor {
-      display: inline-block;
-      width: 9px; height: 18px;
-      background: var(--accent);
-      border-radius: 1px;
-      animation: blink 1.2s step-end infinite;
-      margin-left: 2px;
+    .nav-logo-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 8px var(--blue);
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .nav-links {
-      display: flex; align-items: center; gap: 8px;
-    }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
 
     .nav-links a {
       font-size: 13px; font-weight: 500;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: all 0.15s;
+      color: var(--muted); text-decoration: none;
+      padding: 5px 10px; border-radius: 5px;
+      transition: color 0.15s, background 0.15s;
     }
 
-    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a:hover { color: var(--text-2); background: var(--surface); }
 
     .nav-cta {
-      background: var(--accent) !important;
-      color: #fff !important;
+      margin-left: 8px;
+      background: var(--white) !important;
+      color: #0a0a0b !important;
       font-weight: 600 !important;
-      box-shadow: 0 0 20px var(--accent-glow);
+      padding: 6px 14px !important;
     }
 
-    .nav-cta:hover {
-      box-shadow: 0 0 32px var(--accent-glow) !important;
-      background: #8b7aff !important;
-    }
+    .nav-cta:hover { background: #e8e8ec !important; color: #0a0a0b !important; }
 
-    /* ─── Hero ─────────────────────────────────────────── */
+    /* ─── Hero ─── */
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      padding: 100px 24px 60px;
+      padding: 100px 24px 64px;
       position: relative;
-      overflow: hidden;
     }
 
-    .hero-noise {
+    .hero::before {
+      content: '';
       position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; opacity: 0.4;
-    }
-
-    .hero-glow {
-      position: absolute;
-      top: -200px; left: 50%; transform: translateX(-50%);
-      width: 800px; height: 600px;
-      background: radial-gradient(ellipse, rgba(124,106,255,0.08) 0%, transparent 65%);
+      background:
+        radial-gradient(ellipse 100% 60% at 50% 0%, rgba(91,141,238,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .hero-grid {
       position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, black 0%, transparent 70%);
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black, transparent 80%);
       pointer-events: none;
     }
 
-    .hero-inner { position: relative; max-width: 860px; }
+    .hero-inner { position: relative; max-width: 780px; }
 
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 10px;
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 8px;
       background: var(--surface);
-      border: 1px solid var(--border-bright);
-      border-radius: 8px;
-      padding: 7px 14px;
-      margin-bottom: 36px;
-      font-family: var(--mono);
-      font-size: 12px;
+      border: 1px solid var(--border-2);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 12px; font-weight: 500;
       color: var(--muted);
+      letter-spacing: 0.01em;
+      margin-bottom: 32px;
     }
 
-    .hero-badge .dot {
-      width: 7px; height: 7px;
-      background: var(--accent-2);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-      box-shadow: 0 0 8px var(--accent-2);
+    .hero-label .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 6px #4ade80;
+      animation: breathe 2.5s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(0.75); opacity: 0.6; }
+    @keyframes breathe {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     h1 {
-      font-size: clamp(46px, 7.5vw, 88px);
-      font-weight: 900;
-      letter-spacing: -3.5px;
-      line-height: 1.02;
-      margin-bottom: 28px;
-      color: #fff;
+      font-size: clamp(40px, 6.5vw, 76px);
+      font-weight: 800;
+      letter-spacing: -2.5px;
+      line-height: 1.06;
+      color: var(--white);
+      margin-bottom: 24px;
     }
 
-    h1 .word-highlight {
-      position: relative;
-      display: inline-block;
-    }
-
-    h1 .word-highlight::after {
-      content: '';
-      position: absolute;
-      bottom: 4px; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      border-radius: 2px;
+    h1 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-2);
     }
 
     .hero-sub {
-      font-size: 18px; font-weight: 400;
+      font-size: 17px; font-weight: 400;
       color: var(--muted);
-      max-width: 540px;
-      margin: 0 auto 48px;
+      max-width: 480px;
+      margin: 0 auto 44px;
       line-height: 1.75;
     }
 
-    .hero-cta {
-      display: flex; gap: 12px;
+    .hero-actions {
+      display: flex; gap: 10px;
       justify-content: center; flex-wrap: wrap;
       margin-bottom: 72px;
     }
 
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 26px;
-      border-radius: 8px;
-      font-size: 14px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px;
+      border-radius: 7px;
+      font-size: 13px; font-weight: 600;
       text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer; border: none;
+      transition: all 0.15s;
+      letter-spacing: -0.1px;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 0 30px var(--accent-glow);
+    .btn-white {
+      background: var(--white);
+      color: #0a0a0b;
     }
 
-    .btn-primary:hover {
-      background: #8b7aff;
-      box-shadow: 0 0 50px var(--accent-glow);
-      transform: translateY(-2px);
+    .btn-white:hover { background: #e8e8ec; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid var(--border-2);
     }
 
-    .btn-ghost {
+    .btn-outline:hover { background: var(--surface); transform: translateY(-1px); }
+
+    /* ─── Demo ─── */
+    .demo {
+      display: inline-block;
       background: var(--surface);
-      color: var(--muted);
-      border: 1px solid var(--border-bright);
-    }
-
-    .btn-ghost:hover {
-      color: var(--text);
-      border-color: var(--border-bright);
-      background: var(--surface-2);
-      transform: translateY(-2px);
-    }
-
-    /* ─── Demo tooltip card ───────────────────────────── */
-    .demo-card {
-      position: relative;
-      display: inline-flex; align-items: center; gap: 4px;
-      background: var(--surface);
-      border: 1px solid var(--border-bright);
-      border-radius: 12px;
-      padding: 18px 28px;
-      font-size: 17px;
+      border: 1px solid var(--border-2);
+      border-radius: 10px;
+      padding: 16px 24px;
+      font-size: 15px;
       font-weight: 500;
-      color: #aaa;
-      line-height: 1.5;
+      color: var(--muted);
+      position: relative;
     }
 
-    .demo-card .lang-tag {
-      position: absolute;
-      top: -1px; left: 16px;
-      background: var(--surface-2);
-      border: 1px solid var(--border-bright);
-      border-top: none;
-      border-radius: 0 0 6px 6px;
-      font-family: var(--mono);
-      font-size: 10px;
+    .demo-filename {
+      position: absolute; top: -1px; left: 14px;
+      transform: translateY(-100%);
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: var(--muted);
-      padding: 2px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border-2);
+      border-bottom: none;
+      padding: 3px 10px;
+      border-radius: 4px 4px 0 0;
     }
 
     .demo-word {
-      color: #fff; font-weight: 700;
-      border-bottom: 2px solid var(--accent);
-      cursor: pointer; position: relative;
+      color: var(--white); font-weight: 600;
+      border-bottom: 1.5px solid var(--blue);
       padding-bottom: 1px;
+      cursor: default;
+      position: relative;
     }
 
-    .demo-tooltip {
+    .demo-phrase {
+      color: var(--white); font-weight: 600;
+      border-bottom: 1.5px dashed #f59e0b;
+      padding-bottom: 1px;
+      cursor: default;
+      position: relative;
+    }
+
+    .tooltip {
       position: absolute;
-      bottom: calc(100% + 14px);
+      bottom: calc(100% + 12px);
       left: 50%; transform: translateX(-50%);
+      width: 256px;
       background: var(--bg-2);
-      border: 1px solid var(--border-bright);
-      border-radius: 12px;
-      padding: 16px 18px;
-      width: 260px;
+      border: 1px solid var(--border-2);
+      border-radius: 10px;
+      padding: 14px 16px;
       text-align: left;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
-      animation: float 4s ease-in-out infinite;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
+      animation: float 5s ease-in-out infinite;
     }
 
     @keyframes float {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-8px); }
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(-6px); }
     }
 
-    .demo-tooltip::after {
-      content: '';
-      position: absolute; top: 100%; left: 50%;
+    .tooltip::after {
+      content: ''; position: absolute; top: 100%; left: 50%;
       transform: translateX(-50%);
-      border: 7px solid transparent;
-      border-top-color: var(--border-bright);
+      border: 6px solid transparent;
+      border-top-color: var(--border-2);
     }
 
-    .tt-top { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-    .tt-word { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
-    .tt-pos {
-      font-family: var(--mono);
-      font-size: 10px; font-weight: 500;
-      color: var(--accent);
-      background: var(--accent-dim);
-      padding: 2px 7px; border-radius: 4px;
+    .tt-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+    .tt-word { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: -0.3px; }
+    .tt-badge {
+      font-size: 10px; font-weight: 600;
+      color: var(--blue); background: var(--blue-dim);
+      padding: 1px 6px; border-radius: 3px;
+      letter-spacing: 0.02em;
     }
-    .tt-divider { height: 1px; background: var(--border); margin: 10px 0; }
-    .tt-label {
-      font-family: var(--mono);
-      font-size: 9px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--faint); margin-bottom: 5px;
-    }
-    .tt-def { font-size: 13px; color: #999; line-height: 1.55; margin-bottom: 12px; }
+    .tt-def { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+    .tt-hr { height: 1px; background: var(--border); margin-bottom: 10px; }
     .tt-scene-label {
-      font-family: var(--mono);
-      font-size: 9px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--accent-2); margin-bottom: 5px;
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: #4ade80; margin-bottom: 5px;
     }
-    .tt-scene { font-size: 12px; color: #888; line-height: 1.6; }
+    .tt-scene { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
-    /* ─── Stats bar ───────────────────────────────────── */
-    .stats-bar {
+    /* ─── Social proof ─── */
+    .stats {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 20px 40px;
-      display: flex; align-items: center;
-      justify-content: center; gap: 48px;
-      flex-wrap: wrap;
-      background: var(--surface);
+      background: var(--bg-2);
+      padding: 0 40px;
+      display: flex; justify-content: center;
     }
 
     .stat {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 4px;
+      padding: 24px 48px;
+      border-right: 1px solid var(--border);
+      text-align: center;
     }
 
-    .stat-value {
-      font-family: var(--mono);
-      font-size: 22px; font-weight: 700;
-      color: #fff; letter-spacing: -1px;
+    .stat:last-child { border-right: none; }
+
+    .stat-n {
+      font-size: 26px; font-weight: 800;
+      color: var(--white); letter-spacing: -1px;
+      display: block; margin-bottom: 4px;
     }
 
-    .stat-label {
-      font-size: 11px; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500;
+    .stat-l {
+      font-size: 11px; font-weight: 500;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
-    .stat-divider {
-      width: 1px; height: 40px;
-      background: var(--border);
-    }
-
-    /* ─── Features ───────────────────────────────────── */
-    .section { padding: 96px 40px; }
-    .container { max-width: 1040px; margin: 0 auto; }
+    /* ─── Sections ─── */
+    .section { padding: 88px 40px; }
+    .container { max-width: 1000px; margin: 0 auto; }
 
     .eyebrow {
-      font-family: var(--mono);
-      font-size: 11px; font-weight: 500;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      color: var(--accent);
-      text-align: center; margin-bottom: 14px;
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted);
+      text-align: center; margin-bottom: 12px;
     }
 
-    .section-title {
-      font-size: clamp(28px, 4vw, 42px);
+    .section-h {
+      font-size: clamp(26px, 3.5vw, 40px);
       font-weight: 800; letter-spacing: -1.5px;
-      color: #fff; text-align: center;
-      margin-bottom: 56px; line-height: 1.1;
+      color: var(--white); text-align: center;
+      line-height: 1.1; margin-bottom: 52px;
     }
 
-    .features-grid {
+    /* ─── Feature grid ─── */
+    .feat-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 12px;
       overflow: hidden;
     }
 
-    @media (max-width: 720px) {
-      .features-grid { grid-template-columns: 1fr; }
-      nav { padding: 0 20px; }
-      .stats-bar { gap: 24px; padding: 20px; }
+    @media (max-width: 700px) {
+      .feat-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 16px; }
       .section { padding: 64px 20px; }
+      .stats { padding: 0; flex-wrap: wrap; }
+      .stat { padding: 20px 28px; border-right: none; border-bottom: 1px solid var(--border); }
     }
 
-    .feat {
-      background: var(--surface);
-      padding: 32px 28px;
-      transition: background 0.2s;
+    .feat-item {
+      padding: 28px 26px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
     }
 
-    .feat:hover { background: var(--surface-2); }
+    .feat-item:hover { background: var(--surface); }
+    .feat-item:nth-child(3n) { border-right: none; }
+    .feat-item:nth-child(n+4) { border-bottom: none; }
 
     .feat-icon {
-      font-family: var(--mono);
-      font-size: 11px; font-weight: 700;
-      color: var(--accent);
-      background: var(--accent-dim);
-      border: 1px solid rgba(124,106,255,0.2);
-      display: inline-block;
-      padding: 4px 10px; border-radius: 5px;
-      margin-bottom: 18px;
-      letter-spacing: 0.05em;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
+      border-radius: 7px;
+      margin-bottom: 16px;
     }
 
-    .feat h3 {
-      font-size: 15px; font-weight: 700;
-      color: #fff; margin-bottom: 8px;
-      letter-spacing: -0.3px;
+    .feat-item h3 {
+      font-size: 14px; font-weight: 600;
+      color: var(--white); margin-bottom: 6px;
+      letter-spacing: -0.2px;
     }
 
-    .feat p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .feat-item p { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
-    /* ─── Terminal block ─────────────────────────────── */
-    .terminal {
-      background: var(--bg-2);
-      border: 1px solid var(--border-bright);
-      border-radius: 14px;
-      overflow: hidden;
-      max-width: 640px;
-      margin: 0 auto;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    /* ─── How it works ─── */
+    .steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; position: relative;
     }
 
-    .terminal-bar {
+    @media (max-width: 700px) { .steps { grid-template-columns: 1fr 1fr; } }
+
+    .step { padding: 4px 8px 0; text-align: center; }
+
+    .step-n {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border-2);
       background: var(--surface);
-      padding: 12px 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      color: var(--text-2);
+      margin: 0 auto 16px;
+    }
+
+    .step h3 { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+    .step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ─── Platforms ─── */
+    .platforms {
+      display: flex; flex-wrap: wrap;
+      gap: 8px; justify-content: center;
+      margin-top: 16px;
+    }
+
+    .platform {
       display: flex; align-items: center; gap: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tbar-dot {
-      width: 11px; height: 11px; border-radius: 50%;
-    }
-
-    .tbar-dot:nth-child(1) { background: #ff5f56; }
-    .tbar-dot:nth-child(2) { background: #ffbd2e; }
-    .tbar-dot:nth-child(3) { background: #27c93f; }
-
-    .tbar-title {
-      font-family: var(--mono);
-      font-size: 12px; color: var(--muted);
-      margin-left: 8px; flex: 1; text-align: center;
-    }
-
-    .terminal-body {
-      padding: 24px 28px;
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 2;
-    }
-
-    .t-prompt { color: var(--accent); }
-    .t-cmd { color: #fff; }
-    .t-comment { color: var(--faint); }
-    .t-output { color: var(--accent-2); }
-    .t-muted { color: var(--muted); }
-    .t-string { color: #ffb347; }
-    .t-key { color: #ff7eb3; }
-
-    /* ─── Platforms ──────────────────────────────────── */
-    .platforms-note {
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 32px;
-    }
-
-    .platforms-note span { color: var(--accent-2); }
-
-    .platform-chips {
-      display: flex; gap: 10px;
-      justify-content: center; flex-wrap: wrap;
-    }
-
-    .chip {
       background: var(--surface);
-      border: 1px solid var(--border-bright);
-      border-radius: 8px;
+      border: 1px solid var(--border-2);
+      border-radius: 7px;
       padding: 8px 16px;
       font-size: 13px; font-weight: 500;
       color: var(--muted);
-      display: flex; align-items: center; gap: 8px;
     }
 
-    .chip.active { color: var(--text); border-color: rgba(124,106,255,0.3); background: var(--accent-dim); }
-    .chip .status {
+    .platform.live {
+      color: var(--text-2);
+      border-color: rgba(74,222,128,0.2);
+      background: rgba(74,222,128,0.04);
+    }
+
+    .platform-dot {
       width: 6px; height: 6px; border-radius: 50%;
     }
-    .chip.active .status { background: var(--accent-2); box-shadow: 0 0 6px var(--accent-2); }
-    .chip:not(.active) .status { background: var(--faint); }
 
-    /* ─── CTA section ────────────────────────────────── */
-    .cta-section {
-      padding: 96px 40px;
+    .platform.live .platform-dot {
+      background: #4ade80;
+      box-shadow: 0 0 6px #4ade80;
+    }
+
+    .platform:not(.live) .platform-dot { background: var(--faint); }
+
+    /* ─── CTA ─── */
+    .cta-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border-2);
+      border-radius: 16px;
+      padding: 56px 48px;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
 
-    .cta-section::before {
+    .cta-wrap::before {
       content: '';
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 300px;
-      background: radial-gradient(ellipse, rgba(124,106,255,0.07) 0%, transparent 70%);
+      position: absolute; top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 500px; height: 300px;
+      background: radial-gradient(ellipse, rgba(91,141,238,0.06) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .cta-section h2 {
-      font-size: clamp(32px, 5vw, 54px);
-      font-weight: 900; letter-spacing: -2px;
-      color: #fff; margin-bottom: 16px; line-height: 1.1;
+    .cta-wrap h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800; letter-spacing: -1.5px;
+      color: var(--white); margin-bottom: 14px;
+      line-height: 1.1;
     }
 
-    .cta-section p {
-      font-size: 16px; color: var(--muted);
-      max-width: 420px; margin: 0 auto 40px;
-      line-height: 1.7;
+    .cta-wrap p {
+      font-size: 15px; color: var(--muted);
+      max-width: 400px; margin: 0 auto 36px;
+      line-height: 1.75;
     }
 
-    /* ─── Footer ─────────────────────────────────────── */
+    /* ─── Footer ─── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 28px 40px;
+      padding: 24px 40px;
       display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 16px;
-    }
-
-    .footer-left {
-      display: flex; align-items: center; gap: 16px;
+      justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
 
     .footer-logo {
-      font-family: var(--mono);
       font-size: 14px; font-weight: 700;
       color: var(--muted); text-decoration: none;
     }
 
-    footer p { font-size: 12px; color: var(--faint); }
+    footer p { font-size: 12px; color: var(--muted); }
 
     .footer-links { display: flex; gap: 20px; }
 
     .footer-links a {
-      font-size: 13px; color: var(--faint);
-      text-decoration: none; transition: color 0.2s;
+      font-size: 12px; color: var(--muted);
+      text-decoration: none; transition: color 0.15s;
     }
 
-    .footer-links a:hover { color: var(--muted); }
+    .footer-links a:hover { color: var(--text-2); }
   </style>
 </head>
 <body>
 
-<!-- Nav -->
 <nav>
-  <a href="#" class="nav-logo">thesara<span class="cursor"></span></a>
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    thesara
+  </a>
   <div class="nav-links">
-    <a href="#features">features</a>
-    <a href="#how">how it works</a>
-    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">github</a>
-    <a href="privacy.html">privacy</a>
-    <a href="https://chrome.google.com/webstore" class="nav-cta">add to chrome</a>
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="https://chrome.google.com/webstore" class="nav-cta">Add to Chrome</a>
   </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-noise"></div>
-  <div class="hero-glow"></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
-    <div class="hero-badge">
+
+    <div class="hero-label">
       <span class="dot"></span>
-      <span>v1.0.0 · open source · free forever</span>
+      v1.0.0 · Free · Open source
     </div>
 
-    <h1>Every word.<br><span class="word-highlight">Understood.</span></h1>
+    <h1>Every word.<br><em>In context.</em></h1>
 
     <p class="hero-sub">
-      A Chrome extension that turns any subtitle into an interactive
-      vocabulary lesson — definitions, synonyms, and AI that knows
-      exactly what the word means in that scene.
+      Hover any subtitle word while streaming to see its definition,
+      synonyms, and what it actually means in that scene — powered by AI.
     </p>
 
-    <div class="hero-cta">
-      <a href="https://chrome.google.com/webstore" class="btn btn-primary">
-        Install extension — free
+    <div class="hero-actions">
+      <a href="https://chrome.google.com/webstore" class="btn btn-white">
+        Add to Chrome — it's free
       </a>
-      <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        view source
+      <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-outline" target="_blank">
+        View on GitHub
       </a>
     </div>
 
-    <!-- Demo tooltip -->
-    <div class="demo-card">
-      <span class="lang-tag">subtitle.txt</span>
-      "He decided to &nbsp;
-      <span class="demo-word">
-        give it up
-        <div class="demo-tooltip">
-          <div class="tt-top">
-            <span class="tt-word">give it up</span>
-            <span class="tt-pos">phrasal verb</span>
+    <!-- Demo -->
+    <div class="demo">
+      <span class="demo-filename">episode_03.srt</span>
+      "I think it's time to &thinsp;
+      <span class="demo-phrase">
+        call it a day
+        <div class="tooltip">
+          <div class="tt-row">
+            <span class="tt-word">call it a day</span>
+            <span class="tt-badge">idiom</span>
           </div>
-          <div class="tt-label">Definition</div>
-          <div class="tt-def">To stop doing or trying something; to abandon an effort or habit.</div>
-          <div class="tt-divider"></div>
+          <div class="tt-def">To decide to stop working or doing an activity for the rest of the day.</div>
+          <div class="tt-hr"></div>
           <div class="tt-scene-label">In this scene</div>
-          <div class="tt-scene">He's not quitting a task — he's letting go of something he's held onto for years, making this a moment of surrender rather than mere practicality.</div>
+          <div class="tt-scene">He's not just ending work — he's signalling that he's done with the entire situation, permanently.</div>
         </div>
       </span>
-      &nbsp;and walk away."
+      &thinsp;."
     </div>
+
   </div>
 </section>
 
 <!-- Stats -->
-<div class="stats-bar">
+<div class="stats">
   <div class="stat">
-    <span class="stat-value">14,400</span>
-    <span class="stat-label">free AI calls / day</span>
+    <span class="stat-n">14,400</span>
+    <span class="stat-l">Free AI calls / day</span>
   </div>
-  <div class="stat-divider"></div>
   <div class="stat">
-    <span class="stat-value">&lt; 1s</span>
-    <span class="stat-label">tooltip latency</span>
+    <span class="stat-n">&lt; 800ms</span>
+    <span class="stat-l">Avg tooltip latency</span>
   </div>
-  <div class="stat-divider"></div>
   <div class="stat">
-    <span class="stat-value">0</span>
-    <span class="stat-label">data stored server-side</span>
+    <span class="stat-n">0</span>
+    <span class="stat-l">Bytes stored server-side</span>
   </div>
-  <div class="stat-divider"></div>
   <div class="stat">
-    <span class="stat-value">100%</span>
-    <span class="stat-label">open source</span>
+    <span class="stat-n">100%</span>
+    <span class="stat-l">Open source</span>
   </div>
 </div>
 
 <!-- Features -->
 <section class="section" id="features">
   <div class="container">
-    <p class="eyebrow">// features</p>
-    <h2 class="section-title">Built for serious learners</h2>
-    <div class="features-grid">
-      <div class="feat">
-        <span class="feat-icon">def()</span>
+    <p class="eyebrow">Features</p>
+    <h2 class="section-h">Built for serious learners</h2>
+    <div class="feat-grid">
+      <div class="feat-item">
+        <div class="feat-icon">📖</div>
         <h3>Instant Definitions</h3>
-        <p>Hover any word for its definition, part of speech, and synonyms — without breaking your focus or leaving the screen.</p>
+        <p>Definition, part of speech, and synonyms — on hover, without leaving the screen.</p>
       </div>
-      <div class="feat">
-        <span class="feat-icon">ctx.ai</span>
+      <div class="feat-item">
+        <div class="feat-icon">🧠</div>
         <h3>Scene-Aware AI</h3>
-        <p>"Cook" in Breaking Bad isn't about food. Thesara reads the show, the character, and the dialogue to explain what words actually mean.</p>
+        <p>"Cook" in Breaking Bad isn't about food. Thesara knows the show, the character, and the moment.</p>
       </div>
-      <div class="feat">
-        <span class="feat-icon">phrase[]</span>
+      <div class="feat-item">
+        <div class="feat-icon">🔗</div>
         <h3>Idiom Detection</h3>
-        <p>Automatically groups phrases like "give it up" or "let it slide" and explains them as a unit — not word by word.</p>
+        <p>Automatically clusters phrases like "call it a day" and explains them as a single unit.</p>
       </div>
-      <div class="feat">
-        <span class="feat-icon">history[4]</span>
+      <div class="feat-item">
+        <div class="feat-icon">💬</div>
         <h3>Dialogue Context</h3>
-        <p>The AI sees the last 4 lines of dialogue before the word you hovered — so it understands the conversation, not just the sentence.</p>
+        <p>The AI sees the last 4 lines of dialogue — so it understands the conversation, not just the sentence.</p>
       </div>
-      <div class="feat">
-        <span class="feat-icon">privacy.ok</span>
+      <div class="feat-item">
+        <div class="feat-icon">🔒</div>
         <h3>Private by Design</h3>
-        <p>Only the subtitle you hover is ever sent anywhere. No history, no profiling, no tracking. Your viewing stays yours.</p>
+        <p>Only the subtitle you hover ever leaves your device. No history. No tracking. No accounts.</p>
       </div>
-      <div class="feat">
-        <span class="feat-icon">cost = 0</span>
-        <h3>Free Shared Quota</h3>
-        <p>14,400 AI calls per day shared across all users — provided free by the developer. Bring your own key if it runs out.</p>
+      <div class="feat-item">
+        <div class="feat-icon">⚡</div>
+        <h3>Zero Config</h3>
+        <p>Install and it works. No API key needed to start. Shared quota provided free by the developer.</p>
       </div>
     </div>
   </div>
@@ -691,30 +614,28 @@
 <!-- How it works -->
 <section class="section" id="how" style="background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="container">
-    <p class="eyebrow">// how it works</p>
-    <h2 class="section-title">Under the hood</h2>
-    <div class="terminal">
-      <div class="terminal-bar">
-        <div class="tbar-dot"></div>
-        <div class="tbar-dot"></div>
-        <div class="tbar-dot"></div>
-        <span class="tbar-title">thesara · runtime</span>
+    <p class="eyebrow">How it works</p>
+    <h2 class="section-h">Four steps, three seconds</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">01</div>
+        <h3>Watch normally</h3>
+        <p>Thesara runs silently. Your viewing is completely uninterrupted.</p>
       </div>
-      <div class="terminal-body">
-        <div><span class="t-comment">// 1. SubtitleObserver watches the DOM for subtitle changes</span></div>
-        <div><span class="t-prompt">→ </span><span class="t-cmd">observe</span><span class="t-muted">(</span><span class="t-string">".player-timedtext"</span><span class="t-muted">)</span></div>
-        <div>&nbsp;</div>
-        <div><span class="t-comment">// 2. PhraseDetector finds idioms in the current line</span></div>
-        <div><span class="t-prompt">→ </span><span class="t-cmd">detect</span><span class="t-muted">(</span><span class="t-string">"give it up"</span><span class="t-muted">)</span> <span class="t-output">✓ idiom found</span></div>
-        <div>&nbsp;</div>
-        <div><span class="t-comment">// 3. You hover a word — video pauses, tooltip fires</span></div>
-        <div><span class="t-prompt">→ </span><span class="t-cmd">lookup</span><span class="t-muted">({ </span><span class="t-key">word</span><span class="t-muted">: </span><span class="t-string">"give it up"</span><span class="t-muted">, </span><span class="t-key">context</span><span class="t-muted">: history[4] })</span></div>
-        <div>&nbsp;</div>
-        <div><span class="t-comment">// 4. AI explains the meaning in THIS scene</span></div>
-        <div><span class="t-prompt">→ </span><span class="t-output">"He's letting go of something he held onto for years…"</span></div>
-        <div>&nbsp;</div>
-        <div><span class="t-comment">// 5. Close tooltip → video resumes</span></div>
-        <div><span class="t-prompt">→ </span><span class="t-cmd">resume</span><span class="t-muted">()</span> <span class="t-output">✓</span></div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <h3>Hover a word</h3>
+        <p>Move your cursor over any subtitle word or detected phrase.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <h3>Read the tooltip</h3>
+        <p>Definition, synonyms, and the AI's scene-aware explanation appear instantly.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">04</div>
+        <h3>Keep watching</h3>
+        <p>Dismiss the tooltip and the video resumes exactly where you left off.</p>
       </div>
     </div>
   </div>
@@ -723,43 +644,46 @@
 <!-- Platforms -->
 <section class="section">
   <div class="container" style="text-align:center;">
-    <p class="eyebrow">// platforms</p>
-    <h2 class="section-title">Starting with streaming.<br>Not stopping there.</h2>
-    <p class="platforms-note">Currently live on <span>Netflix</span>. More platforms coming soon.</p>
-    <div class="platform-chips">
-      <div class="chip active"><span class="status"></span> Netflix</div>
-      <div class="chip"><span class="status"></span> Prime Video</div>
-      <div class="chip"><span class="status"></span> Disney+</div>
-      <div class="chip"><span class="status"></span> YouTube</div>
-      <div class="chip"><span class="status"></span> Apple TV+</div>
-      <div class="chip"><span class="status"></span> HBO Max</div>
+    <p class="eyebrow">Platforms</p>
+    <h2 class="section-h">Starting with streaming.<br>Not stopping there.</h2>
+    <div class="platforms">
+      <div class="platform live"><span class="platform-dot"></span> Netflix</div>
+      <div class="platform"><span class="platform-dot"></span> Prime Video</div>
+      <div class="platform"><span class="platform-dot"></span> Disney+</div>
+      <div class="platform"><span class="platform-dot"></span> YouTube</div>
+      <div class="platform"><span class="platform-dot"></span> Apple TV+</div>
+      <div class="platform"><span class="platform-dot"></span> HBO Max</div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section">
-  <h2>Start understanding<br>everything you watch.</h2>
-  <p>Free, open source, and built for language learners who are serious about immersion.</p>
-  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-    <a href="https://chrome.google.com/webstore" class="btn btn-primary" style="font-size:15px; padding:15px 32px;">
-      Add to Chrome — free
-    </a>
-    <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank" style="font-size:15px; padding:15px 32px;">
-      Star on GitHub ★
-    </a>
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="cta-wrap">
+      <h2>Start understanding<br>everything you watch.</h2>
+      <p>Free, open source, and built for language learners who take immersion seriously.</p>
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <a href="https://chrome.google.com/webstore" class="btn btn-white" style="padding:11px 24px; font-size:14px;">
+          Add to Chrome — free
+        </a>
+        <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-outline" target="_blank" style="padding:11px 24px; font-size:14px;">
+          Star on GitHub
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-left">
+  <div style="display:flex; align-items:center; gap:20px;">
     <a href="#" class="footer-logo">thesara</a>
-    <p>open source · free forever · built for learners</p>
+    <p>Open source · Free forever</p>
   </div>
   <div class="footer-links">
-    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">github</a>
-    <a href="privacy.html">privacy</a>
-    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">issues</a>
+    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">Issues</a>
   </div>
 </footer>
 
