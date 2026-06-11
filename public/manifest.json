@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Thesara — Netflix Vocabulary Assistant",
+  "version": "1.0.0",
+  "description": "Hover any subtitle word on Netflix to instantly see its definition, synonyms, and contextual meaning powered by AI.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://www.netflix.com/*",
+    "https://api.dictionaryapi.dev/*",
+    "https://api.groq.com/*",
+    "https://thesara-proxy.thesara.workers.dev/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://www.netflix.com/watch/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thesara Privacy Policy — learn how Thesara handles your data." />
+  <title>Privacy Policy — Thesara</title>
+  <style>
+    :root {
+      --red: #e50914;
+      --bg: #ffffff;
+      --surface: #f8f8f8;
+      --border: #e8e8e8;
+      --text: #111111;
+      --muted: #666666;
+      --link: #e50914;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+
+    header .inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--red);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--text);
+      font-weight: 400;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    .page-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 44px;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: #222;
+    }
+
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    li strong {
+      color: var(--text);
+    }
+
+    .callout {
+      background: var(--surface);
+      border-left: 3px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 24px 0;
+      font-size: 15px;
+    }
+
+    .callout p { margin: 0; }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    code {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: "SFMono-Regular", Consolas, monospace;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      margin-top: 64px;
+    }
+
+    footer .inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    footer a {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer a:hover { color: var(--red); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <a href="https://github.com/hitesh-ctrl/thesara" class="logo">
+      Thesara <span>Netflix Vocabulary Assistant</span>
+    </a>
+    <a href="https://github.com/hitesh-ctrl/thesara" style="font-size:14px;color:#666;">
+      GitHub →
+    </a>
+  </div>
+</header>
+
+<main>
+  <p class="page-label">Legal</p>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: June 2026 &nbsp;·&nbsp; Effective immediately</p>
+
+  <p>
+    Thesara is a free, open-source Chrome extension that helps you understand
+    words and phrases while watching Netflix. This policy explains clearly and
+    completely what data leaves your device, where it goes, and what happens to it.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>Short version:</strong> Thesara sends subtitle text to AI and dictionary
+      services only when you hover a word. Nothing is stored on any server we control.
+      No accounts. No tracking. No ads.
+    </p>
+  </div>
+
+  <h2>1. What data is sent when you use Thesara</h2>
+  <p>When you hover a word or phrase in a Netflix subtitle, the following data is sent:</p>
+  <ul>
+    <li>
+      <strong>The hovered word or phrase</strong> — sent to the
+      <a href="https://dictionaryapi.dev" target="_blank">Free Dictionary API</a>
+      for its definition, part of speech, and synonyms.
+    </li>
+    <li>
+      <strong>The current subtitle line</strong> and <strong>up to 4 preceding subtitle lines</strong>
+      — sent to <a href="https://groq.com" target="_blank">Groq's AI API</a> to generate
+      a contextual explanation of the word in the scene.
+    </li>
+    <li>
+      <strong>The show title and episode title</strong> (e.g. "Breaking Bad",
+      "Ozymandias") — sent to Groq alongside subtitle text to help the AI
+      understand the context.
+    </li>
+  </ul>
+  <p>
+    No data is sent while you are simply watching. Data is only sent at the
+    moment you hover a word.
+  </p>
+
+  <h2>2. What data is never collected</h2>
+  <ul>
+    <li>Your Netflix account details, email, or password.</li>
+    <li>Your viewing history, watch time, or preferences.</li>
+    <li>Any payment or billing information.</li>
+    <li>Your IP address, location, or device identifiers.</li>
+    <li>Any data about you as a person.</li>
+  </ul>
+  <p>
+    No data is ever stored on any server operated by Thesara's developer.
+    There are no databases, no logs of your activity, and no analytics.
+  </p>
+
+  <h2>3. Third-party services</h2>
+  <p>Thesara relies on the following third-party services to function:</p>
+  <ul>
+    <li>
+      <strong>Groq (groq.com)</strong> — Subtitle text and show context are sent
+      to Groq's inference API (Llama 3) to generate contextual word explanations.
+      Groq's own privacy policy governs how they handle this data:
+      <a href="https://groq.com/privacy-policy" target="_blank">groq.com/privacy-policy</a>.
+    </li>
+    <li>
+      <strong>Free Dictionary API (dictionaryapi.dev)</strong> — Individual words
+      are sent for dictionary lookups. This is a public API with no accounts or
+      personal data involved.
+    </li>
+    <li>
+      <strong>Cloudflare Workers (cloudflare.com)</strong> — API requests are
+      routed through a Cloudflare Worker that acts as a secure proxy, keeping the
+      developer's API key off your device. Cloudflare's privacy policy applies:
+      <a href="https://www.cloudflare.com/privacypolicy/" target="_blank">cloudflare.com/privacypolicy</a>.
+    </li>
+  </ul>
+
+  <h2>4. Your optional API key</h2>
+  <p>
+    If the shared daily quota is exhausted and you choose to add your own
+    Groq API key, that key is stored exclusively in
+    <code>chrome.storage.local</code> on your own device. It is:
+  </p>
+  <ul>
+    <li>Never transmitted to Thesara's developer or any server other than Groq.</li>
+    <li>Never synced to the cloud or any other device.</li>
+    <li>Sandboxed to this extension — no website can access it.</li>
+    <li>Removable at any time by clearing the extension's storage.</li>
+  </ul>
+
+  <h2>5. Permissions</h2>
+  <p>Thesara requests the following Chrome permissions and only uses them as described:</p>
+  <ul>
+    <li>
+      <strong>storage</strong> — to save your optional API key locally on your device.
+    </li>
+    <li>
+      <strong>host_permissions for netflix.com</strong> — to read subtitle text
+      from the Netflix player page when you hover a word.
+    </li>
+    <li>
+      <strong>host_permissions for api.groq.com and dictionaryapi.dev</strong>
+      — to make API requests for word explanations.
+    </li>
+  </ul>
+
+  <h2>6. Children's privacy</h2>
+  <p>
+    Thesara does not knowingly collect or process personal data from children
+    under the age of 13.
+  </p>
+
+  <h2>7. Changes to this policy</h2>
+  <p>
+    If this policy changes materially, the updated version will be published here
+    with a new "Last updated" date. Continued use of the extension after changes
+    constitutes acceptance of the updated policy.
+  </p>
+
+  <h2>8. Contact</h2>
+  <p>
+    Questions or concerns about this policy? Open an issue on the
+    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">
+      Thesara GitHub repository
+    </a>.
+  </p>
+</main>
+
+<footer>
+  <div class="inner">
+    <p>© 2026 Thesara. Open source and free forever.</p>
+    <div style="display:flex;gap:20px;">
+      <a href="https://github.com/hitesh-ctrl/thesara">GitHub</a>
+      <a href="https://github.com/hitesh-ctrl/thesara/issues">Report an issue</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

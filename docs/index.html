@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thesara — Hover any Netflix subtitle word to instantly understand it. Definitions, synonyms, and AI-powered contextual meaning." />
+  <title>Thesara — Netflix Vocabulary Assistant</title>
+  <style>
+    :root {
+      --red: #e50914;
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --border: #222;
+      --text: #f0f0f0;
+      --muted: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header .inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--red);
+      letter-spacing: -0.5px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 24px;
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .hero {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 96px 24px 80px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(229,9,20,0.12);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+      border: 1px solid rgba(229,9,20,0.2);
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--red);
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 44px;
+      line-height: 1.6;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .features {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 96px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .feature h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+    }
+
+    .how-it-works {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .step {
+      background: var(--surface);
+      padding: 32px 28px;
+    }
+
+    .step-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .step h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+    }
+
+    footer .inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <span class="logo">thesara</span>
+    <nav>
+      <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="badge">Free Chrome Extension</div>
+  <h1>Watch Netflix.<br>Understand <em>everything</em>.</h1>
+  <p class="subtitle">
+    Hover any subtitle word to instantly see its definition, synonyms,
+    and what it actually means in that scene — powered by AI.
+  </p>
+  <div class="cta-group">
+    <a href="https://chrome.google.com/webstore" class="btn btn-primary">
+      Add to Chrome — it's free
+    </a>
+    <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-secondary" target="_blank">
+      View source
+    </a>
+  </div>
+</section>
+
+<section style="padding: 0 0 60px;">
+  <p class="section-label">Features</p>
+  <p class="section-title">Everything you need, nothing you don't</p>
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">📖</div>
+      <h3>Instant Definitions</h3>
+      <p>Hover any word to see its definition, part of speech, and synonyms — without leaving the screen.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🧠</div>
+      <h3>Contextual AI Meaning</h3>
+      <p>Understands what words mean <em>in that scene</em>. "Cook" in Breaking Bad isn't about food.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔗</div>
+      <h3>Idiom Detection</h3>
+      <p>Automatically detects phrases like "kick the bucket" or "give up" and explains them as a unit.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>Zero Setup</h3>
+      <p>Install and it works. No account. No configuration. No API key required to get started.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <h3>Private by Design</h3>
+      <p>Only the subtitle line you hover is sent to AI. No history, no account data, no tracking.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🆓</div>
+      <h3>Free Forever</h3>
+      <p>Shared AI quota provided by the developer at no cost. Bring your own Groq key if the daily quota runs out.</p>
+    </div>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <p class="section-label">How it works</p>
+  <p class="section-title">Three seconds to understand any word</p>
+  <div class="steps">
+    <div class="step">
+      <p class="step-num">01</p>
+      <h3>Watch normally</h3>
+      <p>Thesara runs silently in the background. Your viewing experience is completely uninterrupted.</p>
+    </div>
+    <div class="step">
+      <p class="step-num">02</p>
+      <h3>Hover a word</h3>
+      <p>Move your mouse over any subtitle word. The video pauses and a tooltip appears instantly.</p>
+    </div>
+    <div class="step">
+      <p class="step-num">03</p>
+      <h3>Understand it</h3>
+      <p>See the definition, synonyms, and exactly what the word means in this scene.</p>
+    </div>
+    <div class="step">
+      <p class="step-num">04</p>
+      <h3>Keep watching</h3>
+      <p>Close the tooltip and the video resumes right where you left off.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="inner">
+    <p>© 2026 Thesara — open source, independent, free.</p>
+    <div>
+      <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">Report an Issue</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thesara — Settings</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background: #141414;
+        color: #e5e5e5;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 48px 16px;
+      }
+
+      .card {
+        background: #1f1f1f;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 32px;
+        width: 100%;
+        max-width: 480px;
+      }
+
+      .logo {
+        font-size: 13px;
+        font-weight: 600;
+        color: #e50914;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+      }
+
+      h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 24px;
+      }
+
+      .section-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: #808080;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 10px;
+      }
+
+      .description {
+        font-size: 13px;
+        color: #999;
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+
+      .description a { color: #e50914; text-decoration: none; }
+      .description a:hover { text-decoration: underline; }
+
+      .field {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      input[type="password"] {
+        flex: 1;
+        background: #141414;
+        border: 1px solid #333;
+        border-radius: 6px;
+        color: #e5e5e5;
+        font-size: 14px;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color 0.15s;
+        font-family: monospace;
+      }
+
+      input[type="password"]:focus { border-color: #e50914; }
+
+      input[type="password"]::placeholder {
+        color: #555;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        font-size: 13px;
+      }
+
+      button {
+        background: #e50914;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+      }
+
+      button:hover { background: #f40612; }
+
+      .status { font-size: 13px; min-height: 20px; }
+      .status--success { color: #46d369; }
+      .status--error   { color: #e50914; }
+
+      .divider { border: none; border-top: 1px solid #2a2a2a; margin: 28px 0; }
+
+      .note {
+        font-size: 12px;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      code {
+        background: #141414;
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 11px;
+        color: #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <p class="logo">Thesara</p>
+      <h1>Settings</h1>
+
+      <p class="section-title">Groq API Key</p>
+      <p class="description">
+        Used for contextual word explanations powered by Llama 3.
+        Get a free key at
+        <a href="https://console.groq.com" target="_blank" rel="noopener">console.groq.com</a>.
+        Your key is stored locally on this device and never leaves your browser.
+      </p>
+
+      <div class="field">
+        <input
+          type="password"
+          id="api-key"
+          placeholder="Paste your Groq API key (gsk_...)"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="save-btn">Save</button>
+      </div>
+
+      <p class="status" id="status"></p>
+
+      <hr class="divider" />
+
+      <p class="note">
+        Stored in <code>chrome.storage.local</code> — sandboxed to this extension,
+        inaccessible to any website, and never synced to the cloud.
+      </p>
+    </div>
+
+    <script>
+      const STORAGE_KEY = "nva_user_groq_api_key";
+      const input = document.getElementById("api-key");
+      const saveBtn = document.getElementById("save-btn");
+      const status = document.getElementById("status");
+
+      // Show masked placeholder if a key is already saved.
+      chrome.storage.local.get(STORAGE_KEY, (result) => {
+        if (typeof result[STORAGE_KEY] === "string" && result[STORAGE_KEY].length > 0) {
+          input.placeholder = "Key saved — paste a new one to replace it";
+        }
+      });
+
+      saveBtn.addEventListener("click", () => {
+        const key = input.value.trim();
+
+        if (key === "") {
+          showStatus("Please paste your Groq API key.", "error");
+          return;
+        }
+
+        if (!key.startsWith("gsk_")) {
+          showStatus("That doesn't look like a Groq key (should start with gsk_).", "error");
+          return;
+        }
+
+        chrome.storage.local.set({ [STORAGE_KEY]: key }, () => {
+          input.value = "";
+          input.placeholder = "Key saved — paste a new one to replace it";
+          showStatus("API key saved ✓", "success");
+        });
+      });
+
+      function showStatus(message, type) {
+        status.textContent = message;
+        status.className = "status status--" + type;
+        setTimeout(() => {
+          status.textContent = "";
+          status.className = "status";
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
