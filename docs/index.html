@@ -3,496 +3,528 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Thesara — Hover any subtitle word to instantly understand it." />
+  <meta name="description" content="Thesara — Understand every word you watch. AI-powered vocabulary for streaming." />
   <title>Thesara — Understand Every Word You Watch</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Telma:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0f0f10;
-      --bg-2:      #141415;
-      --surface:   #1a1a1b;
-      --surface-2: #1f1f21;
-      --border:    rgba(255,255,255,0.065);
-      --border-2:  rgba(255,255,255,0.11);
-      --text:      #f0f0f2;
-      --text-2:    #c8c8cc;
-      --muted:     #6e6e76;
-      --faint:     #2a2a2e;
+      --bg:        #080809;
+      --bg-raise:  #0f0f11;
+      --border:    rgba(255,255,255,0.08);
+      --border-hi: rgba(255,255,255,0.14);
+      --text:      #f2f2f4;
+      --muted:     #5c5c64;
+      --subtle:    #2e2e34;
+      --accent:    #c9a96e;
       --white:     #ffffff;
-      --blue:      #5b8dee;
-      --blue-dim:  rgba(91,141,238,0.1);
+      --font-display: "Telma", Georgia, serif;
+      --font-body:    "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: "Inter", -apple-system, sans-serif;
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
-    /* ─── Nav ─── */
+    /* ── Nav ────────────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 56px;
-      padding: 0 32px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 58px;
+      padding: 0 40px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(15,15,16,0.8);
-      backdrop-filter: blur(12px);
+      background: rgba(8,8,9,0.9);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
 
-    .nav-logo {
-      font-size: 15px; font-weight: 700;
-      color: var(--white); text-decoration: none;
-      letter-spacing: -0.3px;
-      display: flex; align-items: center; gap: 8px;
+    .logo {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: -0.2px;
     }
 
-    .nav-logo-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--blue);
-      box-shadow: 0 0 8px var(--blue);
+    .nav-links {
+      display: flex; align-items: center; gap: 6px;
     }
-
-    .nav-links { display: flex; align-items: center; gap: 4px; }
 
     .nav-links a {
-      font-size: 13px; font-weight: 500;
-      color: var(--muted); text-decoration: none;
-      padding: 5px 10px; border-radius: 5px;
-      transition: color 0.15s, background 0.15s;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 5px;
+      transition: color 0.15s;
+      letter-spacing: 0.01em;
     }
 
-    .nav-links a:hover { color: var(--text-2); background: var(--surface); }
+    .nav-links a:hover { color: var(--text); }
 
     .nav-cta {
-      margin-left: 8px;
       background: var(--white) !important;
-      color: #0a0a0b !important;
-      font-weight: 600 !important;
-      padding: 6px 14px !important;
+      color: #090909 !important;
+      font-weight: 500 !important;
+      padding: 7px 16px !important;
+      border-radius: 6px !important;
+      margin-left: 4px;
     }
 
-    .nav-cta:hover { background: #e8e8ec !important; color: #0a0a0b !important; }
+    .nav-cta:hover { background: #e8e8e8 !important; }
 
-    /* ─── Hero ─── */
+    /* ── Hero ───────────────────────────────────────────────── */
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      padding: 100px 24px 64px;
-      position: relative;
+      padding: 120px 24px 80px;
     }
 
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 100% 60% at 50% 0%, rgba(91,141,238,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black, transparent 80%);
-      pointer-events: none;
-    }
-
-    .hero-inner { position: relative; max-width: 780px; }
-
-    .hero-label {
+    .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-radius: 6px;
-      padding: 5px 12px;
-      font-size: 12px; font-weight: 500;
+      border: 1px solid var(--border-hi);
+      border-radius: 4px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 500;
       color: var(--muted);
-      letter-spacing: 0.01em;
-      margin-bottom: 32px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
     }
 
-    .hero-label .dot {
-      width: 6px; height: 6px; border-radius: 50%;
+    .hero-eyebrow-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
       background: #4ade80;
-      box-shadow: 0 0 6px #4ade80;
-      animation: breathe 2.5s ease-in-out infinite;
-    }
-
-    @keyframes breathe {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
     }
 
     h1 {
-      font-size: clamp(40px, 6.5vw, 76px);
-      font-weight: 800;
-      letter-spacing: -2.5px;
-      line-height: 1.06;
+      font-family: var(--font-display);
+      font-size: clamp(52px, 8vw, 100px);
+      font-weight: 400;
+      letter-spacing: -2px;
+      line-height: 1.0;
       color: var(--white);
-      margin-bottom: 24px;
+      margin-bottom: 32px;
+      max-width: 900px;
     }
 
     h1 em {
       font-style: italic;
-      font-weight: 300;
-      color: var(--text-2);
+      color: var(--accent);
     }
 
     .hero-sub {
-      font-size: 17px; font-weight: 400;
+      font-size: 16px;
+      font-weight: 400;
       color: var(--muted);
-      max-width: 480px;
-      margin: 0 auto 44px;
+      max-width: 440px;
       line-height: 1.75;
+      margin-bottom: 48px;
     }
 
     .hero-actions {
-      display: flex; gap: 10px;
+      display: flex; gap: 12px;
       justify-content: center; flex-wrap: wrap;
-      margin-bottom: 72px;
     }
 
     .btn {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 10px 20px;
-      border-radius: 7px;
-      font-size: 13px; font-weight: 600;
+      padding: 11px 22px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 500;
       text-decoration: none;
+      letter-spacing: 0.01em;
       transition: all 0.15s;
-      letter-spacing: -0.1px;
+      cursor: pointer; border: none;
     }
 
-    .btn-white {
+    .btn-primary {
       background: var(--white);
-      color: #0a0a0b;
+      color: #090909;
     }
 
-    .btn-white:hover { background: #e8e8ec; transform: translateY(-1px); }
+    .btn-primary:hover { background: #e8e8e8; transform: translateY(-1px); }
 
-    .btn-outline {
+    .btn-secondary {
       background: transparent;
-      color: var(--text-2);
-      border: 1px solid var(--border-2);
-    }
-
-    .btn-outline:hover { background: var(--surface); transform: translateY(-1px); }
-
-    /* ─── Demo ─── */
-    .demo {
-      display: inline-block;
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-radius: 10px;
-      padding: 16px 24px;
-      font-size: 15px;
-      font-weight: 500;
       color: var(--muted);
-      position: relative;
+      border: 1px solid var(--border-hi);
     }
 
-    .demo-filename {
-      position: absolute; top: -1px; left: 14px;
-      transform: translateY(-100%);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--muted);
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-bottom: none;
-      padding: 3px 10px;
-      border-radius: 4px 4px 0 0;
-    }
+    .btn-secondary:hover { color: var(--text); border-color: var(--subtle); transform: translateY(-1px); }
 
-    .demo-word {
-      color: var(--white); font-weight: 600;
-      border-bottom: 1.5px solid var(--blue);
-      padding-bottom: 1px;
-      cursor: default;
-      position: relative;
-    }
-
-    .demo-phrase {
-      color: var(--white); font-weight: 600;
-      border-bottom: 1.5px dashed #f59e0b;
-      padding-bottom: 1px;
-      cursor: default;
-      position: relative;
-    }
-
-    .tooltip {
-      position: absolute;
-      bottom: calc(100% + 12px);
-      left: 50%; transform: translateX(-50%);
-      width: 256px;
-      background: var(--bg-2);
-      border: 1px solid var(--border-2);
-      border-radius: 10px;
-      padding: 14px 16px;
-      text-align: left;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
-      animation: float 5s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%,100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(-6px); }
-    }
-
-    .tooltip::after {
-      content: ''; position: absolute; top: 100%; left: 50%;
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: var(--border-2);
-    }
-
-    .tt-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
-    .tt-word { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: -0.3px; }
-    .tt-badge {
-      font-size: 10px; font-weight: 600;
-      color: var(--blue); background: var(--blue-dim);
-      padding: 1px 6px; border-radius: 3px;
-      letter-spacing: 0.02em;
-    }
-    .tt-def { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
-    .tt-hr { height: 1px; background: var(--border); margin-bottom: 10px; }
-    .tt-scene-label {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: #4ade80; margin-bottom: 5px;
-    }
-    .tt-scene { font-size: 12px; color: var(--muted); line-height: 1.6; }
-
-    /* ─── Social proof ─── */
-    .stats {
+    /* ── Rule ───────────────────────────────────────────────── */
+    .rule {
+      border: none;
       border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-2);
+      margin: 0;
+    }
+
+    /* ── Marquee stat bar ───────────────────────────────────── */
+    .statbar {
       padding: 0 40px;
-      display: flex; justify-content: center;
+      display: flex; align-items: stretch;
+      background: var(--bg-raise);
     }
 
     .stat {
-      padding: 24px 48px;
-      border-right: 1px solid var(--border);
+      flex: 1;
+      padding: 28px 0;
       text-align: center;
+      border-right: 1px solid var(--border);
     }
 
     .stat:last-child { border-right: none; }
 
     .stat-n {
-      font-size: 26px; font-weight: 800;
-      color: var(--white); letter-spacing: -1px;
-      display: block; margin-bottom: 4px;
+      display: block;
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 4px;
     }
 
     .stat-l {
-      font-size: 11px; font-weight: 500;
-      color: var(--muted); text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    /* ─── Sections ─── */
-    .section { padding: 88px 40px; }
-    .container { max-width: 1000px; margin: 0 auto; }
-
-    .eyebrow {
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
+      font-size: 11px;
+      font-weight: 400;
       color: var(--muted);
-      text-align: center; margin-bottom: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
-    .section-h {
-      font-size: clamp(26px, 3.5vw, 40px);
-      font-weight: 800; letter-spacing: -1.5px;
-      color: var(--white); text-align: center;
-      line-height: 1.1; margin-bottom: 52px;
-    }
+    /* ── Sections ───────────────────────────────────────────── */
+    .section { padding: 96px 40px; }
+    .container { max-width: 1040px; margin: 0 auto; }
 
-    /* ─── Feature grid ─── */
-    .feat-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    @media (max-width: 700px) {
-      .feat-grid { grid-template-columns: 1fr; }
-      nav { padding: 0 16px; }
-      .section { padding: 64px 20px; }
-      .stats { padding: 0; flex-wrap: wrap; }
-      .stat { padding: 20px 28px; border-right: none; border-bottom: 1px solid var(--border); }
-    }
-
-    .feat-item {
-      padding: 28px 26px;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-    }
-
-    .feat-item:hover { background: var(--surface); }
-    .feat-item:nth-child(3n) { border-right: none; }
-    .feat-item:nth-child(n+4) { border-bottom: none; }
-
-    .feat-icon {
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      background: var(--surface-2);
-      border: 1px solid var(--border-2);
-      border-radius: 7px;
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
       margin-bottom: 16px;
     }
 
-    .feat-item h3 {
-      font-size: 14px; font-weight: 600;
-      color: var(--white); margin-bottom: 6px;
-      letter-spacing: -0.2px;
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.5vw, 52px);
+      font-weight: 400;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 56px;
     }
 
-    .feat-item p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .section-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
 
-    /* ─── How it works ─── */
+    /* ── Feature list ───────────────────────────────────────── */
+    .feat-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 680px) {
+      .feat-list { grid-template-columns: 1fr; }
+      nav { padding: 0 20px; }
+      .statbar { flex-wrap: wrap; padding: 0; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); }
+      .section { padding: 64px 20px; }
+      .steps { grid-template-columns: 1fr 1fr; }
+    }
+
+    .feat {
+      background: var(--bg);
+      padding: 32px 30px;
+      transition: background 0.15s;
+    }
+
+    .feat:hover { background: var(--bg-raise); }
+
+    .feat-num {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .feat h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .feat p {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── Steps ──────────────────────────────────────────────── */
     .steps {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 2px; position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 48px;
     }
 
-    @media (max-width: 700px) { .steps { grid-template-columns: 1fr 1fr; } }
-
-    .step { padding: 4px 8px 0; text-align: center; }
-
-    .step-n {
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      border: 1px solid var(--border-2);
-      background: var(--surface);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700;
-      color: var(--text-2);
-      margin: 0 auto 16px;
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--subtle);
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 20px;
     }
 
-    .step h3 { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
-    .step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .step h3 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 8px;
+      letter-spacing: -0.1px;
+    }
 
-    /* ─── Platforms ─── */
-    .platforms {
-      display: flex; flex-wrap: wrap;
-      gap: 8px; justify-content: center;
-      margin-top: 16px;
+    .step p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── Demo card ──────────────────────────────────────────── */
+    .demo-wrap {
+      margin-top: 72px;
+      border: 1px solid var(--border-hi);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .demo-bar {
+      background: var(--bg-raise);
+      padding: 12px 20px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .demo-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .demo-dot:nth-child(1) { background: #ff5f56; }
+    .demo-dot:nth-child(2) { background: #ffbd2e; }
+    .demo-dot:nth-child(3) { background: #27c93f; }
+
+    .demo-title {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-left: 6px;
+    }
+
+    .demo-body {
+      background: var(--bg);
+      padding: 48px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .demo-subtitle {
+      font-size: 22px;
+      font-weight: 400;
+      color: #888;
+      line-height: 1.5;
+      max-width: 440px;
+      font-family: var(--font-body);
+    }
+
+    .demo-subtitle strong {
+      color: var(--white);
+      font-weight: 500;
+      border-bottom: 1.5px solid var(--accent);
+      padding-bottom: 1px;
+    }
+
+    .demo-tooltip {
+      background: var(--bg-raise);
+      border: 1px solid var(--border-hi);
+      border-radius: 10px;
+      padding: 20px 22px;
+      width: 260px;
+      flex-shrink: 0;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    }
+
+    .tt-word {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      margin-bottom: 3px;
+    }
+
+    .tt-pos {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .tt-rule { height: 1px; background: var(--border); margin: 12px 0; }
+
+    .tt-label {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .tt-def {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .tt-scene-label {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #4ade80;
+      margin-bottom: 5px;
+    }
+
+    .tt-scene {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* ── Platforms ──────────────────────────────────────────── */
+    .platform-grid {
+      display: flex; flex-wrap: wrap; gap: 10px;
     }
 
     .platform {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-radius: 7px;
-      padding: 8px 16px;
-      font-size: 13px; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-hi);
+      border-radius: 6px;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 400;
       color: var(--muted);
+      transition: all 0.15s;
     }
 
     .platform.live {
-      color: var(--text-2);
+      color: var(--text);
       border-color: rgba(74,222,128,0.2);
       background: rgba(74,222,128,0.04);
     }
 
-    .platform-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-    }
+    .p-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .platform.live .p-dot { background: #4ade80; }
+    .platform:not(.live) .p-dot { background: var(--subtle); }
 
-    .platform.live .platform-dot {
-      background: #4ade80;
-      box-shadow: 0 0 6px #4ade80;
-    }
-
-    .platform:not(.live) .platform-dot { background: var(--faint); }
-
-    /* ─── CTA ─── */
-    .cta-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-radius: 16px;
-      padding: 56px 48px;
+    /* ── CTA ────────────────────────────────────────────────── */
+    .cta-section {
+      padding: 96px 40px;
+      border-top: 1px solid var(--border);
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
 
-    .cta-wrap::before {
-      content: '';
-      position: absolute; top: -100px; left: 50%;
-      transform: translateX(-50%);
-      width: 500px; height: 300px;
-      background: radial-gradient(ellipse, rgba(91,141,238,0.06) 0%, transparent 70%);
-      pointer-events: none;
+    .cta-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      letter-spacing: -2px;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 20px;
     }
 
-    .cta-wrap h2 {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 800; letter-spacing: -1.5px;
-      color: var(--white); margin-bottom: 14px;
-      line-height: 1.1;
+    .cta-section h2 em {
+      font-style: italic;
+      color: var(--accent);
     }
 
-    .cta-wrap p {
-      font-size: 15px; color: var(--muted);
-      max-width: 400px; margin: 0 auto 36px;
+    .cta-section p {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 380px;
+      margin: 0 auto 40px;
       line-height: 1.75;
     }
 
-    /* ─── Footer ─── */
+    /* ── Footer ─────────────────────────────────────────────── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 24px 40px;
+      padding: 28px 40px;
       display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
 
     .footer-logo {
-      font-size: 14px; font-weight: 700;
-      color: var(--muted); text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
     }
 
     footer p { font-size: 12px; color: var(--muted); }
 
     .footer-links { display: flex; gap: 20px; }
-
     .footer-links a {
       font-size: 12px; color: var(--muted);
       text-decoration: none; transition: color 0.15s;
     }
-
-    .footer-links a:hover { color: var(--text-2); }
+    .footer-links a:hover { color: var(--text); }
   </style>
 </head>
 <body>
 
+<!-- Nav -->
 <nav>
-  <a href="#" class="nav-logo">
-    <span class="nav-logo-dot"></span>
-    thesara
-  </a>
+  <a href="#" class="logo">thesara</a>
   <div class="nav-links">
     <a href="#features">Features</a>
     <a href="#how">How it works</a>
@@ -504,66 +536,40 @@
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-inner">
-
-    <div class="hero-label">
-      <span class="dot"></span>
-      v1.0.0 · Free · Open source
-    </div>
-
-    <h1>Every word.<br><em>In context.</em></h1>
-
-    <p class="hero-sub">
-      Hover any subtitle word while streaming to see its definition,
-      synonyms, and what it actually means in that scene — powered by AI.
-    </p>
-
-    <div class="hero-actions">
-      <a href="https://chrome.google.com/webstore" class="btn btn-white">
-        Add to Chrome — it's free
-      </a>
-      <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-outline" target="_blank">
-        View on GitHub
-      </a>
-    </div>
-
-    <!-- Demo -->
-    <div class="demo">
-      <span class="demo-filename">episode_03.srt</span>
-      "I think it's time to &thinsp;
-      <span class="demo-phrase">
-        call it a day
-        <div class="tooltip">
-          <div class="tt-row">
-            <span class="tt-word">call it a day</span>
-            <span class="tt-badge">idiom</span>
-          </div>
-          <div class="tt-def">To decide to stop working or doing an activity for the rest of the day.</div>
-          <div class="tt-hr"></div>
-          <div class="tt-scene-label">In this scene</div>
-          <div class="tt-scene">He's not just ending work — he's signalling that he's done with the entire situation, permanently.</div>
-        </div>
-      </span>
-      &thinsp;."
-    </div>
-
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    Free · Open source · v1.0
+  </div>
+  <h1>Every word.<br><em>In context.</em></h1>
+  <p class="hero-sub">
+    Hover any subtitle word while streaming to see its definition,
+    synonyms, and what it actually means in that scene.
+  </p>
+  <div class="hero-actions">
+    <a href="https://chrome.google.com/webstore" class="btn btn-primary">
+      Add to Chrome — free
+    </a>
+    <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-secondary" target="_blank">
+      View on GitHub
+    </a>
   </div>
 </section>
 
+<hr class="rule" />
+
 <!-- Stats -->
-<div class="stats">
+<div class="statbar">
   <div class="stat">
     <span class="stat-n">14,400</span>
-    <span class="stat-l">Free AI calls / day</span>
+    <span class="stat-l">Free AI calls per day</span>
   </div>
   <div class="stat">
-    <span class="stat-n">&lt; 800ms</span>
-    <span class="stat-l">Avg tooltip latency</span>
+    <span class="stat-n">&lt;1s</span>
+    <span class="stat-l">Tooltip latency</span>
   </div>
   <div class="stat">
     <span class="stat-n">0</span>
-    <span class="stat-l">Bytes stored server-side</span>
+    <span class="stat-l">Server-side storage</span>
   </div>
   <div class="stat">
     <span class="stat-n">100%</span>
@@ -571,107 +577,134 @@
   </div>
 </div>
 
+<hr class="rule" />
+
 <!-- Features -->
 <section class="section" id="features">
   <div class="container">
-    <p class="eyebrow">Features</p>
-    <h2 class="section-h">Built for serious learners</h2>
-    <div class="feat-grid">
-      <div class="feat-item">
-        <div class="feat-icon">📖</div>
-        <h3>Instant Definitions</h3>
-        <p>Definition, part of speech, and synonyms — on hover, without leaving the screen.</p>
+    <p class="section-label">Features</p>
+    <h2 class="section-title">Built for how<br>you actually <em>watch.</em></h2>
+    <div class="feat-list">
+      <div class="feat">
+        <p class="feat-num">01</p>
+        <h3>Instant definitions</h3>
+        <p>Hover any subtitle word for its definition, part of speech, and synonyms — without leaving the screen.</p>
       </div>
-      <div class="feat-item">
-        <div class="feat-icon">🧠</div>
-        <h3>Scene-Aware AI</h3>
-        <p>"Cook" in Breaking Bad isn't about food. Thesara knows the show, the character, and the moment.</p>
+      <div class="feat">
+        <p class="feat-num">02</p>
+        <h3>Scene-aware AI</h3>
+        <p>"Cook" in Breaking Bad isn't about food. The AI knows the show, the scene, and the moment — and explains accordingly.</p>
       </div>
-      <div class="feat-item">
-        <div class="feat-icon">🔗</div>
-        <h3>Idiom Detection</h3>
-        <p>Automatically clusters phrases like "call it a day" and explains them as a single unit.</p>
+      <div class="feat">
+        <p class="feat-num">03</p>
+        <h3>Idiom detection</h3>
+        <p>Automatically identifies phrases like "call it a day" or "give it up" and explains them as a single unit of meaning.</p>
       </div>
-      <div class="feat-item">
-        <div class="feat-icon">💬</div>
-        <h3>Dialogue Context</h3>
-        <p>The AI sees the last 4 lines of dialogue — so it understands the conversation, not just the sentence.</p>
+      <div class="feat">
+        <p class="feat-num">04</p>
+        <h3>Dialogue context</h3>
+        <p>The last 6 subtitle lines are passed to the AI, so it understands the conversation — not just the sentence you hovered.</p>
       </div>
-      <div class="feat-item">
-        <div class="feat-icon">🔒</div>
-        <h3>Private by Design</h3>
-        <p>Only the subtitle you hover ever leaves your device. No history. No tracking. No accounts.</p>
+      <div class="feat">
+        <p class="feat-num">05</p>
+        <h3>Private by design</h3>
+        <p>Only the subtitle you hover ever leaves your device. No history, no profiling, no accounts required.</p>
       </div>
-      <div class="feat-item">
-        <div class="feat-icon">⚡</div>
-        <h3>Zero Config</h3>
-        <p>Install and it works. No API key needed to start. Shared quota provided free by the developer.</p>
+      <div class="feat">
+        <p class="feat-num">06</p>
+        <h3>Zero configuration</h3>
+        <p>Install and it works. No API key needed to start. A shared quota is provided free. Bring your own key if it runs out.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- How it works -->
-<section class="section" id="how" style="background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+<hr class="rule" />
+
+<!-- How it works + Demo -->
+<section class="section" id="how" style="background: var(--bg-raise);">
   <div class="container">
-    <p class="eyebrow">How it works</p>
-    <h2 class="section-h">Four steps, three seconds</h2>
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Three seconds to<br><em>understand anything.</em></h2>
     <div class="steps">
       <div class="step">
-        <div class="step-n">01</div>
+        <div class="step-num">01</div>
         <h3>Watch normally</h3>
-        <p>Thesara runs silently. Your viewing is completely uninterrupted.</p>
+        <p>Thesara runs silently. Nothing changes until you choose to interact.</p>
       </div>
       <div class="step">
-        <div class="step-n">02</div>
+        <div class="step-num">02</div>
         <h3>Hover a word</h3>
         <p>Move your cursor over any subtitle word or detected phrase.</p>
       </div>
       <div class="step">
-        <div class="step-n">03</div>
-        <h3>Read the tooltip</h3>
-        <p>Definition, synonyms, and the AI's scene-aware explanation appear instantly.</p>
+        <div class="step-num">03</div>
+        <h3>Read the card</h3>
+        <p>Definition, synonyms, and a scene-aware explanation appear instantly.</p>
       </div>
       <div class="step">
-        <div class="step-n">04</div>
+        <div class="step-num">04</div>
         <h3>Keep watching</h3>
-        <p>Dismiss the tooltip and the video resumes exactly where you left off.</p>
+        <p>Dismiss and the video resumes exactly where you left off.</p>
+      </div>
+    </div>
+
+    <!-- Demo -->
+    <div class="demo-wrap">
+      <div class="demo-bar">
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <div class="demo-dot"></div>
+        <span class="demo-title">thesara · live demo</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-subtitle">
+          "I think it's time to <strong>call it a day</strong> and walk away from all of this."
+        </div>
+        <div class="demo-tooltip">
+          <div class="tt-word">call it a day</div>
+          <div class="tt-pos">Phrasal verb · Idiom</div>
+          <div class="tt-rule"></div>
+          <div class="tt-label">Definition</div>
+          <div class="tt-def">To decide to stop an activity for the rest of the day; to quit.</div>
+          <div class="tt-rule"></div>
+          <div class="tt-scene-label">In this scene</div>
+          <div class="tt-scene">The speaker isn't just ending the workday — they're signalling a permanent surrender, making this a moment of resignation rather than routine.</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<hr class="rule" />
+
 <!-- Platforms -->
 <section class="section">
-  <div class="container" style="text-align:center;">
-    <p class="eyebrow">Platforms</p>
-    <h2 class="section-h">Starting with streaming.<br>Not stopping there.</h2>
-    <div class="platforms">
-      <div class="platform live"><span class="platform-dot"></span> Netflix</div>
-      <div class="platform"><span class="platform-dot"></span> Prime Video</div>
-      <div class="platform"><span class="platform-dot"></span> Disney+</div>
-      <div class="platform"><span class="platform-dot"></span> YouTube</div>
-      <div class="platform"><span class="platform-dot"></span> Apple TV+</div>
-      <div class="platform"><span class="platform-dot"></span> HBO Max</div>
+  <div class="container">
+    <p class="section-label">Platforms</p>
+    <h2 class="section-title">Starting with streaming.<br><em>Not stopping there.</em></h2>
+    <div class="platform-grid">
+      <div class="platform live"><span class="p-dot"></span> Netflix</div>
+      <div class="platform"><span class="p-dot"></span> Prime Video</div>
+      <div class="platform"><span class="p-dot"></span> Disney+</div>
+      <div class="platform"><span class="p-dot"></span> YouTube</div>
+      <div class="platform"><span class="p-dot"></span> Apple TV+</div>
+      <div class="platform"><span class="p-dot"></span> HBO Max</div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="section" style="padding-top: 0;">
-  <div class="container">
-    <div class="cta-wrap">
-      <h2>Start understanding<br>everything you watch.</h2>
-      <p>Free, open source, and built for language learners who take immersion seriously.</p>
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-        <a href="https://chrome.google.com/webstore" class="btn btn-white" style="padding:11px 24px; font-size:14px;">
-          Add to Chrome — free
-        </a>
-        <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-outline" target="_blank" style="padding:11px 24px; font-size:14px;">
-          Star on GitHub
-        </a>
-      </div>
-    </div>
+<section class="cta-section">
+  <h2>Start understanding<br><em>everything</em> you watch.</h2>
+  <p>Free, open source, and built for language learners who take immersion seriously.</p>
+  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+    <a href="https://chrome.google.com/webstore" class="btn btn-primary" style="padding:12px 28px; font-size:14px;">
+      Add to Chrome — free
+    </a>
+    <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-secondary" target="_blank" style="padding:12px 28px; font-size:14px;">
+      Star on GitHub
+    </a>
   </div>
 </section>
 

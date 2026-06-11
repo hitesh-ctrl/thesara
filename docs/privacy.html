@@ -7,31 +7,37 @@
   <title>Privacy Policy — Thesara</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Telma:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0f0f10;
-      --bg-2:      #141415;
-      --surface:   #1a1a1b;
-      --surface-2: #1f1f21;
-      --border:    rgba(255,255,255,0.065);
-      --border-2:  rgba(255,255,255,0.11);
-      --text:      #f0f0f2;
-      --text-2:    #c8c8cc;
-      --muted:     #6e6e76;
-      --faint:     #2a2a2e;
-      --white:     #ffffff;
-      --blue:      #5b8dee;
-      --blue-dim:  rgba(91,141,238,0.1);
-      --green:     #4ade80;
+      --bg:           #080809;
+      --bg-raise:     #0f0f11;
+      --border:       rgba(255,255,255,0.08);
+      --border-hi:    rgba(255,255,255,0.14);
+      --text:         #f2f2f4;
+      --muted:        #5c5c64;
+      --subtle:       #2e2e34;
+      --accent:       #c9a96e;
+      --white:        #ffffff;
+      --bg-2:         #0f0f11;
+      --surface:      #0f0f11;
+      --surface-2:    #161618;
+      --border-2:     rgba(255,255,255,0.14);
+      --text-2:       #c8c8cc;
+      --faint:        #2e2e34;
+      --blue:         #c9a96e;
+      --blue-dim:     rgba(201,169,110,0.1);
+      --green:        #4ade80;
+      --font-display: "Telma", Georgia, serif;
+      --font-body:    "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: "Inter", -apple-system, sans-serif;
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
@@ -53,15 +59,12 @@
     }
 
     .nav-logo {
-      font-size: 15px; font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 17px; font-weight: 400;
       color: var(--white); text-decoration: none;
-      display: flex; align-items: center; gap: 8px;
     }
 
-    .nav-logo-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--blue); box-shadow: 0 0 8px var(--blue);
-    }
+    .nav-logo-dot { display: none; }
 
     .nav-links { display: flex; gap: 4px; }
 
@@ -119,7 +122,8 @@
     }
 
     h1 {
-      font-size: 36px; font-weight: 800;
+      font-family: var(--font-display);
+      font-size: 42px; font-weight: 400;
       letter-spacing: -1.5px; line-height: 1.1;
       color: var(--white); margin-bottom: 18px;
     }
@@ -156,8 +160,9 @@
     .tldr p { font-size: 13px; color: var(--text-2); line-height: 1.75; }
 
     h2 {
-      font-size: 17px; font-weight: 700;
-      color: var(--white); letter-spacing: -0.3px;
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 400;
+      color: var(--white); letter-spacing: -0.5px;
       margin-top: 48px; margin-bottom: 14px;
       padding-top: 48px;
       border-top: 1px solid var(--border);
