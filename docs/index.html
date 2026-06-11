@@ -35,7 +35,7 @@
       color: var(--text);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-      cursor: none;
+      
     }
 
     /* ── Custom cursor ────────────────────────────────── */
@@ -68,11 +68,22 @@
       to   { transform: translateY(0); }
     }
 
-    .logo {
-      font-family: var(--D);
-      font-size: 18px; font-weight: 400;
-      color: var(--white); text-decoration: none;
-      letter-spacing: -0.2px;
+    .logo { text-decoration: none; display: flex; align-items: center; }
+
+    .logo-img {
+      height: 32px;
+      width: auto;
+      filter: invert(1);
+      opacity: 0.92;
+    }
+
+    .foot-logo { text-decoration: none; display: flex; align-items: center; }
+
+    .foot-logo-img {
+      height: 24px;
+      width: auto;
+      filter: invert(1);
+      opacity: 0.5;
     }
 
     .nav-links { display: flex; align-items: center; gap: 4px; }
@@ -269,7 +280,7 @@
       font-size: 13px; font-weight: 500;
       text-decoration: none;
       transition: all 0.15s;
-      border: none; cursor: none;
+      border: none; 
     }
 
     .btn:active { transform: scale(0.97); }
@@ -720,7 +731,7 @@
       border: 1px solid var(--borderB);
       border-radius: 6px; padding: 9px 18px;
       font-size: 13px; color: var(--muted);
-      transition: all 0.15s; cursor: none;
+      transition: all 0.15s; 
     }
     .plat.live { color: var(--text); border-color: rgba(34,211,160,0.2); background: rgba(34,211,160,0.04); }
     .plat:hover { transform: translateY(-2px); border-color: var(--borderB); color: var(--text); }
@@ -745,11 +756,11 @@
 <body>
 
 <!-- Cursor -->
-<div id="cursor"></div>
+
 
 <!-- Nav -->
 <nav>
-  <a href="#" class="logo">thesara</a>
+  <a href="#" class="logo"><img src="logo.png" alt="Thesara" class="logo-img"></a>
   <div class="nav-links">
     <a href="#features">Features</a>
     <a href="#how">How it works</a>
@@ -993,8 +1004,8 @@
 
 <footer>
   <div style="display:flex; align-items:center; gap:20px;">
-    <a href="#" class="foot-logo">thesara</a>
-    <p>Open source · Free forever</p>
+    <a href="#" class="foot-logo"><img src="logo.png" alt="Thesara" class="foot-logo-img"></a>
+    <p>Open source</p>
   </div>
   <div class="foot-links">
     <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
@@ -1004,16 +1015,6 @@
 </footer>
 
 <script>
-  // ── Custom cursor ──────────────────────────────────────────
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top  = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button, .feat, .plat, .step').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
-  });
 
   // ── Scroll reveal ──────────────────────────────────────────
   const ro = new IntersectionObserver(entries => {
