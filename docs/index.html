@@ -166,26 +166,36 @@
     }
 
     .eyebrow-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 10px; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 5px 12px; border-radius: 100px;
-      border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.45);
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(8px);
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 8px 16px; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
+      transition: all 0.2s;
+    }
+
+    .eyebrow-pill:hover {
+      color: rgba(255,255,255,0.85);
+      border-color: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.1);
     }
 
     .eyebrow-pill.live {
       color: var(--green);
-      border-color: rgba(52,211,154,0.3);
-      background: rgba(52,211,154,0.07);
+      border-color: rgba(52,211,154,0.4);
+      background: rgba(52,211,154,0.1);
+      font-weight: 800;
+      box-shadow: 0 0 20px rgba(52,211,154,0.12);
     }
 
     .eyebrow-pill.live::before {
       content: '';
-      width: 5px; height: 5px; border-radius: 50%;
+      width: 6px; height: 6px; border-radius: 50%;
       background: var(--green);
+      box-shadow: 0 0 6px var(--green);
       animation: breathe 2s ease-in-out infinite;
     }
 
@@ -382,7 +392,7 @@
     }
 
     .feat-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
+      display: grid; grid-template-columns: repeat(2, 1fr);
       gap: 1px; background: var(--border);
       border: 1px solid var(--border);
       border-radius: 12px; overflow: hidden;
@@ -626,10 +636,20 @@
         <h3>Scene-aware context</h3>
         <p>"Cook" in Breaking Bad isn't about food. The AI reads the show, the characters, and the last 6 lines of dialogue.</p>
       </div>
-      <div class="feat reveal d2">
+      <div class="feat reveal d1">
         <p class="feat-n">03 · NLP</p>
         <h3>Idiom detection</h3>
         <p>Automatically detects phrases like "call it a day" and explains them as a single unit, not word by word.</p>
+      </div>
+      <div class="feat reveal d2">
+        <p class="feat-n">04 · Quota</p>
+        <h3>Free shared key. Bring your own.</h3>
+        <p>A shared Groq API key is provided free for all users, up to 14,400 calls per day. When the daily quota runs out, you're shown a clear disclosure and can plug in your own free Groq key to keep going. No surprise charges, ever.</p>
+        <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; font-weight:500; padding:4px 10px; border-radius:4px; background:rgba(52,211,154,0.1); border:1px solid rgba(52,211,154,0.2); color:var(--green);">Free by default</span>
+          <span style="font-size:11px; font-weight:500; padding:4px 10px; border-radius:4px; background:rgba(123,121,255,0.1); border:1px solid rgba(123,121,255,0.2); color:var(--accent);">Your key, your control</span>
+          <span style="font-size:11px; font-weight:500; padding:4px 10px; border-radius:4px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--muted);">Full disclosure</span>
+        </div>
       </div>
     </div>
   </div>
