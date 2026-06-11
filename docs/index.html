@@ -368,20 +368,17 @@
     /* Netflix player */
     .mock-player {
       position: relative;
-      background:
-        radial-gradient(ellipse 80% 60% at 30% 40%, #1a1008 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 80% 60%, #0a0a14 0%, transparent 70%),
-        linear-gradient(160deg, #0d0d0d 0%, #060606 50%, #0a0806 100%);
+      background: #000;
       aspect-ratio: 16 / 9;
       overflow: hidden;
     }
 
-    /* Simulated scene — dark dramatic lighting */
+    /* Real scene image */
     .mock-scene {
       position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 50% 70% at 45% 35%, rgba(180,120,40,0.08) 0%, transparent 55%),
-        radial-gradient(ellipse 30% 40% at 75% 25%, rgba(200,160,80,0.05) 0%, transparent 50%);
+      background-image: url('demo-scene.jpg');
+      background-size: cover;
+      background-position: center 20%;
     }
 
     /* Netflix top bar */
@@ -894,25 +891,25 @@
           <span class="mock-netflix-logo">N</span>
           <div class="mock-show-info">
             <div class="mock-show-title">Breaking Bad</div>
-            <div class="mock-ep-title">S4 E10 · Salud</div>
+            <div class="mock-ep-title">S4 E6 · Cornered</div>
           </div>
         </div>
 
         <!-- Tooltip -->
         <div class="mock-tooltip">
-          <div class="tt-word">box me in</div>
-          <div class="tt-pos">Phrasal verb · Idiom</div>
+          <div class="tt-word">the danger</div>
+          <div class="tt-pos">Noun phrase</div>
           <div class="tt-rule"></div>
           <div class="tt-label">Definition</div>
-          <div class="tt-def">To put someone in a situation where they have no freedom or choice.</div>
+          <div class="tt-def">A threat or source of harm; a person or thing likely to cause damage.</div>
           <div class="tt-rule"></div>
           <div class="tt-scene-label">In this scene</div>
-          <div class="tt-scene">Walter isn't talking about a physical space — he's warning that any move to corner him or remove his options will have consequences.</div>
+          <div class="tt-scene">Walter isn't describing a risk — he's claiming to be the most powerful and terrifying force in the situation, a declaration of total dominance over Skyler.</div>
         </div>
 
         <!-- Subtitles -->
         <div class="mock-subtitles">
-          <span class="mock-sub-line">Don't think you can </span><span class="mock-sub-line mock-sub-word">box me in</span><span class="mock-sub-line">.</span>
+          <span class="mock-sub-line">I am </span><span class="mock-sub-line mock-sub-word">the danger</span><span class="mock-sub-line">.</span>
         </div>
 
         <!-- Controls -->
