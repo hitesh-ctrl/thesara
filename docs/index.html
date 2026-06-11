@@ -3,467 +3,557 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Thesara — Hover any Netflix subtitle word to instantly understand it." />
-  <title>Thesara — Netflix Vocabulary Assistant</title>
+  <meta name="description" content="Thesara — Hover any subtitle word to instantly understand it. AI-powered vocabulary for every streaming platform." />
+  <title>Thesara — Understand Every Word You Watch</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --red: #e50914;
-      --red-dim: rgba(229, 9, 20, 0.15);
-      --red-glow: rgba(229, 9, 20, 0.35);
-      --bg: #080808;
-      --surface: #111111;
-      --surface-2: #161616;
-      --border: rgba(255,255,255,0.07);
-      --text: #f2f2f2;
-      --muted: #888;
-      --faint: #444;
+      --accent: #7c6aff;
+      --accent-dim: rgba(124, 106, 255, 0.12);
+      --accent-glow: rgba(124, 106, 255, 0.3);
+      --accent-2: #00e5a0;
+      --bg: #060608;
+      --bg-2: #0c0c10;
+      --surface: #111116;
+      --surface-2: #16161c;
+      --border: rgba(255,255,255,0.06);
+      --border-bright: rgba(255,255,255,0.12);
+      --text: #eeeef2;
+      --muted: #777780;
+      --faint: #333338;
+      --mono: "JetBrains Mono", "Fira Code", monospace;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: "Inter", -apple-system, sans-serif;
+      font-family: "Inter", sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* ── Nav ── */
+    /* ─── Scrollbar ─────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 3px; }
+
+    /* ─── Nav ─────────────────────────────────────────── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 18px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(8,8,8,0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 0 40px;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(6,6,8,0.8);
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
 
     .nav-logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 700;
       color: var(--text);
       text-decoration: none;
+      letter-spacing: -0.5px;
+      display: flex; align-items: center; gap: 8px;
     }
 
-    .nav-logo span { color: var(--red); }
+    .nav-logo .cursor {
+      display: inline-block;
+      width: 9px; height: 18px;
+      background: var(--accent);
+      border-radius: 1px;
+      animation: blink 1.2s step-end infinite;
+      margin-left: 2px;
+    }
 
-    .nav-links { display: flex; gap: 32px; align-items: center; }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 8px;
+    }
 
     .nav-links a {
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 13px; font-weight: 500;
       color: var(--muted);
       text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: color 0.2s;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.15s;
     }
 
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
 
     .nav-cta {
-      background: var(--red) !important;
+      background: var(--accent) !important;
       color: #fff !important;
-      padding: 8px 18px;
-      border-radius: 6px;
       font-weight: 600 !important;
+      box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    /* ── Hero ── */
+    .nav-cta:hover {
+      box-shadow: 0 0 32px var(--accent-glow) !important;
+      background: #8b7aff !important;
+    }
+
+    /* ─── Hero ─────────────────────────────────────────── */
     .hero {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       text-align: center;
-      padding: 120px 24px 80px;
+      padding: 100px 24px 60px;
       position: relative;
       overflow: hidden;
     }
 
-    .hero-bg {
+    .hero-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: 0.4;
+    }
+
+    .hero-glow {
       position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(229,9,20,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(229,9,20,0.05) 0%, transparent 60%);
+      top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse, rgba(124,106,255,0.08) 0%, transparent 65%);
       pointer-events: none;
     }
 
     .hero-grid {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 80%);
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 100% 80% at 50% 0%, black 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .hero-inner {
-      position: relative;
-      max-width: 820px;
+    .hero-inner { position: relative; max-width: 860px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border-bright);
+      border-radius: 8px;
+      padding: 7px 14px;
+      margin-bottom: 36px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
     }
 
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--red-dim);
-      border: 1px solid rgba(229,9,20,0.3);
-      color: #ff4d57;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 32px;
-    }
-
-    .hero-tag::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--red);
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      background: var(--accent-2);
       border-radius: 50%;
       animation: pulse 2s infinite;
+      box-shadow: 0 0 8px var(--accent-2);
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.75); opacity: 0.6; }
     }
 
     h1 {
-      font-size: clamp(44px, 7vw, 80px);
+      font-size: clamp(46px, 7.5vw, 88px);
       font-weight: 900;
-      letter-spacing: -3px;
-      line-height: 1.05;
+      letter-spacing: -3.5px;
+      line-height: 1.02;
       margin-bottom: 28px;
       color: #fff;
     }
 
-    h1 .accent {
-      background: linear-gradient(135deg, #e50914 0%, #ff6b6b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    h1 .word-highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    h1 .word-highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 2px;
     }
 
     .hero-sub {
-      font-size: 18px;
-      font-weight: 400;
+      font-size: 18px; font-weight: 400;
       color: var(--muted);
-      max-width: 520px;
+      max-width: 540px;
       margin: 0 auto 48px;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
     .hero-cta {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 64px;
+      display: flex; gap: 12px;
+      justify-content: center; flex-wrap: wrap;
+      margin-bottom: 72px;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px;
       border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 14px; font-weight: 600;
       text-decoration: none;
-      letter-spacing: 0.01em;
       transition: all 0.2s;
-      cursor: pointer;
+      cursor: pointer; border: none;
     }
 
     .btn-primary {
-      background: var(--red);
+      background: var(--accent);
       color: #fff;
-      box-shadow: 0 0 40px var(--red-glow);
+      box-shadow: 0 0 30px var(--accent-glow);
     }
 
     .btn-primary:hover {
-      background: #f40612;
-      box-shadow: 0 0 60px var(--red-glow);
+      background: #8b7aff;
+      box-shadow: 0 0 50px var(--accent-glow);
       transform: translateY(-2px);
     }
 
     .btn-ghost {
-      background: transparent;
+      background: var(--surface);
       color: var(--muted);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-bright);
     }
 
     .btn-ghost:hover {
       color: var(--text);
-      border-color: var(--faint);
+      border-color: var(--border-bright);
+      background: var(--surface-2);
       transform: translateY(-2px);
     }
 
-    /* ── Tooltip demo ── */
-    .demo-wrap {
+    /* ─── Demo tooltip card ───────────────────────────── */
+    .demo-card {
       position: relative;
-      display: inline-block;
+      display: inline-flex; align-items: center; gap: 4px;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-bright);
       border-radius: 12px;
-      padding: 20px 28px;
-      font-size: 18px;
+      padding: 18px 28px;
+      font-size: 17px;
       font-weight: 500;
-      color: #ccc;
-      letter-spacing: 0.02em;
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    .demo-card .lang-tag {
+      position: absolute;
+      top: -1px; left: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-bright);
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      padding: 2px 8px;
     }
 
     .demo-word {
-      color: #fff;
-      border-bottom: 2px solid var(--red);
-      cursor: pointer;
-      position: relative;
+      color: #fff; font-weight: 700;
+      border-bottom: 2px solid var(--accent);
+      cursor: pointer; position: relative;
+      padding-bottom: 1px;
     }
 
     .demo-tooltip {
       position: absolute;
-      bottom: calc(100% + 16px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 10px;
+      bottom: calc(100% + 14px);
+      left: 50%; transform: translateX(-50%);
+      background: var(--bg-2);
+      border: 1px solid var(--border-bright);
+      border-radius: 12px;
       padding: 16px 18px;
-      width: 240px;
+      width: 260px;
       text-align: left;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
-      animation: floatUp 3s ease-in-out infinite;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+      animation: float 4s ease-in-out infinite;
     }
 
-    @keyframes floatUp {
+    @keyframes float {
       0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-6px); }
+      50% { transform: translateX(-50%) translateY(-8px); }
     }
 
     .demo-tooltip::after {
       content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
+      position: absolute; top: 100%; left: 50%;
       transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: #2a2a2a;
+      border: 7px solid transparent;
+      border-top-color: var(--border-bright);
     }
 
-    .tt-word { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-    .tt-pos { font-size: 11px; color: var(--red); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-    .tt-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin-bottom: 4px; }
-    .tt-def { font-size: 13px; color: #bbb; line-height: 1.5; margin-bottom: 10px; }
-    .tt-scene { font-size: 12px; color: #999; line-height: 1.5; border-top: 1px solid #222; padding-top: 10px; }
+    .tt-top { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+    .tt-word { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+    .tt-pos {
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 2px 7px; border-radius: 4px;
+    }
+    .tt-divider { height: 1px; background: var(--border); margin: 10px 0; }
+    .tt-label {
+      font-family: var(--mono);
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--faint); margin-bottom: 5px;
+    }
+    .tt-def { font-size: 13px; color: #999; line-height: 1.55; margin-bottom: 12px; }
+    .tt-scene-label {
+      font-family: var(--mono);
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--accent-2); margin-bottom: 5px;
+    }
+    .tt-scene { font-size: 12px; color: #888; line-height: 1.6; }
 
-    /* ── Section ── */
-    section { padding: 96px 24px; }
+    /* ─── Stats bar ───────────────────────────────────── */
+    .stats-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex; align-items: center;
+      justify-content: center; gap: 48px;
+      flex-wrap: wrap;
+      background: var(--surface);
+    }
 
+    .stat {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 22px; font-weight: 700;
+      color: #fff; letter-spacing: -1px;
+    }
+
+    .stat-label {
+      font-size: 11px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500;
+    }
+
+    .stat-divider {
+      width: 1px; height: 40px;
+      background: var(--border);
+    }
+
+    /* ─── Features ───────────────────────────────────── */
+    .section { padding: 96px 40px; }
     .container { max-width: 1040px; margin: 0 auto; }
 
-    .section-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--red);
-      text-align: center;
-      margin-bottom: 14px;
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--accent);
+      text-align: center; margin-bottom: 14px;
     }
 
-    .section-heading {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      text-align: center;
-      color: #fff;
-      margin-bottom: 56px;
-      line-height: 1.15;
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800; letter-spacing: -1.5px;
+      color: #fff; text-align: center;
+      margin-bottom: 56px; line-height: 1.1;
     }
 
-    /* ── Features ── */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      gap: 1px;
       background: var(--border);
+      border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 720px) {
       .features-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 20px; }
+      .stats-bar { gap: 24px; padding: 20px; }
+      .section { padding: 64px 20px; }
     }
 
-    .feature-card {
+    .feat {
       background: var(--surface);
-      padding: 36px 32px;
+      padding: 32px 28px;
       transition: background 0.2s;
     }
 
-    .feature-card:hover { background: var(--surface-2); }
+    .feat:hover { background: var(--surface-2); }
 
-    .feature-icon {
-      width: 44px; height: 44px;
-      background: var(--red-dim);
-      border: 1px solid rgba(229,9,20,0.2);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      margin-bottom: 20px;
+    .feat-icon {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(124,106,255,0.2);
+      display: inline-block;
+      padding: 4px 10px; border-radius: 5px;
+      margin-bottom: 18px;
+      letter-spacing: 0.05em;
     }
 
-    .feature-card h3 {
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 8px;
+    .feat h3 {
+      font-size: 15px; font-weight: 700;
+      color: #fff; margin-bottom: 8px;
       letter-spacing: -0.3px;
     }
 
-    .feature-card p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.65;
+    .feat p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ─── Terminal block ─────────────────────────────── */
+    .terminal {
+      background: var(--bg-2);
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+      overflow: hidden;
+      max-width: 640px;
+      margin: 0 auto;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
     }
 
-    /* ── How it works ── */
-    .steps-wrap {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      position: relative;
-    }
-
-    @media (max-width: 700px) {
-      .steps-wrap { grid-template-columns: 1fr 1fr; }
-    }
-
-    .steps-wrap::before {
-      content: '';
-      position: absolute;
-      top: 28px;
-      left: calc(12.5% + 20px);
-      right: calc(12.5% + 20px);
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--red), transparent);
-      pointer-events: none;
-    }
-
-    .step {
-      padding: 0 20px 0;
-      text-align: center;
-    }
-
-    .step-num {
-      width: 56px; height: 56px;
+    .terminal-bar {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--red);
-      margin: 0 auto 20px;
-      position: relative;
-      z-index: 1;
+      padding: 12px 18px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .step h3 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 8px;
+    .tbar-dot {
+      width: 11px; height: 11px; border-radius: 50%;
     }
 
-    .step p {
+    .tbar-dot:nth-child(1) { background: #ff5f56; }
+    .tbar-dot:nth-child(2) { background: #ffbd2e; }
+    .tbar-dot:nth-child(3) { background: #27c93f; }
+
+    .tbar-title {
+      font-family: var(--mono);
+      font-size: 12px; color: var(--muted);
+      margin-left: 8px; flex: 1; text-align: center;
+    }
+
+    .terminal-body {
+      padding: 24px 28px;
+      font-family: var(--mono);
       font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
+      line-height: 2;
     }
 
-    /* ── Free section ── */
-    .free-card {
+    .t-prompt { color: var(--accent); }
+    .t-cmd { color: #fff; }
+    .t-comment { color: var(--faint); }
+    .t-output { color: var(--accent-2); }
+    .t-muted { color: var(--muted); }
+    .t-string { color: #ffb347; }
+    .t-key { color: #ff7eb3; }
+
+    /* ─── Platforms ──────────────────────────────────── */
+    .platforms-note {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .platforms-note span { color: var(--accent-2); }
+
+    .platform-chips {
+      display: flex; gap: 10px;
+      justify-content: center; flex-wrap: wrap;
+    }
+
+    .chip {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 56px 48px;
+      border: 1px solid var(--border-bright);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .chip.active { color: var(--text); border-color: rgba(124,106,255,0.3); background: var(--accent-dim); }
+    .chip .status {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .chip.active .status { background: var(--accent-2); box-shadow: 0 0 6px var(--accent-2); }
+    .chip:not(.active) .status { background: var(--faint); }
+
+    /* ─── CTA section ────────────────────────────────── */
+    .cta-section {
+      padding: 96px 40px;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
 
-    .free-card::before {
+    .cta-section::before {
       content: '';
-      position: absolute;
-      top: -80px; left: 50%;
-      transform: translateX(-50%);
-      width: 400px; height: 200px;
-      background: radial-gradient(ellipse, var(--red-dim) 0%, transparent 70%);
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(124,106,255,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .free-card h2 {
-      font-size: 36px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      color: #fff;
-      margin-bottom: 16px;
+    .cta-section h2 {
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 900; letter-spacing: -2px;
+      color: #fff; margin-bottom: 16px; line-height: 1.1;
     }
 
-    .free-card p {
-      font-size: 16px;
-      color: var(--muted);
-      max-width: 480px;
-      margin: 0 auto 36px;
+    .cta-section p {
+      font-size: 16px; color: var(--muted);
+      max-width: 420px; margin: 0 auto 40px;
       line-height: 1.7;
     }
 
-    /* ── Footer ── */
+    /* ─── Footer ─────────────────────────────────────── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 32px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
+      padding: 28px 40px;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
     }
 
-    footer p {
-      font-size: 13px;
-      color: var(--faint);
+    .footer-left {
+      display: flex; align-items: center; gap: 16px;
     }
 
-    .footer-links { display: flex; gap: 24px; }
+    .footer-logo {
+      font-family: var(--mono);
+      font-size: 14px; font-weight: 700;
+      color: var(--muted); text-decoration: none;
+    }
+
+    footer p { font-size: 12px; color: var(--faint); }
+
+    .footer-links { display: flex; gap: 20px; }
 
     .footer-links a {
-      font-size: 13px;
-      color: var(--faint);
-      text-decoration: none;
-      transition: color 0.2s;
+      font-size: 13px; color: var(--faint);
+      text-decoration: none; transition: color 0.2s;
     }
 
     .footer-links a:hover { color: var(--muted); }
@@ -473,142 +563,203 @@
 
 <!-- Nav -->
 <nav>
-  <a href="#" class="nav-logo">the<span>sara</span></a>
+  <a href="#" class="nav-logo">thesara<span class="cursor"></span></a>
   <div class="nav-links">
-    <a href="#features">Features</a>
-    <a href="#how">How it works</a>
-    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="https://chrome.google.com/webstore" class="nav-cta">Add to Chrome</a>
+    <a href="#features">features</a>
+    <a href="#how">how it works</a>
+    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">github</a>
+    <a href="privacy.html">privacy</a>
+    <a href="https://chrome.google.com/webstore" class="nav-cta">add to chrome</a>
   </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-glow"></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
-    <div class="hero-tag">Free Chrome Extension</div>
-    <h1>Watch Netflix.<br>Understand <span class="accent">everything.</span></h1>
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span>v1.0.0 · open source · free forever</span>
+    </div>
+
+    <h1>Every word.<br><span class="word-highlight">Understood.</span></h1>
+
     <p class="hero-sub">
-      Hover any subtitle word. See its definition, synonyms, and exactly
-      what it means in that moment — powered by AI that knows the show.
+      A Chrome extension that turns any subtitle into an interactive
+      vocabulary lesson — definitions, synonyms, and AI that knows
+      exactly what the word means in that scene.
     </p>
+
     <div class="hero-cta">
       <a href="https://chrome.google.com/webstore" class="btn btn-primary">
-        Add to Chrome — it's free
+        Install extension — free
       </a>
       <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank">
-        View source on GitHub
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        view source
       </a>
     </div>
 
-    <!-- Animated tooltip demo -->
-    <div class="demo-wrap">
-      "He finally decided to
+    <!-- Demo tooltip -->
+    <div class="demo-card">
+      <span class="lang-tag">subtitle.txt</span>
+      "He decided to &nbsp;
       <span class="demo-word">
-        kick the bucket
+        give it up
         <div class="demo-tooltip">
-          <div class="tt-word">kick the bucket</div>
-          <div class="tt-pos">phrase · idiom</div>
-          <div class="tt-label">In this scene</div>
-          <div class="tt-scene">A darkly humorous idiom meaning to die — used here with the casual detachment typical of this character.</div>
+          <div class="tt-top">
+            <span class="tt-word">give it up</span>
+            <span class="tt-pos">phrasal verb</span>
+          </div>
+          <div class="tt-label">Definition</div>
+          <div class="tt-def">To stop doing or trying something; to abandon an effort or habit.</div>
+          <div class="tt-divider"></div>
+          <div class="tt-scene-label">In this scene</div>
+          <div class="tt-scene">He's not quitting a task — he's letting go of something he's held onto for years, making this a moment of surrender rather than mere practicality.</div>
         </div>
       </span>
-      and retire."
+      &nbsp;and walk away."
     </div>
   </div>
 </section>
 
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-value">14,400</span>
+    <span class="stat-label">free AI calls / day</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-value">&lt; 1s</span>
+    <span class="stat-label">tooltip latency</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-value">0</span>
+    <span class="stat-label">data stored server-side</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-value">100%</span>
+    <span class="stat-label">open source</span>
+  </div>
+</div>
+
 <!-- Features -->
-<section id="features" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+<section class="section" id="features">
   <div class="container">
-    <p class="section-eyebrow">Features</p>
-    <h2 class="section-heading">Built for how you actually watch</h2>
+    <p class="eyebrow">// features</p>
+    <h2 class="section-title">Built for serious learners</h2>
     <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">📖</div>
+      <div class="feat">
+        <span class="feat-icon">def()</span>
         <h3>Instant Definitions</h3>
-        <p>Hover any word for its definition, part of speech, and synonyms without leaving the screen or pausing your flow.</p>
+        <p>Hover any word for its definition, part of speech, and synonyms — without breaking your focus or leaving the screen.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🧠</div>
+      <div class="feat">
+        <span class="feat-icon">ctx.ai</span>
         <h3>Scene-Aware AI</h3>
-        <p>"Cook" in Breaking Bad isn't about food. Thesara understands what words mean in context — the show, the character, the scene.</p>
+        <p>"Cook" in Breaking Bad isn't about food. Thesara reads the show, the character, and the dialogue to explain what words actually mean.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔗</div>
+      <div class="feat">
+        <span class="feat-icon">phrase[]</span>
         <h3>Idiom Detection</h3>
-        <p>Automatically groups phrases like "kick the bucket" or "give it a shot" and explains them as a single unit.</p>
+        <p>Automatically groups phrases like "give it up" or "let it slide" and explains them as a unit — not word by word.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Zero Setup</h3>
-        <p>Install and it works immediately. No account. No configuration. No API key required to get started.</p>
+      <div class="feat">
+        <span class="feat-icon">history[4]</span>
+        <h3>Dialogue Context</h3>
+        <p>The AI sees the last 4 lines of dialogue before the word you hovered — so it understands the conversation, not just the sentence.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔒</div>
+      <div class="feat">
+        <span class="feat-icon">privacy.ok</span>
         <h3>Private by Design</h3>
-        <p>Only the subtitle you hover is sent for lookup. No viewing history, no account data, no tracking of any kind.</p>
+        <p>Only the subtitle you hover is ever sent anywhere. No history, no profiling, no tracking. Your viewing stays yours.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🆓</div>
-        <h3>Genuinely Free</h3>
-        <p>Shared AI quota provided by the developer at no cost. Add your own free Groq key if the daily quota runs out.</p>
+      <div class="feat">
+        <span class="feat-icon">cost = 0</span>
+        <h3>Free Shared Quota</h3>
+        <p>14,400 AI calls per day shared across all users — provided free by the developer. Bring your own key if it runs out.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- How it works -->
-<section id="how">
+<section class="section" id="how" style="background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="container">
-    <p class="section-eyebrow">How it works</p>
-    <h2 class="section-heading">Three seconds to understand any word</h2>
-    <div class="steps-wrap">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>Watch normally</h3>
-        <p>Thesara runs silently in the background. Your viewing is completely uninterrupted.</p>
+    <p class="eyebrow">// how it works</p>
+    <h2 class="section-title">Under the hood</h2>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="tbar-dot"></div>
+        <div class="tbar-dot"></div>
+        <div class="tbar-dot"></div>
+        <span class="tbar-title">thesara · runtime</span>
       </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>Hover a word</h3>
-        <p>Move your mouse over any subtitle word or detected phrase.</p>
+      <div class="terminal-body">
+        <div><span class="t-comment">// 1. SubtitleObserver watches the DOM for subtitle changes</span></div>
+        <div><span class="t-prompt">→ </span><span class="t-cmd">observe</span><span class="t-muted">(</span><span class="t-string">".player-timedtext"</span><span class="t-muted">)</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-comment">// 2. PhraseDetector finds idioms in the current line</span></div>
+        <div><span class="t-prompt">→ </span><span class="t-cmd">detect</span><span class="t-muted">(</span><span class="t-string">"give it up"</span><span class="t-muted">)</span> <span class="t-output">✓ idiom found</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-comment">// 3. You hover a word — video pauses, tooltip fires</span></div>
+        <div><span class="t-prompt">→ </span><span class="t-cmd">lookup</span><span class="t-muted">({ </span><span class="t-key">word</span><span class="t-muted">: </span><span class="t-string">"give it up"</span><span class="t-muted">, </span><span class="t-key">context</span><span class="t-muted">: history[4] })</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-comment">// 4. AI explains the meaning in THIS scene</span></div>
+        <div><span class="t-prompt">→ </span><span class="t-output">"He's letting go of something he held onto for years…"</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-comment">// 5. Close tooltip → video resumes</span></div>
+        <div><span class="t-prompt">→ </span><span class="t-cmd">resume</span><span class="t-muted">()</span> <span class="t-output">✓</span></div>
       </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>Read the tooltip</h3>
-        <p>Definition, synonyms, and the AI's scene-aware explanation appear instantly.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <h3>Keep watching</h3>
-        <p>Close the tooltip and the video resumes exactly where you left off.</p>
-      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Platforms -->
+<section class="section">
+  <div class="container" style="text-align:center;">
+    <p class="eyebrow">// platforms</p>
+    <h2 class="section-title">Starting with streaming.<br>Not stopping there.</h2>
+    <p class="platforms-note">Currently live on <span>Netflix</span>. More platforms coming soon.</p>
+    <div class="platform-chips">
+      <div class="chip active"><span class="status"></span> Netflix</div>
+      <div class="chip"><span class="status"></span> Prime Video</div>
+      <div class="chip"><span class="status"></span> Disney+</div>
+      <div class="chip"><span class="status"></span> YouTube</div>
+      <div class="chip"><span class="status"></span> Apple TV+</div>
+      <div class="chip"><span class="status"></span> HBO Max</div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section style="padding: 48px 24px 96px;">
-  <div class="container">
-    <div class="free-card">
-      <h2>Start watching smarter today.</h2>
-      <p>Free, open source, and built for learners. Works on any Netflix show in any language with subtitles.</p>
-      <a href="https://chrome.google.com/webstore" class="btn btn-primary" style="font-size:15px; padding:16px 36px;">
-        Add to Chrome — free
-      </a>
-    </div>
+<section class="cta-section">
+  <h2>Start understanding<br>everything you watch.</h2>
+  <p>Free, open source, and built for language learners who are serious about immersion.</p>
+  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+    <a href="https://chrome.google.com/webstore" class="btn btn-primary" style="font-size:15px; padding:15px 32px;">
+      Add to Chrome — free
+    </a>
+    <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank" style="font-size:15px; padding:15px 32px;">
+      Star on GitHub ★
+    </a>
   </div>
 </section>
 
 <footer>
-  <p>© 2026 Thesara · Open source · Free forever</p>
+  <div class="footer-left">
+    <a href="#" class="footer-logo">thesara</a>
+    <p>open source · free forever · built for learners</p>
+  </div>
   <div class="footer-links">
-    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">Report an Issue</a>
+    <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">github</a>
+    <a href="privacy.html">privacy</a>
+    <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">issues</a>
   </div>
 </footer>
 
