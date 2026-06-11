@@ -34,7 +34,27 @@
       color: var(--text);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      position: relative;
     }
+
+    /* Site-wide floating quotes layer — sits behind all content */
+    #phrases {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* All sections stack above the quotes */
+    nav, .hero-content, .demo-section, .features-section,
+    .contact-section, footer {
+      position: relative;
+      z-index: 2;
+    }
+
+    nav { z-index: 300; }
 
     /* ── Nav ─────────────────────────────────── */
     nav {
@@ -89,7 +109,6 @@
       align-items: center; justify-content: center;
       text-align: center;
       padding: 120px 32px 80px;
-      overflow: hidden;
     }
 
     /* Night sky gradient */
@@ -113,7 +132,8 @@
 
     .phrase {
       position: absolute;
-      font-family: var(--B);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 700;
       white-space: nowrap;
       user-select: none;
       animation: drift linear infinite, twinkle ease-in-out infinite;
@@ -486,6 +506,9 @@
 </head>
 <body>
 
+<!-- Site-wide floating quotes -->
+<div id="phrases"></div>
+
 <!-- Nav -->
 <nav>
   <a href="#" class="nav-logo">thesara</a>
@@ -500,8 +523,6 @@
 
 <!-- Hero -->
 <section class="hero">
-  <div id="phrases"></div>
-
   <div class="hero-content">
     <div class="hero-eyebrow">
       <span class="eyebrow-pill live">Chrome Extension</span>
@@ -643,7 +664,7 @@
 </footer>
 
 <script>
-  // ── Floating movie phrases ─────────────────────────────────
+  // ── Floating movie phrases across the full page ───────────
   const quotes = [
     "I am the danger.", "Here's looking at you, kid.",
     "You can't handle the truth!", "I'll be back.",
@@ -663,71 +684,91 @@
     "I feel the need. The need for speed!",
     "Winter is coming.", "A Lannister always pays his debts.",
     "You is kind, you is smart, you is important.",
-    "It's not who I am underneath, but what I do that defines me.",
-    "Why do we fall? So we can learn to pick ourselves up.",
-    "To infinity... and beyond!", "Just when I thought I was out...",
     "Leave the gun. Take the cannoli.", "Say hello to my little friend!",
-    "I want to play a game.", "They may take our lives...",
-    "I volunteer as tribute.", "The stuff that dreams are made of.",
     "You're gonna need a bigger boat.", "Nobody puts Baby in a corner.",
-    "I feel the earth move.", "We accept the love we think we deserve.",
-    "Get busy living or get busy dying.", "It's not personal. It's strictly business.",
+    "We accept the love we think we deserve.",
+    "Get busy living or get busy dying.",
+    "It's not personal. It's strictly business.",
     "I am Groot.", "Avengers, assemble.",
-    "I am inevitable.", "Part of the journey is the end.",
-    "With great power...", "I could do this all day.",
+    "I am inevitable.", "I could do this all day.",
+    "I volunteer as tribute.", "The stuff that dreams are made of.",
+    "To be, or not to be.", "All those moments will be lost in time.",
+    "You complete me.", "Just keep swimming.",
+    "Why do we fall?", "I'm Batman.",
   ];
 
   const container = document.getElementById('phrases');
-  const count = 50;
 
-  // Colour palette for the "stars" — mostly white, occasional warm/cool tint
   const colours = [
     [255,255,255], [220,220,255], [255,240,220],
-    [200,220,255], [255,255,240],
+    [200,220,255], [255,255,245],
   ];
 
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement('div');
-    el.className = 'phrase';
-    el.textContent = quotes[i % quotes.length];
+  // Grid-based placement: divide into columns x rows cells,
+  // place one quote per cell with random jitter — ensures no two
+  // quotes occupy the same cell (no blocking).
+  const cols = 4;
+  const rows = 14;
+  const total = cols * rows;
 
-    el.style.left = (Math.random() * 98) + '%';
-    el.style.top  = (Math.random() * 98) + '%';
+  // Shuffle quote indices so distribution is varied
+  const indices = Array.from({length: total}, (_, i) => i % quotes.length);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
 
-    const size = 8 + Math.random() * 11;
-    el.style.fontSize = size + 'px';
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const idx = row * cols + col;
+      const el = document.createElement('div');
+      el.className = 'phrase';
+      el.textContent = quotes[indices[idx]];
 
-    const rot = (Math.random() - 0.5) * 18;
-    el.style.setProperty('--rot', rot + 'deg');
+      // Base position = cell centre + random jitter within cell
+      const cellW = 100 / cols;
+      const cellH = 100 / rows;
+      const jitterX = (Math.random() - 0.5) * cellW * 0.7;
+      const jitterY = (Math.random() - 0.5) * cellH * 0.6;
+      const left = col * cellW + cellW / 2 + jitterX;
+      const top  = row * cellH + cellH / 2 + jitterY;
 
-    // Brighter opacity — star-like
-    const opHi = 0.10 + Math.random() * 0.18;
-    const opLo = opHi * 0.35;
-    el.style.setProperty('--op-hi', opHi);
-    el.style.setProperty('--op-lo', opLo);
-    el.style.opacity = opHi;
+      el.style.left = left + '%';
+      el.style.top  = top  + '%';
 
-    // Colour tint
-    const [r,g,b] = colours[Math.floor(Math.random() * colours.length)];
-    el.style.color = `rgb(${r},${g},${b})`;
+      // Font size — varied
+      const size = 10 + Math.random() * 10;
+      el.style.fontSize = size + 'px';
 
-    // Glow — brighter phrases get more glow
-    const glow = opHi > 0.2 ? `0 0 8px rgba(${r},${g},${b},0.4)` : `0 0 4px rgba(${r},${g},${b},0.2)`;
-    el.style.textShadow = glow;
+      // Rotation
+      const rot = (Math.random() - 0.5) * 20;
+      el.style.setProperty('--rot', rot + 'deg');
 
-    // Drift animation
-    const driftDur = 20 + Math.random() * 30;
-    const twinkleDur = 3 + Math.random() * 5;
-    const driftDelay = -(Math.random() * driftDur);
-    const twinkleDelay = -(Math.random() * twinkleDur);
+      // Opacity — bright but not distracting
+      const opHi = 0.10 + Math.random() * 0.16;
+      const opLo = opHi * 0.30;
+      el.style.setProperty('--op-hi', opHi);
+      el.style.setProperty('--op-lo', opLo);
+      el.style.opacity = opHi;
 
-    el.style.animationName = 'drift, twinkle';
-    el.style.animationDuration = `${driftDur}s, ${twinkleDur}s`;
-    el.style.animationDelay = `${driftDelay}s, ${twinkleDelay}s`;
-    el.style.animationTimingFunction = 'linear, ease-in-out';
-    el.style.animationIterationCount = 'infinite, infinite';
+      // Colour
+      const [r,g,b] = colours[Math.floor(Math.random() * colours.length)];
+      el.style.color = `rgb(${r},${g},${b})`;
 
-    container.appendChild(el);
+      // Glow
+      el.style.textShadow = `0 0 ${opHi > 0.18 ? '10px' : '5px'} rgba(${r},${g},${b},${opHi > 0.18 ? 0.5 : 0.25})`;
+
+      // Animations
+      const driftDur   = 22 + Math.random() * 26;
+      const twinkleDur = 3  + Math.random() * 5;
+      el.style.animationName = 'drift, twinkle';
+      el.style.animationDuration = `${driftDur}s, ${twinkleDur}s`;
+      el.style.animationDelay = `-${Math.random() * driftDur}s, -${Math.random() * twinkleDur}s`;
+      el.style.animationTimingFunction = 'linear, ease-in-out';
+      el.style.animationIterationCount = 'infinite, infinite';
+
+      container.appendChild(el);
+    }
   }
 
   // ── Scroll reveal ──────────────────────────────────────────
