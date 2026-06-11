@@ -323,72 +323,201 @@
       line-height: 1.7;
     }
 
-    /* ── Demo card ──────────────────────────────────────────── */
-    .demo-wrap {
+    /* ── Netflix mock ───────────────────────────────────────── */
+    .netflix-mock {
       margin-top: 72px;
       border: 1px solid var(--border-hi);
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
+      position: relative;
+      user-select: none;
     }
 
-    .demo-bar {
-      background: var(--bg-raise);
-      padding: 12px 20px;
+    /* Browser chrome */
+    .mock-browser {
+      background: #1e1e1e;
+      padding: 10px 16px;
       display: flex; align-items: center; gap: 8px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #333;
     }
 
-    .demo-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .demo-dot:nth-child(1) { background: #ff5f56; }
-    .demo-dot:nth-child(2) { background: #ffbd2e; }
-    .demo-dot:nth-child(3) { background: #27c93f; }
+    .mock-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .mock-dot:nth-child(1) { background: #ff5f56; }
+    .mock-dot:nth-child(2) { background: #ffbd2e; }
+    .mock-dot:nth-child(3) { background: #27c93f; }
 
-    .demo-title {
+    .mock-bar {
+      flex: 1;
+      background: #2a2a2a;
+      border-radius: 4px;
+      height: 22px;
+      display: flex; align-items: center;
+      padding: 0 10px;
+      margin: 0 10px;
+      gap: 6px;
+    }
+
+    .mock-bar-lock { font-size: 9px; color: #666; }
+
+    .mock-bar-url {
       font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      margin-left: 6px;
-    }
-
-    .demo-body {
-      background: var(--bg);
-      padding: 48px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 48px;
-      flex-wrap: wrap;
-    }
-
-    .demo-subtitle {
-      font-size: 22px;
-      font-weight: 400;
       color: #888;
-      line-height: 1.5;
-      max-width: 440px;
       font-family: var(--font-body);
     }
 
-    .demo-subtitle strong {
-      color: var(--white);
-      font-weight: 500;
-      border-bottom: 1.5px solid var(--accent);
-      padding-bottom: 1px;
+    /* Netflix player */
+    .mock-player {
+      position: relative;
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 40%, #1a1008 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 60%, #0a0a14 0%, transparent 70%),
+        linear-gradient(160deg, #0d0d0d 0%, #060606 50%, #0a0806 100%);
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
     }
 
-    .demo-tooltip {
-      background: var(--bg-raise);
-      border: 1px solid var(--border-hi);
+    /* Simulated scene — dark dramatic lighting */
+    .mock-scene {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 70% at 45% 35%, rgba(180,120,40,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 30% 40% at 75% 25%, rgba(200,160,80,0.05) 0%, transparent 50%);
+    }
+
+    /* Netflix top bar */
+    .mock-topbar {
+      position: absolute; top: 0; left: 0; right: 0;
+      padding: 16px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+    }
+
+    .mock-netflix-logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: #e50914;
+      font-family: var(--font-body);
+      letter-spacing: -0.5px;
+    }
+
+    .mock-show-info {
+      text-align: right;
+    }
+
+    .mock-show-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      font-family: var(--font-body);
+    }
+
+    .mock-ep-title {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      font-family: var(--font-body);
+    }
+
+    /* Tooltip */
+    .mock-tooltip {
+      position: absolute;
+      bottom: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(14,14,16,0.97);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 10px;
-      padding: 20px 22px;
+      padding: 16px 18px;
       width: 260px;
-      flex-shrink: 0;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.8);
+      animation: float 5s ease-in-out infinite;
     }
 
+    /* Subtitle area */
+    .mock-subtitles {
+      position: absolute;
+      bottom: 14%;
+      left: 50%; transform: translateX(-50%);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .mock-sub-line {
+      font-size: clamp(12px, 2vw, 18px);
+      font-weight: 600;
+      color: #fff;
+      font-family: var(--font-body);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8);
+      display: inline;
+    }
+
+    .mock-sub-word {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1px;
+      cursor: pointer;
+    }
+
+    /* Netflix bottom controls */
+    .mock-controls {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+      padding: 8px 28px 12px;
+    }
+
+    .mock-progress {
+      height: 3px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 2px;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .mock-progress-fill {
+      height: 100%;
+      width: 38%;
+      background: #e50914;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .mock-progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -5px; top: 50%;
+      transform: translateY(-50%);
+      width: 10px; height: 10px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .mock-btns {
+      display: flex; align-items: center; gap: 14px;
+    }
+
+    .mock-btn {
+      width: 18px; height: 18px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .mock-btn.circle { border-radius: 50%; }
+    .mock-btn.wide { width: 28px; }
+    .mock-btn.slim { width: 14px; height: 14px; }
+
+    .mock-time {
+      font-size: 10px;
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-body);
+      margin-left: 4px;
+    }
+
+    .mock-spacer { flex: 1; }
+
+    /* Tooltip internals */
     .tt-word {
       font-family: var(--font-display);
-      font-size: 20px;
+      font-size: clamp(14px, 1.8vw, 20px);
       font-weight: 400;
       color: var(--white);
       letter-spacing: -0.5px;
@@ -404,22 +533,22 @@
       margin-bottom: 14px;
     }
 
-    .tt-rule { height: 1px; background: var(--border); margin: 12px 0; }
+    .tt-rule { height: 1px; background: rgba(255,255,255,0.08); margin: 10px 0; }
 
     .tt-label {
       font-size: 10px;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--muted);
+      color: #555;
       margin-bottom: 5px;
     }
 
     .tt-def {
-      font-size: 13px;
+      font-size: clamp(10px, 1.2vw, 13px);
       color: #aaa;
       line-height: 1.6;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .tt-scene-label {
@@ -432,7 +561,7 @@
     }
 
     .tt-scene {
-      font-size: 13px;
+      font-size: clamp(10px, 1.2vw, 13px);
       color: #aaa;
       line-height: 1.6;
       font-style: italic;
@@ -742,27 +871,66 @@
       </div>
     </div>
 
-    <!-- Demo -->
-    <div class="demo-wrap">
-      <div class="demo-bar">
-        <div class="demo-dot"></div>
-        <div class="demo-dot"></div>
-        <div class="demo-dot"></div>
-        <span class="demo-title">thesara · live demo</span>
-      </div>
-      <div class="demo-body">
-        <div class="demo-subtitle">
-          "I think it's time to <strong>call it a day</strong> and walk away from all of this."
+    <!-- Netflix mock -->
+    <div class="netflix-mock reveal">
+
+      <!-- Browser chrome -->
+      <div class="mock-browser">
+        <div class="mock-dot"></div>
+        <div class="mock-dot"></div>
+        <div class="mock-dot"></div>
+        <div class="mock-bar">
+          <span class="mock-bar-lock">🔒</span>
+          <span class="mock-bar-url">netflix.com/watch/81260280</span>
         </div>
-        <div class="demo-tooltip">
-          <div class="tt-word">call it a day</div>
+      </div>
+
+      <!-- Player -->
+      <div class="mock-player">
+        <div class="mock-scene"></div>
+
+        <!-- Top bar -->
+        <div class="mock-topbar">
+          <span class="mock-netflix-logo">N</span>
+          <div class="mock-show-info">
+            <div class="mock-show-title">Breaking Bad</div>
+            <div class="mock-ep-title">S4 E10 · Salud</div>
+          </div>
+        </div>
+
+        <!-- Tooltip -->
+        <div class="mock-tooltip">
+          <div class="tt-word">box me in</div>
           <div class="tt-pos">Phrasal verb · Idiom</div>
           <div class="tt-rule"></div>
           <div class="tt-label">Definition</div>
-          <div class="tt-def">To decide to stop an activity for the rest of the day; to quit.</div>
+          <div class="tt-def">To put someone in a situation where they have no freedom or choice.</div>
           <div class="tt-rule"></div>
           <div class="tt-scene-label">In this scene</div>
-          <div class="tt-scene">The speaker isn't just ending the workday — they're signalling a permanent surrender, making this a moment of resignation rather than routine.</div>
+          <div class="tt-scene">Walter isn't talking about a physical space — he's warning that any move to corner him or remove his options will have consequences.</div>
+        </div>
+
+        <!-- Subtitles -->
+        <div class="mock-subtitles">
+          <span class="mock-sub-line">Don't think you can </span><span class="mock-sub-line mock-sub-word">box me in</span><span class="mock-sub-line">.</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="mock-controls">
+          <div class="mock-progress">
+            <div class="mock-progress-fill"></div>
+          </div>
+          <div class="mock-btns">
+            <div class="mock-btn circle"></div>
+            <div class="mock-btn wide"></div>
+            <div class="mock-btn wide"></div>
+            <div class="mock-btn circle slim"></div>
+            <span class="mock-time">24:18 / 47:02</span>
+            <div class="mock-spacer"></div>
+            <div class="mock-btn slim"></div>
+            <div class="mock-btn slim"></div>
+            <div class="mock-btn wide slim"></div>
+          </div>
         </div>
       </div>
     </div>
