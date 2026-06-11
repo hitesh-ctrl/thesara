@@ -12,19 +12,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #10101a;
-      --bg2:      #14141f;
-      --bg3:      #1a1a28;
-      --border:   rgba(255,255,255,0.08);
-      --borderB:  rgba(255,255,255,0.14);
-      --text:     #e8e8ef;
-      --muted:    #6060708;
-      --muted:    #606070;
-      --faint:    #22222e;
-      --accent:   #7b79ff;
-      --accentDim:rgba(123,121,255,0.12);
-      --green:    #34d39a;
-      --white:    #ffffff;
+      --bg:      #10101a;
+      --bg2:     #14141f;
+      --bg3:     #1c1c2a;
+      --border:  rgba(255,255,255,0.08);
+      --borderB: rgba(255,255,255,0.14);
+      --text:    #e8e8ef;
+      --muted:   #606070;
+      --faint:   #22222e;
+      --accent:  #7b79ff;
+      --green:   #34d39a;
+      --white:   #ffffff;
       --D: "Telma", Georgia, serif;
       --B: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
@@ -39,12 +37,12 @@
       overflow-x: hidden;
     }
 
-    /* ── Nav ─────────────────────────────────────────── */
+    /* ── Nav ─────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 60px; padding: 0 40px;
+      height: 60px; padding: 0 48px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(16,16,26,0.9);
+      background: rgba(16,16,26,0.88);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       animation: navIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
@@ -55,266 +53,127 @@
       to   { transform: translateY(0); opacity: 1; }
     }
 
-    .logo { text-decoration: none; display: flex; align-items: center; }
-    .logo-img { height: 30px; width: auto; filter: invert(1); opacity: 0.9; }
+    .logo { text-decoration: none; }
+    .logo-img { height: 28px; width: auto; filter: invert(1); opacity: 0.88; }
 
-    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-right { display: flex; align-items: center; gap: 4px; }
 
-    .nav-links a {
-      font-size: 13px; font-weight: 400;
-      color: var(--muted); text-decoration: none;
-      padding: 5px 12px; border-radius: 6px;
-      transition: color 0.15s, background 0.15s;
+    .nav-right a {
+      font-size: 13px; color: var(--muted);
+      text-decoration: none; padding: 5px 12px;
+      border-radius: 6px; transition: color 0.15s;
     }
 
-    .nav-links a:hover { color: var(--text); background: var(--bg3); }
+    .nav-right a:hover { color: var(--text); }
 
     .nav-cta {
       background: var(--white) !important;
       color: #0f0f19 !important;
       font-weight: 600 !important;
-      margin-left: 8px;
       padding: 7px 18px !important;
       border-radius: 6px !important;
+      margin-left: 6px;
     }
 
     .nav-cta:hover { background: #e4e4f0 !important; }
 
-    /* ── Hero ────────────────────────────────────────── */
+    /* ── Hero ────────────────────────────────── */
     .hero {
-      min-height: 100vh;
-      padding: 144px 64px 96px;
-      display: flex; flex-direction: column;
-      justify-content: center;
+      padding: 148px 64px 80px;
       border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr auto;
+      align-items: end; gap: 64px;
     }
 
     .hero-tag {
       display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 500;
-      color: var(--muted);
+      font-size: 11px; color: var(--muted);
       letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 36px;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
+      margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 0.6s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
-    .hero-tag-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--green);
-    }
+    .htag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
 
     h1 {
       font-family: var(--D);
-      font-size: clamp(52px, 8.5vw, 112px);
-      font-weight: 400;
-      letter-spacing: -3.5px;
-      line-height: 1.0;
-      color: var(--white);
-      margin-bottom: 32px;
-      max-width: 820px;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 400; letter-spacing: -3px; line-height: 1.0;
+      color: var(--white); margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
-    h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
+    h1 em { font-style: italic; color: var(--accent); }
 
     .hero-sub {
-      font-size: 16px; color: var(--muted);
-      max-width: 420px; line-height: 1.75;
-      margin-bottom: 44px;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.32s cubic-bezier(0.22,1,0.36,1) forwards;
+      font-size: 15px; color: var(--muted);
+      max-width: 400px; line-height: 1.8; margin-bottom: 36px;
+      opacity: 0; animation: fadeUp 0.7s 0.3s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
     .hero-btns {
-      display: flex; gap: 12px; flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.44s cubic-bezier(0.22,1,0.36,1) forwards;
+      display: flex; gap: 10px; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.7s 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
     }
 
+    /* Hero stats — right side */
+    .hero-stats {
+      display: flex; flex-direction: column; gap: 28px;
+      padding-bottom: 8px;
+      opacity: 0; animation: fadeUp 0.7s 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .hstat-n {
+      font-family: var(--D);
+      font-size: 36px; font-weight: 300;
+      letter-spacing: -1.5px; color: var(--white);
+      display: block; margin-bottom: 4px;
+    }
+
+    .hstat-l { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Buttons ─────────────────────────────────────── */
+    /* ── Buttons ─────────────────────────────── */
     .btn {
       display: inline-flex; align-items: center; gap: 7px;
       padding: 11px 22px; border-radius: 7px;
-      font-family: var(--B);
-      font-size: 13px; font-weight: 500;
-      text-decoration: none;
-      transition: all 0.15s; border: none;
+      font-family: var(--B); font-size: 13px; font-weight: 500;
+      text-decoration: none; transition: all 0.15s; border: none;
     }
 
     .btn-white { background: var(--white); color: #0f0f19; }
     .btn-white:hover { background: #e4e4f0; transform: translateY(-1px); }
 
-    .btn-ghost {
-      background: transparent; color: var(--muted);
-      border: 1px solid var(--borderB);
-    }
-
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--borderB); }
     .btn-ghost:hover { color: var(--text); border-color: var(--muted); transform: translateY(-1px); }
 
-    /* ── Ticker ──────────────────────────────────────── */
-    .ticker-wrap {
-      background: var(--bg2);
+    /* ── Demo ────────────────────────────────── */
+    .demo-section {
+      padding: 72px 64px;
       border-bottom: 1px solid var(--border);
-      overflow: hidden; padding: 13px 0;
-    }
-
-    .ticker {
-      display: flex; white-space: nowrap;
-      animation: scroll 28s linear infinite;
-    }
-
-    .ticker:hover { animation-play-state: paused; }
-
-    @keyframes scroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    .tick {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 0 28px;
-      font-size: 11px; font-weight: 500;
-      color: var(--muted); letter-spacing: 0.08em;
-      text-transform: uppercase; flex-shrink: 0;
-    }
-
-    .tick-dot {
-      width: 3px; height: 3px; border-radius: 50%;
-      background: var(--accent); flex-shrink: 0;
-    }
-
-    /* ── Stats ───────────────────────────────────────── */
-    .stats {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .stat {
-      padding: 44px 40px;
-      border-right: 1px solid var(--border);
-    }
-
-    .stat:last-child { border-right: none; }
-
-    .stat-n {
-      font-family: var(--D);
-      font-size: clamp(32px, 3.5vw, 48px);
-      font-weight: 300; letter-spacing: -2px;
-      color: var(--white); display: block; margin-bottom: 8px;
-    }
-
-    .stat-l {
-      font-size: 12px; color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-
-    /* ── Sections ────────────────────────────────────── */
-    .section { padding: 96px 64px; }
-    .container { max-width: 1140px; margin: 0 auto; }
-
-    .sec-tag {
-      font-size: 11px; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 16px;
-    }
-
-    .sec-h {
-      font-family: var(--D);
-      font-size: clamp(34px, 4.5vw, 58px);
-      font-weight: 400; letter-spacing: -2px;
-      line-height: 1.05; color: var(--white);
-      margin-bottom: 56px;
-    }
-
-    .sec-h em { font-style: italic; color: var(--accent); }
-
-    /* ── Feature grid ────────────────────────────────── */
-    .feat-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      gap: 1px; background: var(--border);
-    }
-
-    .feat {
       background: var(--bg2);
-      padding: 36px 32px;
-      transition: background 0.2s;
-      position: relative; overflow: hidden;
     }
 
-    .feat:hover { background: var(--bg3); }
+    .demo-section .container { max-width: 1100px; margin: 0 auto; }
 
-    .feat-num {
-      font-family: var(--D);
-      font-size: 11px; font-weight: 400;
-      color: var(--muted); letter-spacing: 0.1em;
-      margin-bottom: 20px;
-    }
-
-    .feat h3 {
-      font-family: var(--D);
-      font-size: 21px; font-weight: 400;
-      color: var(--white); letter-spacing: -0.4px;
-      margin-bottom: 10px; line-height: 1.2;
-    }
-
-    .feat p {
-      font-size: 13px; color: var(--muted); line-height: 1.75;
-    }
-
-    /* Accent left border on hover */
-    .feat::before {
-      content: '';
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 2px; background: var(--accent);
-      transform: scaleY(0); transform-origin: bottom;
-      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .feat:hover::before { transform: scaleY(1); }
-
-    /* ── Steps ───────────────────────────────────────── */
-    .steps {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 48px;
-    }
-
-    .step-n {
-      font-family: var(--D);
-      font-size: 48px; font-weight: 300;
-      color: var(--faint); letter-spacing: -2px;
-      line-height: 1; margin-bottom: 20px;
-    }
-
-    .step h3 {
-      font-size: 14px; font-weight: 500;
-      color: var(--white); margin-bottom: 8px;
-    }
-
-    .step p { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
-    /* ── Netflix mock ────────────────────────────────── */
     .mock-outer {
-      margin-top: 64px; border-radius: 12px;
-      overflow: hidden; border: 1px solid var(--borderB);
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--borderB);
       box-shadow: 0 32px 80px rgba(0,0,0,0.5);
     }
 
     .mock-browser {
-      background: #1c1c26; padding: 10px 16px;
+      background: #1c1c28; padding: 10px 16px;
       display: flex; align-items: center; gap: 8px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
 
     .mdot { width: 10px; height: 10px; border-radius: 50%; }
@@ -323,7 +182,7 @@
     .mdot:nth-child(3) { background: #27c93f; }
 
     .mbar {
-      flex: 1; margin: 0 10px; background: #26262f;
+      flex: 1; margin: 0 10px; background: #262630;
       border-radius: 4px; height: 22px;
       display: flex; align-items: center; padding: 0 10px;
     }
@@ -345,10 +204,10 @@
       position: absolute; top: 0; left: 0; right: 0;
       padding: 16px 28px;
       display: flex; align-items: center; justify-content: space-between;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
     }
 
-    .nfx-logo { font-size: 20px; font-weight: 900; color: #e50914; font-family: var(--B); }
+    .nfx-n { font-size: 20px; font-weight: 900; color: #e50914; font-family: var(--B); }
     .nfx-info { text-align: right; }
     .nfx-show { font-size: 12px; font-weight: 600; color: #fff; font-family: var(--B); }
     .nfx-ep { font-size: 10px; color: rgba(255,255,255,0.5); font-family: var(--B); }
@@ -365,7 +224,7 @@
 
     @keyframes float {
       0%,100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(-7px); }
+      50%      { transform: translateX(-50%) translateY(-8px); }
     }
 
     .tt-w  { font-family: var(--D); font-size: 18px; font-weight: 400; color: #fff; letter-spacing: -0.3px; margin-bottom: 3px; }
@@ -383,12 +242,8 @@
 
     .sub { font-size: clamp(13px, 2vw, 19px); font-weight: 600; color: #fff; font-family: var(--B); text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
 
-    .sub-hl {
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 1px; position: relative;
-    }
+    .sub-hl { border-bottom: 2px solid var(--accent); padding-bottom: 1px; position: relative; }
 
-    /* Animated cursor */
     .mock-cursor {
       position: absolute; bottom: -2px; left: 55%;
       pointer-events: none;
@@ -399,111 +254,138 @@
 
     @keyframes cursorIn {
       0%       { opacity: 0; transform: translate(4px, 6px); }
-      18%      { opacity: 1; transform: translate(0, 0); }
-      85%,100% { opacity: 1; transform: translate(0, 0); }
+      18%      { opacity: 1; transform: translate(0,0); }
+      85%,100% { opacity: 1; transform: translate(0,0); }
     }
 
     .mock-ctrl {
       position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
       padding: 8px 28px 12px;
     }
 
     .mock-prog { height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 10px; }
     .mock-prog-fill { height: 100%; width: 38%; background: #e50914; border-radius: 2px; position: relative; }
     .mock-prog-fill::after { content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 10px; height: 10px; background: #fff; border-radius: 50%; }
-
     .mock-btns { display: flex; align-items: center; gap: 12px; }
     .mb { width: 16px; height: 16px; background: rgba(255,255,255,0.6); border-radius: 2px; flex-shrink: 0; }
-    .mb.r { border-radius: 50%; }
-    .mb.w { width: 24px; }
-    .mb.s { width: 13px; height: 13px; }
+    .mb.r { border-radius: 50%; } .mb.w { width: 24px; } .mb.s { width: 13px; height: 13px; }
     .mock-t { font-size: 10px; color: rgba(255,255,255,0.6); font-family: var(--B); }
     .msp { flex: 1; }
 
-    /* ── Platforms ───────────────────────────────────── */
-    .plats { display: flex; flex-wrap: wrap; gap: 10px; }
-
-    .plat {
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid var(--borderB); border-radius: 7px;
-      padding: 9px 18px; font-size: 13px; color: var(--muted);
-      transition: all 0.15s;
-    }
-
-    .plat.live { color: var(--text); border-color: rgba(52,211,154,0.25); background: rgba(52,211,154,0.05); }
-    .plat:not(.live):hover { color: var(--text); border-color: var(--muted); transform: translateY(-1px); }
-
-    .pdot { width: 6px; height: 6px; border-radius: 50%; }
-    .plat.live .pdot { background: var(--green); }
-    .plat:not(.live) .pdot { background: var(--faint); }
-
-    /* ── CTA ─────────────────────────────────────────── */
-    .cta-section {
-      padding: 120px 64px;
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
+    /* ── Features ────────────────────────────── */
+    .features-section {
+      padding: 80px 64px;
       border-bottom: 1px solid var(--border);
     }
 
-    .cta-section h2 {
+    .features-section .container { max-width: 1100px; margin: 0 auto; }
+
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+    }
+
+    .feat {
+      background: var(--bg2); padding: 36px 32px;
+      transition: background 0.2s;
+      position: relative; overflow: hidden;
+    }
+
+    .feat:hover { background: var(--bg3); }
+
+    .feat::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 2px;
+      background: var(--accent);
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .feat:hover::before { transform: scaleY(1); }
+
+    .feat-n {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 18px;
+    }
+
+    .feat h3 {
       font-family: var(--D);
-      font-size: clamp(44px, 6.5vw, 84px);
-      font-weight: 400; letter-spacing: -3px;
-      line-height: 1.0; color: var(--white);
-      margin-bottom: 28px; max-width: 680px;
+      font-size: 20px; font-weight: 400;
+      color: var(--white); letter-spacing: -0.4px;
+      margin-bottom: 10px; line-height: 1.2;
     }
 
-    .cta-section h2 em { font-style: italic; color: var(--accent); }
+    .feat p { font-size: 13px; color: var(--muted); line-height: 1.75; }
 
-    .cta-sub {
-      font-size: 15px; color: var(--muted);
-      max-width: 380px; line-height: 1.75; margin-bottom: 44px;
+    /* ── CTA ─────────────────────────────────── */
+    .cta {
+      padding: 100px 64px;
+      background: var(--bg2);
     }
 
-    /* ── Footer ──────────────────────────────────────── */
+    .cta .container {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 48px; flex-wrap: wrap;
+    }
+
+    .cta h2 {
+      font-family: var(--D);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400; letter-spacing: -2.5px;
+      line-height: 1.05; color: var(--white);
+      max-width: 560px;
+    }
+
+    .cta h2 em { font-style: italic; color: var(--accent); }
+
+    .cta-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; flex-shrink: 0; }
+
+    .cta-note { font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 220px; }
+
+    /* ── Footer ──────────────────────────────── */
     footer {
-      padding: 28px 64px;
+      padding: 24px 64px;
+      border-top: 1px solid var(--border);
       display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
 
-    .foot-left { display: flex; align-items: center; gap: 20px; }
-    .foot-logo { text-decoration: none; display: flex; align-items: center; }
-    .foot-logo-img { height: 22px; width: auto; filter: invert(1); opacity: 0.4; }
+    .foot-logo { text-decoration: none; }
+    .foot-logo-img { height: 20px; width: auto; filter: invert(1); opacity: 0.35; }
+
     footer p { font-size: 12px; color: var(--muted); }
 
     .foot-links { display: flex; gap: 20px; }
     .foot-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.15s; }
     .foot-links a:hover { color: var(--text); }
 
-    /* ── Scroll reveal ───────────────────────────────── */
+    /* ── Scroll reveal ───────────────────────── */
     .reveal {
-      opacity: 0; transform: translateY(20px);
+      opacity: 0; transform: translateY(18px);
       transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
                   transform 0.6s cubic-bezier(0.22,1,0.36,1);
     }
 
     .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.07s; }
+    .d2 { transition-delay: 0.14s; }
+    .d3 { transition-delay: 0.21s; }
 
-    .d1 { transition-delay: 0.06s; }
-    .d2 { transition-delay: 0.12s; }
-    .d3 { transition-delay: 0.18s; }
-    .d4 { transition-delay: 0.24s; }
-    .d5 { transition-delay: 0.30s; }
-    .d6 { transition-delay: 0.36s; }
-
-    /* ── Responsive ──────────────────────────────────── */
+    /* ── Responsive ──────────────────────────── */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
-      .hero { padding: 120px 24px 72px; }
-      .stats { grid-template-columns: 1fr 1fr; }
-      .stat { padding: 32px 24px; border-right: none; border-bottom: 1px solid var(--border); }
-      .section { padding: 64px 24px; }
+      .hero { padding: 120px 24px 64px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 24px; }
+      .demo-section, .features-section, .cta { padding: 56px 24px; }
       .feat-grid { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr 1fr; gap: 32px; }
-      .cta-section { padding: 80px 24px; }
-      footer { padding: 24px 20px; }
+      .cta .container { flex-direction: column; }
+      footer { padding: 20px 24px; }
     }
   </style>
 </head>
@@ -512,9 +394,8 @@
 <!-- Nav -->
 <nav>
   <a href="#" class="logo"><img src="logo.png" alt="Thesara" class="logo-img" /></a>
-  <div class="nav-links">
+  <div class="nav-right">
     <a href="#features">Features</a>
-    <a href="#how">How it works</a>
     <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
     <a href="privacy.html">Privacy</a>
     <a href="https://chrome.google.com/webstore" class="nav-cta">Add to Chrome</a>
@@ -523,133 +404,36 @@
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-tag">
-    <span class="hero-tag-dot"></span>
-    v1.0 · Free · Open source
-  </div>
-  <h1>Every word.<br><em>In context.</em></h1>
-  <p class="hero-sub">
-    Hover any subtitle word while streaming to see its definition,
-    synonyms, and exactly what it means in that scene.
-  </p>
-  <div class="hero-btns">
-    <a href="https://chrome.google.com/webstore" class="btn btn-white">Add to Chrome — free</a>
-    <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank">View on GitHub</a>
-  </div>
-</section>
-
-<!-- Ticker -->
-<div class="ticker-wrap">
-  <div class="ticker">
-    <span class="tick"><span class="tick-dot"></span>Instant definitions</span>
-    <span class="tick"><span class="tick-dot"></span>Scene-aware AI</span>
-    <span class="tick"><span class="tick-dot"></span>Idiom detection</span>
-    <span class="tick"><span class="tick-dot"></span>Dialogue context</span>
-    <span class="tick"><span class="tick-dot"></span>Private by design</span>
-    <span class="tick"><span class="tick-dot"></span>Zero configuration</span>
-    <span class="tick"><span class="tick-dot"></span>14,400 free AI calls/day</span>
-    <span class="tick"><span class="tick-dot"></span>Open source</span>
-    <span class="tick"><span class="tick-dot"></span>Instant definitions</span>
-    <span class="tick"><span class="tick-dot"></span>Scene-aware AI</span>
-    <span class="tick"><span class="tick-dot"></span>Idiom detection</span>
-    <span class="tick"><span class="tick-dot"></span>Dialogue context</span>
-    <span class="tick"><span class="tick-dot"></span>Private by design</span>
-    <span class="tick"><span class="tick-dot"></span>Zero configuration</span>
-    <span class="tick"><span class="tick-dot"></span>14,400 free AI calls/day</span>
-    <span class="tick"><span class="tick-dot"></span>Open source</span>
-  </div>
-</div>
-
-<!-- Stats -->
-<div class="stats">
-  <div class="stat reveal">
-    <span class="stat-n" data-count="14400">14,400</span>
-    <span class="stat-l">Free AI calls per day</span>
-  </div>
-  <div class="stat reveal d1">
-    <span class="stat-n">&lt;1s</span>
-    <span class="stat-l">Tooltip latency</span>
-  </div>
-  <div class="stat reveal d2">
-    <span class="stat-n" data-count="0">0</span>
-    <span class="stat-l">Bytes stored server-side</span>
-  </div>
-  <div class="stat reveal d3">
-    <span class="stat-n" data-count="100" data-sfx="%">100%</span>
-    <span class="stat-l">Open source</span>
-  </div>
-</div>
-
-<!-- Features -->
-<section class="section" id="features">
-  <div class="container">
-    <p class="sec-tag reveal">Features</p>
-    <h2 class="sec-h reveal">Built for how<br>you actually <em>watch.</em></h2>
-    <div class="feat-grid">
-      <div class="feat reveal d1">
-        <p class="feat-num">01</p>
-        <h3>Instant definitions</h3>
-        <p>Definition, part of speech, and synonyms on hover — without leaving the screen.</p>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag"><span class="htag-dot"></span>v1.0 · Free · Open source</div>
+      <h1>Every word.<br><em>In context.</em></h1>
+      <p class="hero-sub">Hover any subtitle word while streaming to see its definition, synonyms, and what it actually means in that scene.</p>
+      <div class="hero-btns">
+        <a href="https://chrome.google.com/webstore" class="btn btn-white">Add to Chrome — free</a>
+        <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank">View on GitHub</a>
       </div>
-      <div class="feat reveal d2">
-        <p class="feat-num">02</p>
-        <h3>Scene-aware AI</h3>
-        <p>"Cook" in Breaking Bad isn't about food. The AI knows the show, the characters, and the moment.</p>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="hstat-n" data-count="14400">14,400</span>
+        <span class="hstat-l">Free AI calls / day</span>
       </div>
-      <div class="feat reveal d3">
-        <p class="feat-num">03</p>
-        <h3>Idiom detection</h3>
-        <p>Automatically clusters phrases like "call it a day" and explains them as a single unit.</p>
+      <div>
+        <span class="hstat-n">&lt;1s</span>
+        <span class="hstat-l">Tooltip latency</span>
       </div>
-      <div class="feat reveal d4">
-        <p class="feat-num">04</p>
-        <h3>Dialogue context</h3>
-        <p>The last 6 subtitle lines are passed to the AI so it understands the full conversation.</p>
-      </div>
-      <div class="feat reveal d5">
-        <p class="feat-num">05</p>
-        <h3>Private by design</h3>
-        <p>Only the subtitle you hover ever leaves your device. No history, no profiling, no accounts.</p>
-      </div>
-      <div class="feat reveal d6">
-        <p class="feat-num">06</p>
-        <h3>Zero configuration</h3>
-        <p>Install and it works. No API key needed. A shared free quota is available from day one.</p>
+      <div>
+        <span class="hstat-n">100%</span>
+        <span class="hstat-l">Open source</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- How it works -->
-<section class="section" id="how" style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+<!-- Demo -->
+<section class="demo-section">
   <div class="container">
-    <p class="sec-tag reveal">How it works</p>
-    <h2 class="sec-h reveal">Three seconds to<br><em>understand anything.</em></h2>
-
-    <div class="steps">
-      <div class="step reveal d1">
-        <div class="step-n">01</div>
-        <h3>Watch normally</h3>
-        <p>Thesara runs silently. Nothing changes until you choose to interact.</p>
-      </div>
-      <div class="step reveal d2">
-        <div class="step-n">02</div>
-        <h3>Hover a word</h3>
-        <p>Move your cursor over any subtitle word or detected phrase.</p>
-      </div>
-      <div class="step reveal d3">
-        <div class="step-n">03</div>
-        <h3>Read the card</h3>
-        <p>Definition, synonyms, and the AI's scene-aware explanation appear instantly.</p>
-      </div>
-      <div class="step reveal d4">
-        <div class="step-n">04</div>
-        <h3>Keep watching</h3>
-        <p>Dismiss and the video resumes exactly where you left off.</p>
-      </div>
-    </div>
-
-    <!-- Netflix mock -->
     <div class="mock-outer reveal">
       <div class="mock-browser">
         <div class="mdot"></div><div class="mdot"></div><div class="mdot"></div>
@@ -658,7 +442,7 @@
       <div class="mock-player">
         <div class="mock-scene"></div>
         <div class="mock-topbar">
-          <span class="nfx-logo">N</span>
+          <span class="nfx-n">N</span>
           <div class="nfx-info">
             <div class="nfx-show">Breaking Bad</div>
             <div class="nfx-ep">S4 E6 · Cornered</div>
@@ -692,36 +476,42 @@
   </div>
 </section>
 
-<!-- Platforms -->
-<section class="section">
+<!-- Features -->
+<section class="features-section" id="features">
   <div class="container">
-    <p class="sec-tag reveal">Platforms</p>
-    <h2 class="sec-h reveal">Starting with streaming.<br><em>Not stopping there.</em></h2>
-    <div class="plats">
-      <div class="plat live reveal d1"><span class="pdot"></span> Netflix</div>
-      <div class="plat reveal d2"><span class="pdot"></span> Prime Video</div>
-      <div class="plat reveal d3"><span class="pdot"></span> Disney+</div>
-      <div class="plat reveal d4"><span class="pdot"></span> YouTube</div>
-      <div class="plat reveal d5"><span class="pdot"></span> Apple TV+</div>
-      <div class="plat reveal d6"><span class="pdot"></span> HBO Max</div>
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <p class="feat-n">01 · Dictionary</p>
+        <h3>Instant definitions</h3>
+        <p>Definition, part of speech, and synonyms on hover — without leaving the screen or breaking focus.</p>
+      </div>
+      <div class="feat reveal d1">
+        <p class="feat-n">02 · AI</p>
+        <h3>Scene-aware context</h3>
+        <p>"Cook" in Breaking Bad isn't about food. The AI knows the show, the characters, and reads the last 6 lines of dialogue.</p>
+      </div>
+      <div class="feat reveal d2">
+        <p class="feat-n">03 · NLP</p>
+        <h3>Idiom detection</h3>
+        <p>Automatically clusters phrases like "call it a day" and explains them as a single unit of meaning.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section">
+<section class="cta">
   <div class="container">
     <h2 class="reveal">Start understanding<br><em>everything</em> you watch.</h2>
-    <p class="cta-sub reveal">Free, open source, and built for language learners who take immersion seriously.</p>
-    <div style="display:flex; gap:12px; flex-wrap:wrap;" class="reveal">
+    <div class="cta-right reveal d1">
       <a href="https://chrome.google.com/webstore" class="btn btn-white" style="padding:13px 28px; font-size:14px;">Add to Chrome — free</a>
-      <a href="https://github.com/hitesh-ctrl/thesara" class="btn btn-ghost" target="_blank" style="padding:13px 28px; font-size:14px;">Star on GitHub</a>
+      <p class="cta-note">Works on Netflix. More platforms coming. No account required.</p>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="foot-left">
+  <div style="display:flex; align-items:center; gap:16px;">
     <a href="#" class="foot-logo"><img src="logo.png" alt="Thesara" class="foot-logo-img" /></a>
     <p>Open source</p>
   </div>
@@ -733,34 +523,31 @@
 </footer>
 
 <script>
-  // Scroll reveal
   const ro = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-  // Count-up
-  function countUp(el, target, sfx, dur) {
+  // Count-up for hero stats
+  function countUp(el, target, dur) {
     const t0 = performance.now();
     const comma = target >= 1000;
     (function tick(now) {
       const p = Math.min((now - t0) / dur, 1);
       const v = Math.round((1 - Math.pow(1-p, 3)) * target);
-      el.textContent = (comma ? v.toLocaleString() : v) + sfx;
+      el.textContent = (comma ? v.toLocaleString() : v);
       if (p < 1) requestAnimationFrame(tick);
     })(t0);
   }
 
-  const co = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target;
-      const t = parseInt(el.dataset.count, 10);
-      if (!isNaN(t)) countUp(el, t, el.dataset.sfx || '', 1400);
-      co.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
+  // Fire count-up after hero entrance animation
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('[data-count]').forEach(el => {
+        countUp(el, parseInt(el.dataset.count, 10), 1600);
+      });
+    }, 600);
+  });
 </script>
 </body>
 </html>
