@@ -217,6 +217,18 @@
       /* High-contrast Cormorant at this scale is breathtaking */
     }
 
+    .hero-byline {
+      font-family: var(--D);
+      font-size: clamp(13px, 1.2vw, 16px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
     .hero-tagline {
       font-family: var(--D);
       font-size: clamp(18px, 2.5vw, 28px);
@@ -542,6 +554,7 @@
     </div>
 
     <div class="hero-title">THESARA</div>
+    <div class="hero-byline">by Hitesh</div>
 
     <p class="hero-tagline">
       Understand every word you watch.<br>
@@ -661,7 +674,7 @@
   <div class="contact-inner">
     <div class="contact-left reveal">
       <h2>Got a thought?<br><em>Say hello.</em></h2>
-      <p>Feedback, bugs, collaborations, or just want to talk about language learning and film. We're listening.</p>
+      <p>Feedback, bugs, or collaborations. We're listening.</p>
     </div>
     <div class="contact-right reveal d1">
       <a href="mailto:talktothesara@gmail.com" class="contact-email">
