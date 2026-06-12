@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Thesara — Netflix Vocabulary Assistant",
   "version": "1.0.0",
-  "description": "Hover any subtitle word on Netflix to instantly see its definition, synonyms, and contextual meaning powered by AI.",
+  "description": "Hover any subtitle word on Netflix to see its definition, synonyms, and AI-powered contextual meaning. Supports your own free Groq key.",
   "permissions": ["storage"],
   "host_permissions": [
     "https://www.netflix.com/*",

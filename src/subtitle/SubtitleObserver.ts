@@ -24,9 +24,16 @@ export class SubtitleObserver {
   private lastEmittedText: string | null = null;
   private currentUrl: string = location.href;
   private urlCheckIntervalId: ReturnType<typeof setInterval> | null = null;
+  private readonly boundHandleNavigation: () => void;
 
   constructor(callback: SubtitleCallback) {
     this.callback = callback;
+    this.boundHandleNavigation = () => {
+      if (location.href !== this.currentUrl) {
+        this.currentUrl = location.href;
+        this.handleNavigation();
+      }
+    };
   }
 
   /**
@@ -145,19 +152,32 @@ export class SubtitleObserver {
 
   /**
    * Netflix is a SPA. When the user navigates to a new episode, the URL changes
-   * but the page does not reload. We watch for URL changes and restart the
-   * observer so it finds the fresh subtitle container.
+   * but the page does not reload. We prefer the Navigation API (Chrome 102+) for
+   * zero-overhead event-driven detection. If unavailable, we fall back to
+   * popstate + a 5-second heartbeat (instead of 1s) to catch pushState navigations
+   * that don't fire popstate.
    */
   private startUrlWatcher(): void {
-    this.urlCheckIntervalId = setInterval(() => {
-      if (location.href !== this.currentUrl) {
-        this.currentUrl = location.href;
-        this.handleNavigation();
-      }
-    }, 1000);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nav = (window as any).navigation as EventTarget | undefined;
+    if (nav !== undefined) {
+      // Navigation API (Chrome 102+) — fires on every navigation including pushState.
+      nav.addEventListener("navigate", this.boundHandleNavigation);
+    } else {
+      window.addEventListener("popstate", this.boundHandleNavigation);
+      // Fallback heartbeat at 5s — catches programmatic pushState calls.
+      this.urlCheckIntervalId = setInterval(this.boundHandleNavigation, 5000);
+    }
   }
 
   private stopUrlWatcher(): void {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nav = (window as any).navigation as EventTarget | undefined;
+    if (nav !== undefined) {
+      nav.removeEventListener("navigate", this.boundHandleNavigation);
+    } else {
+      window.removeEventListener("popstate", this.boundHandleNavigation);
+    }
     if (this.urlCheckIntervalId !== null) {
       clearInterval(this.urlCheckIntervalId);
       this.urlCheckIntervalId = null;

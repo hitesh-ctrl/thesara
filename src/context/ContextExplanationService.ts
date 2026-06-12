@@ -1,9 +1,10 @@
 import type { NetflixContext } from "../player/NetflixContextDetector";
-import { GeminiProxy } from "./GeminiProxy";
+import { AIProxy } from "./AIProxy";
+import { BoundedCache } from "../util/BoundedCache";
 
 export type ContextResult =
   | { ok: true; explanation: string }
-  | { ok: false; reason: "no_api_key" | "api_error" | "network_error" | "quota_exceeded" };
+  | { ok: false; reason: "api_error" | "network_error" | "quota_exceeded" };
 
 /**
  * Generates a contextual explanation of a word or phrase within its subtitle
@@ -11,8 +12,8 @@ export type ContextResult =
  * own Groq key if the shared quota is exhausted.
  */
 export class ContextExplanationService {
-  private readonly cache = new Map<string, string>();
-  private readonly proxy = new GeminiProxy();
+  private readonly cache = new BoundedCache<string, string>(500);
+  private readonly proxy = new AIProxy();
 
   public async explain(
     wordOrPhrase: string,
@@ -25,8 +26,7 @@ export class ContextExplanationService {
     if (cached !== undefined) return { ok: true, explanation: cached };
 
     const isPhrase = wordOrPhrase.trim().includes(" ");
-    const speaker = detectSpeaker(sentence);
-    const body = buildGroqBody(wordOrPhrase, sentence, recentLines, speaker, netflixContext, isPhrase);
+    const body = buildGroqBody(wordOrPhrase, sentence, recentLines, netflixContext, isPhrase);
     const result = await this.proxy.call("/context", body);
 
     if (!result.ok) return result as ContextResult;
@@ -39,31 +39,9 @@ export class ContextExplanationService {
   }
 }
 
-// ─── Speaker detection ────────────────────────────────────────────────────────
-
-/**
- * Detects a speaker name from common subtitle patterns:
- *   "WALTER: I am the danger."       → "Walter"
- *   "- Jesse: Watch out!"            → "Jesse"
- *   "[Narrator] Long ago..."         → "Narrator"
- */
-function detectSpeaker(text: string): string | null {
-  const patterns = [
-    /^-?\s*([A-Z][A-Za-z\s]{1,20}):\s/,     // "WALTER: " or "- Jesse: "
-    /^\[([A-Z][A-Za-z\s]{1,20})\]/,          // "[Narrator]"
-  ];
-  for (const pattern of patterns) {
-    const match = pattern.exec(text.trim());
-    if (match?.[1]) {
-      return match[1].trim();
-    }
-  }
-  return null;
-}
-
 // ─── Prompt ───────────────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are an expert English language tutor embedded in a Netflix subtitle assistant.
+const SYSTEM_PROMPT = `You are an expert English language tutor embedded in a streaming subtitle assistant.
 
 Your job: when a viewer hovers over a word or phrase while watching a TV show or movie, explain exactly what it means in THAT moment — not its dictionary definition, but its actual meaning given the scene, the show, the characters, and everything said before it.
 
@@ -71,7 +49,6 @@ You will be given:
 - The show name and episode (if known)
 - Recent subtitle lines leading up to the current line (for scene context)
 - The current subtitle line
-- The speaker (if detectable)
 - The word or phrase the viewer hovered
 
 WHAT TO FOCUS ON:
@@ -90,30 +67,29 @@ RULES:
 - If the word is being used plainly with no special meaning, say so simply — don't invent nuance
 - Never start with "In this context", "This word means", or "The word"
 - Never repeat the subtitle line
-- When a speaker is identified, use their name to add character context
+- Do NOT mention character names unless they are clearly established in the recent subtitle lines provided
 
 EXAMPLES:
 
-Show: Breaking Bad | Speaker: Walter | Recent: ["Jesse, you asked me if I was in the meth business or the money business."] | Line: "I'm the danger." | Word: "danger"
-Answer: Walter isn't describing a hazard — he's declaring himself a powerful, threatening force, in one of his most iconic acts of self-mythologising.
+Show: Breaking Bad | Recent: ["Jesse, you asked me if I was in the meth business or the money business."] | Line: "I'm the danger." | Word: "danger"
+Answer: The speaker isn't describing a hazard — he's declaring himself a powerful, threatening force, in a chilling act of self-mythologising.
 
-Show: Modern Family | Speaker: Claire | Recent: ["We need to think about Grandma's future."] | Line: "Are you still putting Aunt Edie in a home?" | Word: "home"
+Show: Modern Family | Recent: ["We need to think about Grandma's future."] | Line: "Are you still putting Aunt Edie in a home?" | Word: "home"
 Answer: "A home" here means a care home or nursing facility — a place for elderly people who need full-time assistance, not just a house.
 
-Show: Succession | Speaker: Logan | Recent: ["The board is getting nervous.", "They want assurances."] | Line: "I'll take care of it." | Word: "take care of"
-Answer: From Logan Roy this is not reassurance — it's a quiet threat that he will neutralise whoever is causing the problem.
+Show: Succession | Recent: ["The board is getting nervous.", "They want assurances."] | Line: "I'll take care of it." | Word: "take care of"
+Answer: Said in this power struggle, "take care of it" is not reassurance — it's a quiet threat to neutralise whoever is causing the problem.
 
-Show: The Office | Speaker: Michael | Recent: ["We've hit our sales targets three months running!"] | Line: "That's what she said." | Phrase: "That's what she said"
-Answer: Michael's running joke — he uses this phrase to turn any innocent statement into an innuendo, a staple of his cringe humour throughout the show.
+Show: The Office | Recent: ["We've hit our sales targets three months running!"] | Line: "That's what she said." | Phrase: "That's what she said"
+Answer: A running joke in the show — this phrase is used to twist any innocent statement into a sexual innuendo, a staple of the character's cringe humour.
 
-Show: Fleabag | Speaker: Fleabag | Recent: ["I don't know what I'm doing.", "I just keep messing everything up."] | Line: "I'm fine." | Word: "fine"
-Answer: Fleabag's "fine" almost always means the opposite — this is her default deflection when she is anything but fine, a pattern the whole show is built on.`;
+Show: Fleabag | Recent: ["I don't know what I'm doing.", "I just keep messing everything up."] | Line: "I'm fine." | Word: "fine"
+Answer: In this show "fine" almost always means the opposite — it's a habitual deflection used when the speaker is anything but fine.`;
 
 function buildGroqBody(
   wordOrPhrase: string,
   sentence: string,
   recentLines: string[],
-  speaker: string | null,
   netflixContext: NetflixContext,
   isPhrase: boolean,
 ): unknown {
@@ -126,13 +102,11 @@ function buildGroqBody(
       ? `Recent lines:\n${recentLines.map((l) => `  "${l}"`).join("\n")}\n`
       : "";
 
-  const speakerLine = speaker ? `Speaker: ${speaker}\n` : "";
   const label = isPhrase ? "Phrase" : "Word";
 
   const userText =
     `Show: ${netflixContext.showTitle}${episode}\n` +
     recentContext +
-    speakerLine +
     `Current line: "${sentence}"\n` +
     `${label}: "${wordOrPhrase}"`;
 

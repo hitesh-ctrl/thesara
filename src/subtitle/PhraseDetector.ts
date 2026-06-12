@@ -1,4 +1,5 @@
-import { GeminiProxy } from "../context/GeminiProxy";
+import { AIProxy } from "../context/AIProxy";
+import { BoundedCache } from "../util/BoundedCache";
 
 const SYSTEM_PROMPT = `You are a phrase detector for an English vocabulary learning app used while watching TV shows and movies.
 
@@ -26,12 +27,12 @@ Input: "I want a coffee."
 Output: []`;
 
 /**
- * Uses Groq (via GeminiProxy) to detect multi-word idioms and phrases in a
+ * Uses Groq (via AIProxy) to detect multi-word idioms and phrases in a
  * subtitle sentence. Results are cached per sentence.
  */
 export class PhraseDetector {
-  private readonly cache = new Map<string, string[]>();
-  private readonly proxy = new GeminiProxy();
+  private readonly cache = new BoundedCache<string, string[]>(500);
+  private readonly proxy = new AIProxy();
 
   public async detect(sentence: string): Promise<string[]> {
     const cached = this.cache.get(sentence);

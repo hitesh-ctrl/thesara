@@ -1,5 +1,6 @@
 import type { DictionaryResult, ApiEntry } from "./types";
 import { extractWordInfo } from "./types";
+import { BoundedCache } from "../util/BoundedCache";
 
 const API_BASE = "https://api.dictionaryapi.dev/api/v2/entries/en";
 
@@ -13,7 +14,7 @@ const API_BASE = "https://api.dictionaryapi.dev/api/v2/entries/en";
  * - Lowercase normalisation: "Hello" and "hello" share a cache entry.
  */
 export class DictionaryService {
-  private readonly cache = new Map<string, DictionaryResult>();
+  private readonly cache = new BoundedCache<string, DictionaryResult>(500);
 
   /**
    * Looks up a word. Returns cached result immediately on subsequent calls.

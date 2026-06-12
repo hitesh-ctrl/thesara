@@ -11,7 +11,7 @@ import { QuotaDisclosureUI } from "../quota/QuotaDisclosureUI";
 import type { SubtitleUpdate } from "../subtitle/types";
 
 console.log(
-  "%c[Netflix Vocabulary] Content script loaded ✓",
+  "%c[Thesara] Content script loaded ✓",
   "color: #e50914; font-weight: bold; font-size: 14px;",
 );
 
@@ -20,7 +20,7 @@ const context = new ContextExplanationService();
 const phraseDetector = new PhraseDetector();
 const video = new VideoController();
 
-// Listens for quota_exceeded events from GeminiProxy and shows the full
+// Listens for quota_exceeded events from AIProxy and shows the full
 // disclosure screen so users can optionally add their own key.
 const quotaUI = new QuotaDisclosureUI();
 quotaUI.init();
@@ -36,7 +36,7 @@ let currentSentence = "";
  * Rolling buffer of the last N subtitle lines for context.
  * Passed to the AI so it understands what was said before the hovered word.
  */
-const HISTORY_SIZE = 4;
+const HISTORY_SIZE = 6;
 const subtitleHistory: string[] = [];
 
 /**
@@ -46,8 +46,56 @@ const subtitleHistory: string[] = [];
  */
 let currentPhrases: string[] = [];
 
+/**
+ * Debounced hide — prevents flickering when the mouse briefly passes over
+ * gaps between word spans as it moves from one word to another.
+ */
+let hideTimer: ReturnType<typeof setTimeout> | null = null;
+
+function scheduleHide(): void {
+  if (hideTimer !== null) return;
+  hideTimer = setTimeout(() => {
+    hideTimer = null;
+    tooltip.hide();
+  }, 80);
+}
+
+function cancelHide(): void {
+  if (hideTimer !== null) {
+    clearTimeout(hideTimer);
+    hideTimer = null;
+  }
+}
+
+/**
+ * Debounce timer for AI calls (context + phrase detection).
+ * Fires 300ms after the subtitle settles — avoids blasting the API on
+ * rapid-fire subtitles in fast-paced scenes.
+ */
+let aiDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+const AI_DEBOUNCE_MS = 300;
+
+function scheduleAICalls(sentence: string): void {
+  if (aiDebounceTimer !== null) clearTimeout(aiDebounceTimer);
+  aiDebounceTimer = setTimeout(() => {
+    aiDebounceTimer = null;
+    // Only run if the sentence is still the current one.
+    if (sentence !== currentSentence) return;
+    void runPhraseDetection(sentence);
+  }, AI_DEBOUNCE_MS);
+}
+
+async function runPhraseDetection(sentence: string): Promise<void> {
+  const phrases = await phraseDetector.detect(sentence);
+  if (phrases.length > 0 && currentSentence === sentence) {
+    currentPhrases = phrases;
+    overlay.render();
+  }
+}
+
 const overlay = new OverlayRenderer(
   (wordOrPhrase, token, spanEl) => {
+    cancelHide();
     video.pause();
 
     const sentence = currentSentence;
@@ -55,29 +103,22 @@ const overlay = new OverlayRenderer(
     const netflixContext = detectNetflixContext();
     const isPhrase = token.isPhrase === true;
 
-    // Phrases: skip dictionary (won't have idioms), go straight to context.
-    // Single words: run both in parallel.
-    const dictPromise = isPhrase
-      ? Promise.resolve(null)
-      : dictionary.lookup(wordOrPhrase);
+    // Show tooltip immediately with loading state — no waiting.
+    tooltip.show(spanEl, wordOrPhrase, null);
 
-    // Skip context only for plain common words — phrases always get context.
+    // Phase 1 — update with dictionary data as soon as it arrives.
+    if (!isPhrase) {
+      void dictionary.lookup(wordOrPhrase).then((result) => {
+        tooltip.updateDict(wordOrPhrase, result);
+      });
+    }
+
+    // Phase 2 — fill context explanation when AI responds.
     const contextPromise =
       !isPhrase && isCommonWord(wordOrPhrase)
         ? Promise.resolve(null)
         : context.explain(wordOrPhrase, sentence, recentLines, netflixContext);
 
-    // Phase 1 — show tooltip as soon as we have something to display.
-    if (isPhrase) {
-      // For phrases, wait for context (no dict) — show loading state immediately.
-      tooltip.show(spanEl, wordOrPhrase, null);
-    } else {
-      void dictPromise.then((result) => {
-        tooltip.show(spanEl, wordOrPhrase, result);
-      });
-    }
-
-    // Phase 2 — fill in the context explanation.
     void contextPromise.then((contextResult) => {
       tooltip.setContext(wordOrPhrase, contextResult);
     });
@@ -86,7 +127,7 @@ const overlay = new OverlayRenderer(
       "mouseleave",
       (e: MouseEvent) => {
         if (!tooltip.contains(e.relatedTarget)) {
-          tooltip.hide();
+          scheduleHide();
         }
       },
       { once: true },
@@ -97,12 +138,12 @@ const overlay = new OverlayRenderer(
 
 document.addEventListener("mouseover", (e: MouseEvent) => {
   const target = e.target;
-  if (
-    target instanceof HTMLElement &&
-    !target.classList.contains("nva-word") &&
-    !tooltip.contains(target)
-  ) {
-    tooltip.hide();
+  if (target instanceof HTMLElement) {
+    if (target.classList.contains("nva-word") || tooltip.contains(target)) {
+      cancelHide();
+    } else {
+      scheduleHide();
+    }
   }
 });
 
@@ -117,13 +158,13 @@ async function handleSubtitleUpdate(update: SubtitleUpdate): Promise<void> {
     currentPhrases = [];
     overlay.render();
 
-    // Async upgrade: re-render with phrase highlights once detection resolves.
-    const phrases = await phraseDetector.detect(currentSentence);
-    if (phrases.length > 0 && currentSentence === update.event.text) {
-      currentPhrases = phrases;
-      overlay.render();
-    }
+    // Async upgrade: re-render with phrase highlights after debounce settles.
+    scheduleAICalls(currentSentence);
   } else {
+    if (aiDebounceTimer !== null) {
+      clearTimeout(aiDebounceTimer);
+      aiDebounceTimer = null;
+    }
     currentSentence = "";
     currentPhrases = [];
     subtitleHistory.length = 0;

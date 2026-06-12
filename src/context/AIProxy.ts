@@ -35,7 +35,7 @@ export type ProxyResult =
 export const QUOTA_EXCEEDED_EVENT = "nva:quota_exceeded";
 export const INVALID_USER_KEY_EVENT = "nva:invalid_user_key";
 
-export class GeminiProxy {
+export class AIProxy {
   public async call(path: "/context" | "/phrases", body: unknown): Promise<ProxyResult> {
     // ── 1. Check if quota was already exhausted today (skip proxy entirely) ───
     const alreadyExhausted = await this.isQuotaExhaustedToday();
@@ -72,7 +72,10 @@ export class GeminiProxy {
     try {
       response = await fetch(`${PROXY_BASE_URL}${path}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Thesara-Client": "1",
+        },
         body: JSON.stringify(body),
       });
     } catch {
@@ -102,9 +105,7 @@ export class GeminiProxy {
   // ─── Direct Groq call (user's own key) ───────────────────────────────────────
 
   private async callGroqDirect(body: unknown, apiKey: string): Promise<ProxyResult> {
-    // body is already in Groq/OpenAI format — pass it straight through.
-    const response$ = body as { model?: string };
-    const groqBody = { ...response$, model: GROQ_MODEL };
+    const groqBody = { ...(body as Record<string, unknown>), model: GROQ_MODEL };
 
     let response: Response;
     try {
