@@ -527,6 +527,7 @@
     <a href="#features">Features</a>
     <a href="#contact">Contact</a>
     <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
+    <a href="privacy.html">Privacy</a>
     <a href="https://chrome.google.com/webstore" class="nav-cta">Add to Chrome</a>
   </div>
 </nav>
@@ -684,54 +685,223 @@
 </footer>
 
 <script>
-  // ── Floating movie phrases across the full page ───────────
+  // ── Floating movie & TV phrases across the full page ─────────────────────
   const quotes = [
-    "I am the danger.", "Here's looking at you, kid.",
-    "You can't handle the truth!", "I'll be back.",
-    "May the Force be with you.", "Why so serious?",
-    "To infinity and beyond!", "Life is like a box of chocolates.",
-    "I see dead people.", "You had me at hello.",
-    "After all this time? Always.", "I am your father.",
-    "Make him an offer he can't refuse.", "You talking to me?",
-    "Go ahead, make my day.", "Bond. James Bond.",
-    "There's no place like home.", "My precious.",
-    "Hasta la vista, baby.", "Show me the money!",
-    "I'm the king of the world!", "Elementary, my dear Watson.",
-    "Just keep swimming.", "We're not in Kansas anymore.",
+    // Classics
+    "I am the danger.",
+    "Here's looking at you, kid.",
+    "You can't handle the truth!",
+    "I'll be back.",
+    "May the Force be with you.",
+    "Why so serious?",
+    "To infinity and beyond!",
+    "Life is like a box of chocolates.",
+    "I see dead people.",
+    "You had me at hello.",
+    "After all this time? Always.",
+    "I am your father.",
+    "Make him an offer he can't refuse.",
+    "You talking to me?",
+    "Go ahead, make my day.",
+    "Bond. James Bond.",
+    "There's no place like home.",
+    "My precious.",
+    "Hasta la vista, baby.",
+    "Show me the money!",
+    "I'm the king of the world!",
+    "Elementary, my dear Watson.",
+    "Just keep swimming.",
+    "We're not in Kansas anymore.",
     "Frankly, my dear, I don't give a damn.",
     "With great power comes great responsibility.",
     "Keep your friends close, but your enemies closer.",
     "I feel the need. The need for speed!",
-    "Winter is coming.", "A Lannister always pays his debts.",
+    "Winter is coming.",
+    "A Lannister always pays his debts.",
     "You is kind, you is smart, you is important.",
-    "Leave the gun. Take the cannoli.", "Say hello to my little friend!",
-    "You're gonna need a bigger boat.", "Nobody puts Baby in a corner.",
+    "Leave the gun. Take the cannoli.",
+    "Say hello to my little friend!",
+    "You're gonna need a bigger boat.",
+    "Nobody puts Baby in a corner.",
     "We accept the love we think we deserve.",
     "Get busy living or get busy dying.",
     "It's not personal. It's strictly business.",
-    "I am Groot.", "Avengers, assemble.",
-    "I am inevitable.", "I could do this all day.",
-    "I volunteer as tribute.", "The stuff that dreams are made of.",
-    "To be, or not to be.", "All those moments will be lost in time.",
-    "You complete me.", "Just keep swimming.",
-    "Why do we fall?", "I'm Batman.",
+    "I am Groot.",
+    "Avengers, assemble.",
+    "I am inevitable.",
+    "I could do this all day.",
+    "I volunteer as tribute.",
+    "The stuff that dreams are made of.",
+    "To be, or not to be.",
+    "All those moments will be lost in time.",
+    "You complete me.",
+    "Why do we fall?",
+    "I'm Batman.",
+    // More movies
+    "E.T. phone home.",
+    "They may take our lives, but they'll never take our freedom!",
+    "Houston, we have a problem.",
+    "You shall not pass!",
+    "One does not simply walk into Mordor.",
+    "My name is Inigo Montoya.",
+    "Inconceivable!",
+    "As you wish.",
+    "Life finds a way.",
+    "Clever girl.",
+    "Just when I thought I was out...",
+    "Say what again.",
+    "Pulp fiction.",
+    "I drink your milkshake!",
+    "There will be blood.",
+    "I'm not bad. I'm just drawn that way.",
+    "You can't sit with us.",
+    "She doesn't even go here.",
+    "On Wednesdays we wear pink.",
+    "So fetch.",
+    "That's so fetch.",
+    "You're a wizard, Harry.",
+    "Dobby is free.",
+    "Mischief managed.",
+    "Expecto patronum.",
+    "Wingardium leviosa.",
+    "It's not about the money. It's about sending a message.",
+    "Why so serious?",
+    "Some men just want to watch the world burn.",
+    "I'm Spartacus!",
+    "Friends, Romans, countrymen.",
+    "Et tu, Brute?",
+    "Veni, vidi, vici.",
+    "A martini. Shaken, not stirred.",
+    "The name is Bond.",
+    "Nobody does it better.",
+    "For England, James.",
+    "The world is not enough.",
+    "Die another day.",
+    "Goldfinger.",
+    "You only live twice.",
+    "Live and let die.",
+    "Moonraker.",
+    // TV shows
+    "We need to talk about Kevin.",
+    "I don't understand the question and I won't respond to it.",
+    "That's what she said.",
+    "Bears. Beets. Battlestar Galactica.",
+    "Dunder Mifflin, this is Pam.",
+    "How you doin'?",
+    "We were on a break!",
+    "Could it BE any more obvious?",
+    "Smelly cat, smelly cat.",
+    "Oh my God, they killed Kenny!",
+    "Respect my authoritah!",
+    "I am the one who knocks.",
+    "Say my name.",
+    "I did it for me.",
+    "Tread lightly.",
+    "Stay out of my territory.",
+    "Yeah, science!",
+    "Better call Saul.",
+    "It's all good, man.",
+    "Don't drink and drive.",
+    "S'all good, man.",
+    "You know nothing, Jon Snow.",
+    "Dracarys.",
+    "A girl has no name.",
+    "Not today.",
+    "Chaos isn't a pit. It's a ladder.",
+    "The night is dark and full of terrors.",
+    "When you play the game of thrones...",
+    "Valar morghulis.",
+    "What is dead may never die.",
+    "Hold the door.",
+    "I am the storm.",
+    "A man without fear.",
+    "Hell's Kitchen is my neighbourhood.",
+    "I'm not the monster you think I am.",
+    "We're all monsters, darling.",
+    "It's a trap!",
+    "Do or do not. There is no try.",
+    "I have spoken.",
+    "This is the way.",
+    "I have spoken.",
+    "Grogu.",
+    "The force will be with you. Always.",
+    "Fear is the path to the dark side.",
+    "Luminous beings are we.",
+    "In my experience there is no such thing as luck.",
+    "The ability to speak does not make you intelligent.",
+    "These aren't the droids you're looking for.",
+    // Drama / Prestige TV
+    "I am the captain of my soul.",
+    "The things I do for love.",
+    "All men must die.",
+    "If you think this has a happy ending...",
+    "Every flight begins with a fall.",
+    "A lion doesn't concern himself with the opinions of sheep.",
+    "Power is power.",
+    "I choose violence.",
+    "Shame. Shame. Shame.",
+    "The things we love destroy us every time.",
+    "Never forget what you are.",
+    "I am no man.",
+    "The night is darkest just before dawn.",
+    "I believe in Harvey Dent.",
+    "You either die a hero...",
+    "It's not who I am underneath.",
+    "Why do we fall, Bruce?",
+    "So we can learn to pick ourselves up.",
+    "Gotham needs its true hero.",
+    "The Dark Knight.",
+    // Animation
+    "To boldly go where no man has gone before.",
+    "Beam me up, Scotty.",
+    "Live long and prosper.",
+    "Resistance is futile.",
+    "Make it so.",
+    "Engage.",
+    "Space: the final frontier.",
+    "Second star to the right.",
+    "Straight on till morning.",
+    // Misc iconic
+    "What's in the box?!",
+    "Soylent Green is people!",
+    "I'm sorry, Dave. I'm afraid I can't do that.",
+    "Open the pod bay doors, HAL.",
+    "Daisy, Daisy, give me your answer do.",
+    "All work and no play makes Jack a dull boy.",
+    "Here's Johnny!",
+    "Wendy? I'm home.",
+    "Redrum.",
+    "They're here.",
+    "Be afraid. Be very afraid.",
+    "Nothing to see here.",
+    "Move along.",
+    "These aren't the droids...",
+    "I've got a bad feeling about this.",
+    "Never tell me the odds.",
+    "Punch it, Chewie.",
+    "Noooooo!",
+    "Help me, Obi-Wan Kenobi.",
+    "You were the chosen one!",
+    "It's over, Anakin!",
+    "I have the high ground.",
+    "Hello there.",
+    "General Kenobi.",
   ];
 
   const container = document.getElementById('phrases');
 
   const colours = [
     [255,255,255], [220,220,255], [255,240,220],
-    [200,220,255], [255,255,245],
+    [200,220,255], [255,255,245], [210,255,240],
+    [255,230,210], [230,210,255], [255,255,220],
   ];
 
-  // Grid-based placement: divide into columns x rows cells,
-  // place one quote per cell with random jitter — ensures no two
-  // quotes occupy the same cell (no blocking).
-  const cols = 4;
-  const rows = 14;
+  // Dense grid: 7 columns × 26 rows = 182 cells — fills the whole page
+  const cols = 7;
+  const rows = 26;
   const total = cols * rows;
 
-  // Shuffle quote indices so distribution is varied
+  // Build shuffled index pool, cycling through quotes as needed
   const indices = Array.from({length: total}, (_, i) => i % quotes.length);
   for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -745,42 +915,52 @@
       el.className = 'phrase';
       el.textContent = quotes[indices[idx]];
 
-      // Base position = cell centre + random jitter within cell
+      // Cell centre + random jitter
       const cellW = 100 / cols;
       const cellH = 100 / rows;
-      const jitterX = (Math.random() - 0.5) * cellW * 0.7;
-      const jitterY = (Math.random() - 0.5) * cellH * 0.6;
+      const jitterX = (Math.random() - 0.5) * cellW * 0.75;
+      const jitterY = (Math.random() - 0.5) * cellH * 0.65;
       const left = col * cellW + cellW / 2 + jitterX;
       const top  = row * cellH + cellH / 2 + jitterY;
 
       el.style.left = left + '%';
       el.style.top  = top  + '%';
 
-      // Font size — varied
-      const size = 10 + Math.random() * 10;
+      // Three tiers of size: tiny, small, medium — gives a starfield depth feel
+      const tier = Math.random();
+      const size = tier < 0.55 ? (8 + Math.random() * 4)    // tiny  55%
+                 : tier < 0.85 ? (12 + Math.random() * 5)   // small 30%
+                 :               (17 + Math.random() * 6);  // medium 15%
       el.style.fontSize = size + 'px';
 
-      // Rotation
-      const rot = (Math.random() - 0.5) * 20;
+      // Rotation — more variety
+      const rot = (Math.random() - 0.5) * 28;
       el.style.setProperty('--rot', rot + 'deg');
 
-      // Opacity — bright but not distracting
-      const opHi = 0.10 + Math.random() * 0.16;
-      const opLo = opHi * 0.30;
-      el.style.setProperty('--op-hi', opHi);
-      el.style.setProperty('--op-lo', opLo);
-      el.style.opacity = opHi;
+      // Opacity — tiered: smaller = dimmer to reinforce depth
+      const baseOp = tier < 0.55 ? 0.06 + Math.random() * 0.08
+                   : tier < 0.85 ? 0.10 + Math.random() * 0.12
+                   :               0.15 + Math.random() * 0.14;
+      const opHi = baseOp;
+      const opLo = opHi * 0.25;
+      el.style.setProperty('--op-hi', String(opHi));
+      el.style.setProperty('--op-lo', String(opLo));
+      el.style.opacity = String(opHi);
 
       // Colour
       const [r,g,b] = colours[Math.floor(Math.random() * colours.length)];
       el.style.color = `rgb(${r},${g},${b})`;
 
-      // Glow
-      el.style.textShadow = `0 0 ${opHi > 0.18 ? '10px' : '5px'} rgba(${r},${g},${b},${opHi > 0.18 ? 0.5 : 0.25})`;
+      // Glow — only on medium-size quotes
+      if (tier >= 0.85) {
+        el.style.textShadow = `0 0 12px rgba(${r},${g},${b},${opHi * 2})`;
+      }
 
-      // Animations
-      const driftDur   = 22 + Math.random() * 26;
-      const twinkleDur = 3  + Math.random() * 5;
+      // Staggered animations — longer drift for smaller quotes
+      const driftDur   = tier < 0.55 ? 30 + Math.random() * 30
+                       : tier < 0.85 ? 22 + Math.random() * 22
+                       :               16 + Math.random() * 16;
+      const twinkleDur = 3 + Math.random() * 6;
       el.style.animationName = 'drift, twinkle';
       el.style.animationDuration = `${driftDur}s, ${twinkleDur}s`;
       el.style.animationDelay = `-${Math.random() * driftDur}s, -${Math.random() * twinkleDur}s`;
