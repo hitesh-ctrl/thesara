@@ -7,94 +7,129 @@
   <title>Privacy Policy — Thesara</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Telma:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Cormorant+SC:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:           #080809;
-      --bg-raise:     #0f0f11;
-      --border:       rgba(255,255,255,0.08);
-      --border-hi:    rgba(255,255,255,0.14);
-      --text:         #f2f2f4;
-      --muted:        #5c5c64;
-      --subtle:       #2e2e34;
-      --accent:       #c9a96e;
-      --white:        #ffffff;
-      --bg-2:         #0f0f11;
-      --surface:      #0f0f11;
-      --surface-2:    #161618;
-      --border-2:     rgba(255,255,255,0.14);
-      --text-2:       #c8c8cc;
-      --faint:        #2e2e34;
-      --blue:         #c9a96e;
-      --blue-dim:     rgba(201,169,110,0.1);
-      --green:        #4ade80;
-      --font-display: "Telma", Georgia, serif;
-      --font-body:    "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --bg:      #03030a;
+      --bg2:     #070712;
+      --border:  rgba(255,255,255,0.07);
+      --borderB: rgba(255,255,255,0.12);
+      --text:    #e8e8f0;
+      --muted:   #55556a;
+      --accent:  #7b79ff;
+      --green:   #34d39a;
+      --white:   #ffffff;
+      --D: "Cormorant", "Cormorant SC", Georgia, serif;
+      --B: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font-body);
+      font-family: var(--B);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
     }
 
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 
-    /* ─── Nav ─── */
+    /* ── Floating quotes layer ── */
+    #phrases {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .phrase {
+      position: absolute;
+      font-family: var(--B);
+      font-weight: 700;
+      white-space: nowrap;
+      user-select: none;
+      animation: drift linear infinite, twinkle ease-in-out infinite;
+    }
+
+    @keyframes drift {
+      0%   { transform: translateY(0px) translateX(0px) rotate(var(--rot)); }
+      30%  { transform: translateY(-10px) translateX(5px) rotate(var(--rot)); }
+      60%  { transform: translateY(-4px) translateX(-7px) rotate(var(--rot)); }
+      100% { transform: translateY(0px) translateX(0px) rotate(var(--rot)); }
+    }
+
+    @keyframes twinkle {
+      0%,100% { opacity: var(--op-hi); }
+      40%,60% { opacity: var(--op-lo); }
+    }
+
+    /* ── Nav ── identical to index.html ── */
     nav {
-      position: sticky; top: 0; z-index: 200;
-      height: 56px; padding: 0 32px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: 60px; padding: 0 48px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(15,15,16,0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(8,8,16,0.85);
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
 
     .nav-logo {
-      font-family: var(--font-display);
-      font-size: 17px; font-weight: 400;
+      font-family: "Cormorant SC", "Cormorant", Georgia, serif;
+      font-size: 20px; font-weight: 600;
       color: var(--white); text-decoration: none;
+      letter-spacing: 0.08em;
     }
 
-    .nav-logo-dot { display: none; }
+    .nav-right { display: flex; align-items: center; gap: 4px; }
 
-    .nav-links { display: flex; gap: 4px; }
-
-    .nav-links a {
-      font-size: 13px; font-weight: 500;
-      color: var(--muted); text-decoration: none;
-      padding: 5px 10px; border-radius: 5px;
-      transition: color 0.15s, background 0.15s;
+    .nav-right a {
+      font-size: 13px; color: var(--muted);
+      text-decoration: none; padding: 5px 12px;
+      border-radius: 6px; transition: color 0.15s;
     }
 
-    .nav-links a:hover { color: var(--text-2); background: var(--surface); }
+    .nav-right a:hover { color: var(--text); }
 
-    /* ─── Layout ─── */
-    .page {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      max-width: 960px;
+    .nav-cta {
+      background: var(--white) !important;
+      color: #08080f !important;
+      font-weight: 600 !important;
+      padding: 7px 18px !important;
+      border-radius: 6px !important;
+      margin-left: 6px;
+      transition: background 0.15s !important;
+    }
+
+    .nav-cta:hover { background: #e4e4f0 !important; }
+
+    /* ── Page layout — Medium-style single wide column ── */
+    .page-wrap {
+      position: relative; z-index: 2;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 56px 40px 96px;
-      gap: 56px;
+      padding: 100px 48px 96px;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 64px;
       align-items: start;
     }
 
-    @media (max-width: 720px) {
-      .page { grid-template-columns: 1fr; padding: 40px 20px 80px; }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .page-wrap { grid-template-columns: 1fr; padding: 90px 24px 80px; }
       .toc { display: none; }
     }
 
-    /* ─── TOC ─── */
-    .toc { position: sticky; top: 76px; }
+    /* ── TOC ── */
+    .toc { position: sticky; top: 80px; }
 
     .toc-label {
       font-size: 10px; font-weight: 600;
@@ -104,92 +139,104 @@
 
     .toc a {
       display: block;
-      font-size: 12px; font-weight: 500;
+      font-size: 12px; font-weight: 400;
       color: var(--muted); text-decoration: none;
-      padding: 5px 0 5px 12px;
-      border-left: 1.5px solid var(--border-2);
-      margin-bottom: 1px;
-      transition: all 0.15s;
+      padding: 6px 0 6px 14px;
+      border-left: 1.5px solid rgba(255,255,255,0.06);
+      margin-bottom: 2px;
+      transition: all 0.2s;
     }
 
-    .toc a:hover { color: var(--text-2); border-left-color: var(--blue); }
+    .toc a:hover { color: var(--text); border-left-color: var(--accent); padding-left: 18px; }
 
-    /* ─── Content ─── */
-    .page-label {
-      font-size: 11px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--muted); margin-bottom: 12px;
+    /* ── Content — editorial Medium rhythm ── */
+    .sec-label {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 16px;
     }
 
     h1 {
-      font-family: var(--font-display);
-      font-size: 42px; font-weight: 400;
-      letter-spacing: -1.5px; line-height: 1.1;
-      color: var(--white); margin-bottom: 18px;
+      font-family: var(--D);
+      font-size: clamp(40px, 5.5vw, 64px);
+      font-weight: 300; letter-spacing: -2px; line-height: 1.0;
+      color: var(--white); margin-bottom: 24px;
     }
 
     .meta {
       display: flex; flex-wrap: wrap; gap: 8px;
-      margin-bottom: 36px; padding-bottom: 32px;
+      margin-bottom: 40px; padding-bottom: 32px;
       border-bottom: 1px solid var(--border);
     }
 
     .meta-tag {
       font-size: 11px; font-weight: 500;
       color: var(--muted);
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      padding: 3px 10px; border-radius: 5px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 4px 12px; border-radius: 100px;
     }
 
+    /* Summary callout — feels like a Medium pull quote */
     .tldr {
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-left: 2px solid var(--blue);
-      border-radius: 0 8px 8px 0;
-      padding: 18px 20px;
-      margin-bottom: 44px;
+      background: rgba(123,121,255,0.05);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 16px 16px 0;
+      padding: 24px 28px;
+      margin-bottom: 56px;
     }
 
     .tldr-label {
       font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--blue); margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--accent); margin-bottom: 10px;
     }
 
-    .tldr p { font-size: 13px; color: var(--text-2); line-height: 1.75; }
+    .tldr p {
+      font-family: var(--D);
+      font-size: 18px; font-weight: 300;
+      color: rgba(232,232,240,0.75);
+      line-height: 1.7;
+      font-style: italic;
+    }
 
+    /* Section headings — large, editorial */
     h2 {
-      font-family: var(--font-display);
-      font-size: 22px; font-weight: 400;
-      color: var(--white); letter-spacing: -0.5px;
-      margin-top: 48px; margin-bottom: 14px;
-      padding-top: 48px;
-      border-top: 1px solid var(--border);
-      display: flex; align-items: center; gap: 10px;
+      font-family: var(--D);
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 300; color: var(--white);
+      letter-spacing: -0.8px; line-height: 1.15;
+      margin-top: 64px; margin-bottom: 20px;
+      padding-top: 64px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; gap: 12px;
     }
 
     h2:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
 
     .h2-n {
-      font-size: 11px; font-weight: 600;
+      font-family: var(--B);
+      font-size: 10px; font-weight: 600;
       color: var(--muted);
-      background: var(--surface-2);
-      border: 1px solid var(--border-2);
-      padding: 2px 7px; border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 3px 8px; border-radius: 100px;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
     }
 
+    /* Body text — Medium's comfortable reading width and size */
     p {
-      font-size: 14px; color: var(--muted);
-      margin-bottom: 14px; line-height: 1.85;
+      font-size: 15px; color: rgba(232,232,240,0.55);
+      margin-bottom: 18px; line-height: 1.9;
     }
 
-    ul { list-style: none; margin-bottom: 18px; }
+    ul { list-style: none; margin-bottom: 24px; }
 
     li {
-      font-size: 14px; color: var(--muted); line-height: 1.75;
-      padding: 9px 0 9px 18px;
-      border-bottom: 1px solid var(--faint);
+      font-size: 15px; color: rgba(232,232,240,0.55); line-height: 1.8;
+      padding: 12px 0 12px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
       position: relative;
     }
 
@@ -198,108 +245,127 @@
     li::before {
       content: '–';
       position: absolute; left: 0;
-      color: var(--muted);
+      color: var(--accent); opacity: 0.5;
     }
 
-    li strong { color: var(--text-2); font-weight: 600; }
+    li strong { color: rgba(232,232,240,0.85); font-weight: 600; }
+
+    /* Tables — softer, rounded, Medium card feel */
+    .table-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 24px;
+    }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border-2);
-      border-radius: 8px;
-      overflow: hidden;
     }
 
     th {
-      background: var(--surface-2);
-      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      padding: 12px 18px;
       text-align: left;
       font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
+      text-transform: uppercase; letter-spacing: 0.12em;
       color: var(--muted);
-      border-bottom: 1px solid var(--border-2);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
 
     td {
-      padding: 11px 14px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      vertical-align: top; line-height: 1.6;
+      padding: 14px 18px;
+      color: rgba(232,232,240,0.5);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top; line-height: 1.65;
     }
 
     tr:last-child td { border-bottom: none; }
-    td strong { color: var(--text-2); font-weight: 500; }
+    td strong { color: rgba(232,232,240,0.8); font-weight: 500; }
 
     code {
       font-size: 12px; font-family: "SF Mono", Consolas, monospace;
-      background: var(--surface-2);
-      border: 1px solid var(--border-2);
-      padding: 1px 6px; border-radius: 4px;
-      color: var(--text-2);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 2px 7px; border-radius: 6px;
+      color: rgba(232,232,240,0.75);
     }
 
-    a { color: var(--blue); text-decoration: none; }
+    a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    /* Contact card — soft, rounded Medium card */
     .contact-card {
-      background: var(--surface);
-      border: 1px solid var(--border-2);
-      border-radius: 10px;
-      padding: 20px 24px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 24px 28px;
       display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 14px;
-      margin-top: 14px;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      margin-top: 16px;
     }
 
-    .contact-card p { font-size: 13px; color: var(--muted); margin: 0; }
-    .contact-card strong { color: var(--text-2); }
+    .contact-card p { font-size: 14px; color: rgba(232,232,240,0.45); margin: 0; line-height: 1.6; }
+    .contact-card strong { color: rgba(232,232,240,0.8); }
 
     .btn-sm {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--white);
-      color: #0a0a0b; font-size: 12px; font-weight: 600;
-      padding: 8px 16px; border-radius: 6px;
+      color: #08080f; font-size: 12px; font-weight: 600;
+      padding: 9px 18px; border-radius: 100px;
       text-decoration: none;
       transition: background 0.15s;
+      white-space: nowrap;
     }
 
-    .btn-sm:hover { background: #e8e8ec; text-decoration: none; }
+    .btn-sm:hover { background: #e4e4f0; text-decoration: none; }
 
-    /* ─── Footer ─── */
+    /* ── Footer ── identical to index.html ── */
     footer {
+      position: relative; z-index: 2;
+      padding: 24px 48px;
       border-top: 1px solid var(--border);
-      padding: 22px 40px;
       display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
 
+    .foot-name {
+      font-family: "Cormorant SC", "Cormorant", Georgia, serif;
+      font-size: 17px; font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
     footer p { font-size: 12px; color: var(--muted); }
 
-    .footer-links { display: flex; gap: 18px; }
-    .footer-links a {
-      font-size: 12px; color: var(--muted);
-      text-decoration: none; transition: color 0.15s;
+    .foot-links { display: flex; gap: 20px; }
+    .foot-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+    .foot-links a:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      footer { padding: 20px 24px; }
     }
-    .footer-links a:hover { color: var(--text-2); }
   </style>
 </head>
 <body>
 
+<!-- Floating quotes background -->
+<div id="phrases"></div>
+
+<!-- Nav — same as index.html -->
 <nav>
-  <a href="index.html" class="nav-logo">
-    <span class="nav-logo-dot"></span>
-    thesara
-  </a>
-  <div class="nav-links">
-    <a href="index.html">← Home</a>
+  <a href="index.html" class="nav-logo">thesara</a>
+  <div class="nav-right">
+    <a href="index.html#demo">Demo</a>
+    <a href="index.html#features">Features</a>
+    <a href="index.html#contact">Contact</a>
     <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
+    <a href="https://chrome.google.com/webstore" class="nav-cta">Add to Chrome</a>
   </div>
 </nav>
 
-<div class="page">
+<div class="page-wrap">
 
   <aside class="toc">
     <p class="toc-label">On this page</p>
@@ -316,7 +382,7 @@
   </aside>
 
   <main>
-    <p class="page-label">Legal</p>
+    <p class="sec-label">Legal</p>
     <h1>Privacy Policy</h1>
 
     <div class="meta">
@@ -339,7 +405,7 @@
       Thesara is passive by default. No data leaves your device until you hover a word.
       The following is transmitted exclusively at that moment:
     </p>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>Data</th><th>Destination</th><th>Purpose</th></tr>
       </thead>
@@ -355,7 +421,7 @@
           <td>Scene context for the AI explanation</td>
         </tr>
         <tr>
-          <td><strong>Up to 4 preceding subtitle lines</strong></td>
+          <td><strong>Up to 6 preceding subtitle lines</strong></td>
           <td>Groq via Cloudflare Worker</td>
           <td>Improve contextual accuracy of the AI response</td>
         </tr>
@@ -366,6 +432,7 @@
         </tr>
       </tbody>
     </table>
+    </table></div>
     <p>This data is processed transiently and not stored on any Thesara-operated server.</p>
 
     <h2 id="not-collected"><span class="h2-n">02</span> Data we do not collect</h2>
@@ -419,7 +486,7 @@
 
     <h2 id="permissions"><span class="h2-n">05</span> Chrome permissions</h2>
     <p>Thesara requests the minimum permissions necessary. Each is used only as described.</p>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>Permission</th><th>Why it's needed</th></tr>
       </thead>
@@ -447,6 +514,7 @@
       </tbody>
     </table>
 
+    </table></div>
     <h2 id="retention"><span class="h2-n">06</span> Data retention</h2>
     <p>
       Thesara operates no databases and retains no user data. The Cloudflare Worker
@@ -487,13 +555,127 @@
 </div>
 
 <footer>
-  <p>© 2026 Thesara · Open source · Free forever</p>
-  <div class="footer-links">
+  <div style="display:flex; align-items:center; gap:16px;">
+    <span class="foot-name">thesara</span>
+    <p>Open source</p>
+  </div>
+  <div class="foot-links">
     <a href="index.html">Home</a>
     <a href="https://github.com/hitesh-ctrl/thesara" target="_blank">GitHub</a>
     <a href="https://github.com/hitesh-ctrl/thesara/issues" target="_blank">Issues</a>
   </div>
 </footer>
 
+<script>
+  // Same floating quotes as index.html
+  const quotes = [
+    "I am the danger.", "Here's looking at you, kid.",
+    "You can't handle the truth!", "I'll be back.",
+    "May the Force be with you.", "Why so serious?",
+    "To infinity and beyond!", "Life is like a box of chocolates.",
+    "I see dead people.", "You had me at hello.",
+    "After all this time? Always.", "I am your father.",
+    "Make him an offer he can't refuse.", "You talking to me?",
+    "Go ahead, make my day.", "Bond. James Bond.",
+    "There's no place like home.", "My precious.",
+    "Hasta la vista, baby.", "Show me the money!",
+    "I'm the king of the world!", "Elementary, my dear Watson.",
+    "Just keep swimming.", "We're not in Kansas anymore.",
+    "Frankly, my dear, I don't give a damn.",
+    "With great power comes great responsibility.",
+    "Keep your friends close, but your enemies closer.",
+    "I feel the need. The need for speed!",
+    "Winter is coming.", "A Lannister always pays his debts.",
+    "You is kind, you is smart, you is important.",
+    "Leave the gun. Take the cannoli.", "Say hello to my little friend!",
+    "You're gonna need a bigger boat.", "Nobody puts Baby in a corner.",
+    "We accept the love we think we deserve.",
+    "Get busy living or get busy dying.",
+    "I am Groot.", "Avengers, assemble.",
+    "I am inevitable.", "I could do this all day.",
+    "I volunteer as tribute.", "To be, or not to be.",
+    "All those moments will be lost in time.",
+    "You complete me.", "Why do we fall?", "I'm Batman.",
+    "E.T. phone home.", "Houston, we have a problem.",
+    "You shall not pass!", "One does not simply walk into Mordor.",
+    "My name is Inigo Montoya.", "Inconceivable!", "As you wish.",
+    "Life finds a way.", "Say what again.",
+    "You can't sit with us.", "You're a wizard, Harry.",
+    "Dobby is free.", "Mischief managed.", "Expecto patronum.",
+    "That's what she said.", "Bears. Beets. Battlestar Galactica.",
+    "How you doin'?", "We were on a break!", "Smelly cat.",
+    "I am the one who knocks.", "Say my name.", "I did it for me.",
+    "Yeah, science!", "Better call Saul.",
+    "You know nothing, Jon Snow.", "Dracarys.", "A girl has no name.",
+    "Not today.", "Valar morghulis.", "Hold the door.",
+    "Do or do not. There is no try.", "I have spoken.",
+    "This is the way.", "Hello there.", "General Kenobi.",
+    "These aren't the droids you're looking for.",
+    "I've got a bad feeling about this.", "Never tell me the odds.",
+    "The stuff that dreams are made of.",
+    "A martini. Shaken, not stirred.", "Here's Johnny!",
+    "What's in the box?!", "Open the pod bay doors, HAL.",
+    "I'm sorry, Dave. I'm afraid I can't do that.",
+    "The Dark Knight.", "I believe in Harvey Dent.",
+    "To boldly go where no man has gone before.",
+    "Beam me up, Scotty.", "Live long and prosper.",
+    "Make it so.", "Engage.", "Resistance is futile.",
+    "I feel the need. The need for speed!",
+    "Dunder Mifflin, this is Pam.",
+  ];
+
+  const container = document.getElementById('phrases');
+  const colours = [
+    [255,255,255],[220,220,255],[255,240,220],
+    [200,220,255],[255,255,245],[210,255,240],
+  ];
+
+  const cols = 7, rows = 26, total = cols * rows;
+  const indices = Array.from({length: total}, (_, i) => i % quotes.length);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const el = document.createElement('div');
+      el.className = 'phrase';
+      el.textContent = quotes[indices[row * cols + col]];
+
+      const cellW = 100 / cols, cellH = 100 / rows;
+      el.style.left = (col * cellW + cellW / 2 + (Math.random() - 0.5) * cellW * 0.75) + '%';
+      el.style.top  = (row * cellH + cellH / 2 + (Math.random() - 0.5) * cellH * 0.65) + '%';
+
+      const tier = Math.random();
+      const size = tier < 0.55 ? 8 + Math.random() * 4
+                 : tier < 0.85 ? 12 + Math.random() * 5
+                 :               17 + Math.random() * 6;
+      el.style.fontSize = size + 'px';
+
+      el.style.setProperty('--rot', ((Math.random() - 0.5) * 28) + 'deg');
+
+      const opHi = tier < 0.55 ? 0.06 + Math.random() * 0.08
+                 : tier < 0.85 ? 0.10 + Math.random() * 0.12
+                 :               0.15 + Math.random() * 0.14;
+      el.style.setProperty('--op-hi', String(opHi));
+      el.style.setProperty('--op-lo', String(opHi * 0.25));
+      el.style.opacity = String(opHi);
+
+      const [r,g,b] = colours[Math.floor(Math.random() * colours.length)];
+      el.style.color = `rgb(${r},${g},${b})`;
+      if (tier >= 0.85) el.style.textShadow = `0 0 12px rgba(${r},${g},${b},${opHi * 2})`;
+
+      const drift   = tier < 0.55 ? 30 + Math.random() * 30 : tier < 0.85 ? 22 + Math.random() * 22 : 16 + Math.random() * 16;
+      const twinkle = 3 + Math.random() * 6;
+      el.style.animationName = 'drift, twinkle';
+      el.style.animationDuration = `${drift}s, ${twinkle}s`;
+      el.style.animationDelay = `-${Math.random() * drift}s, -${Math.random() * twinkle}s`;
+      el.style.animationTimingFunction = 'linear, ease-in-out';
+      el.style.animationIterationCount = 'infinite, infinite';
+      container.appendChild(el);
+    }
+  }
+</script>
 </body>
 </html>
