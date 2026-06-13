@@ -3,3 +3,12 @@ dist/
 *.log
 .DS_Store
 .dev/
+.claude/
+
+# Store marketing assets (kept locally, not source)
+screenshot-*.png
+screenshot-*.svg
+promo-*.png
+promo-*.svg
+icon128.png
+*.zip
