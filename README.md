@@ -20,6 +20,10 @@ No account. No fees. One permission.
 
 ---
 
+![Thesara in action](docs/assets/demo.png)
+
+---
+
 ## What it does
 
 Thesara sits quietly on Netflix until you hover a subtitle word. A tooltip appears with:
@@ -38,6 +42,12 @@ Nothing is stored. Nothing is tracked. The tooltip is gone the moment you move o
 A Cloudflare Worker holds a shared Groq key, rate-limited to 13,000 requests per day. It costs nothing to use. If the shared quota runs out, Thesara walks you through adding your own free Groq key: full disclosure shown before anything is saved, key stored only in your browser's local extension storage, sent only to Groq.
 
 The extension never sees your watch history, your account, or your IP address.
+
+---
+
+## Architecture
+
+![Architecture diagram](docs/assets/arch.png)
 
 ---
 
