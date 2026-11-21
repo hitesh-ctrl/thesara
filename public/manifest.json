@@ -30,6 +30,8 @@
         "https://www.hotstar.com/*/watch/*",
         "https://www.primevideo.com/detail/*",
         "https://www.primevideo.com/player/*",
+        "https://www.primevideo.com/region/*/detail/*",
+        "https://www.primevideo.com/region/*/player/*",
         "https://www.amazon.com/gp/video/*",
         "https://tv.apple.com/*/movie/*",
         "https://tv.apple.com/*/show/*",

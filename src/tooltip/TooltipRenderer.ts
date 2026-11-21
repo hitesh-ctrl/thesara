@@ -7,18 +7,18 @@ const DICT_SECTION_ID = "nva-tooltip-dict";
 const CONTEXT_SECTION_ID = "nva-tooltip-context";
 const VISIBLE_CLASS = "nva-tooltip--visible";
 const VIEWPORT_PADDING = 12;
-const TOOLTIP_OFFSET = 16;
+const TOOLTIP_OFFSET = 20;
 
 /**
  * Manages a single reusable tooltip element.
  *
  * Three-phase rendering:
- * 1. show()       — renders immediately on hover with just the word name + loading skeletons.
- * 2. updateDict() — fills in definition/synonyms when the dictionary API responds.
- * 3. setContext() — fills in the AI explanation when Groq responds.
+ * 1. show()       — renders immediately on hover: word title + loading skeletons.
+ * 2. updateDict() — fills the definition section when the dictionary API responds.
+ * 3. setContext() — fills the AI explanation when Groq responds.
  *
- * Positioning: always anchored above the subtitle container, not the individual word.
- * This keeps the tooltip in a predictable place and prevents it covering subtitles.
+ * skipDict flag: set for common words and phrases — suppresses the dictionary
+ * skeleton and lookup entirely since neither would be useful.
  */
 export class TooltipRenderer {
   private readonly el: HTMLDivElement;
@@ -33,22 +33,14 @@ export class TooltipRenderer {
     document.body.appendChild(this.el);
   }
 
-  /**
-   * Provides a way to locate the subtitle container for tooltip positioning.
-   * Called by the entry point after the observer finds the container.
-   */
   public setContainerFinder(fn: () => Element | null): void {
     this.getSubtitleContainer = fn;
   }
 
-  /**
-   * Shows the tooltip immediately with just the word/phrase name.
-   * Dictionary and context sections start as loading skeletons.
-   */
-  public show(anchor: HTMLElement, word: string): void {
+  public show(anchor: HTMLElement, word: string, skipDict = false): void {
     this.currentWord = word;
     this.el.innerHTML = "";
-    this.el.appendChild(this.buildShell(word));
+    this.el.appendChild(this.buildShell(word, skipDict));
     document.body.appendChild(this.el);
 
     this.el.style.visibility = "hidden";
@@ -57,10 +49,6 @@ export class TooltipRenderer {
     this.el.style.visibility = "";
   }
 
-  /**
-   * Fills in the dictionary section in-place.
-   * Called once the dictionary API responds — no tooltip rebuild needed.
-   */
   public updateDict(word: string, result: DictionaryResult): void {
     if (word !== this.currentWord) return;
     const section = document.getElementById(DICT_SECTION_ID);
@@ -69,14 +57,13 @@ export class TooltipRenderer {
     section.innerHTML = "";
 
     if (!result.ok) {
-      const p = document.createElement("p");
-      p.className = "nva-tooltip__not-found";
-      if (result.error.kind === "not_found") {
-        p.textContent = "No definition found.";
-      } else {
-        p.textContent = "Dictionary unavailable — check your connection.";
+      if (result.error.kind !== "not_found") {
+        const p = document.createElement("p");
+        p.className = "nva-tooltip__not-found";
+        p.textContent = "Dictionary unavailable.";
+        section.appendChild(p);
       }
-      section.appendChild(p);
+      this.repositionAfterReflow();
       return;
     }
 
@@ -116,31 +103,19 @@ export class TooltipRenderer {
       section.appendChild(synList);
     }
 
-    // Re-position after content changes size.
     this.repositionAfterReflow();
   }
 
-  private addDivider(parent: HTMLElement): void {
-    const hr = document.createElement("div");
-    hr.className = "nva-tooltip__divider";
-    parent.appendChild(hr);
-  }
-
-  /**
-   * Fills in the context section in-place once the AI responds.
-   * Pass null to silently remove the placeholder (common words).
-   */
   public setContext(word: string, result: ContextResult | null): void {
     if (word !== this.currentWord) return;
     const section = document.getElementById(CONTEXT_SECTION_ID);
     if (section === null) return;
 
-    if (result === null || !result.ok) {
-      section.remove();
-      return;
-    }
-
     section.innerHTML = "";
+
+    if (result === null || !result.ok) {
+      return; // leave section empty — no error noise
+    }
 
     this.addDivider(section);
 
@@ -168,7 +143,7 @@ export class TooltipRenderer {
     return target instanceof Node && this.el.contains(target);
   }
 
-  // ─── Private ────────────────────────────────────────────────────────────────
+  // ─── Private ─────────────────────────────────────────────────────────────────
 
   private createElement(): HTMLDivElement {
     const existing = document.getElementById(TOOLTIP_ID);
@@ -178,49 +153,55 @@ export class TooltipRenderer {
     return el;
   }
 
-  /**
-   * Builds the initial tooltip shell with the word title and loading skeletons.
-   */
-  private buildShell(word: string): DocumentFragment {
+  private addDivider(parent: HTMLElement): void {
+    const hr = document.createElement("div");
+    hr.className = "nva-tooltip__divider";
+    parent.appendChild(hr);
+  }
+
+  private buildShell(word: string, skipDict: boolean): DocumentFragment {
     const frag = document.createDocumentFragment();
 
+    // ── Word title ──
     const wordEl = document.createElement("p");
     wordEl.className = "nva-tooltip__word";
     wordEl.textContent = word;
     frag.appendChild(wordEl);
 
-    // Dictionary section — starts as a skeleton, filled by updateDict().
+    // ── Dictionary section ──
     const dictSection = document.createElement("div");
     dictSection.id = DICT_SECTION_ID;
-    const skeleton = document.createElement("div");
-    skeleton.className = "nva-tooltip__skeleton";
-    dictSection.appendChild(skeleton);
+    if (!skipDict) {
+      const skel = document.createElement("div");
+      skel.className = "nva-tooltip__skeleton";
+      dictSection.appendChild(skel);
+    }
     frag.appendChild(dictSection);
 
-    // Context section — starts empty, filled by setContext().
+    // ── Context section — always starts with a loading skeleton ──
     const ctxSection = document.createElement("div");
     ctxSection.id = CONTEXT_SECTION_ID;
+
+    const ctxDivider = document.createElement("div");
+    ctxDivider.className = "nva-tooltip__divider nva-tooltip__divider--ctx";
+    ctxSection.appendChild(ctxDivider);
+
+    const ctxSkel = document.createElement("div");
+    ctxSkel.className = "nva-tooltip__skeleton nva-tooltip__skeleton--ctx";
+    ctxSection.appendChild(ctxSkel);
+
     frag.appendChild(ctxSection);
 
     return frag;
   }
 
-  /**
-   * Positions the tooltip above the subtitle container.
-   *
-   * Strategy:
-   *   1. Find the Netflix subtitle container and anchor above it — this keeps
-   *      the tooltip in a consistent, predictable position above the subtitles.
-   *   2. Horizontally centre on the hovered word, clamped to the viewport.
-   *   3. If no subtitle container is found, fall back to above the anchor element.
-   */
   private position(anchor: HTMLElement): void {
     const tipW = this.el.offsetWidth;
     const tipH = this.el.offsetHeight;
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    // ── Vertical: above the subtitle container ──────────────────────────────
+    // ── Vertical: above the subtitle container ──
     const subtitleContainer = this.getSubtitleContainer();
     let top: number;
 
@@ -232,10 +213,9 @@ export class TooltipRenderer {
       top = anchorRect.top - tipH - TOOLTIP_OFFSET;
     }
 
-    // Hard floor/ceiling.
     top = Math.max(VIEWPORT_PADDING, Math.min(top, vh - tipH - VIEWPORT_PADDING));
 
-    // ── Horizontal: centred on the hovered word ─────────────────────────────
+    // ── Horizontal: centred on the hovered word ──
     const anchorRect = anchor.getBoundingClientRect();
     let left = anchorRect.left + anchorRect.width / 2 - tipW / 2;
     left = Math.max(VIEWPORT_PADDING, Math.min(left, vw - tipW - VIEWPORT_PADDING));
@@ -244,11 +224,7 @@ export class TooltipRenderer {
     this.el.style.left = `${String(left)}px`;
   }
 
-  /**
-   * Re-runs positioning after content fills in and changes the tooltip height.
-   */
   private repositionAfterReflow(): void {
-    // Use rAF so the browser has rendered the new content before we measure.
     requestAnimationFrame(() => {
       const wordSpan = document.querySelector<HTMLElement>(".nva-word:hover");
       if (wordSpan !== null) this.position(wordSpan);

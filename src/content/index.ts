@@ -97,9 +97,9 @@ const overlay = new OverlayRenderer(
     const showContext = adapter.getShowContext();
     const isPhrase = token.isPhrase === true;
 
-    tooltip.show(spanEl, wordOrPhrase);
+    tooltip.show(spanEl, wordOrPhrase, isCommonWord(wordOrPhrase) || isPhrase);
 
-    if (!isPhrase) {
+    if (!isPhrase && !isCommonWord(wordOrPhrase)) {
       void dictionary.lookup(wordOrPhrase).then((result) => {
         tooltip.updateDict(wordOrPhrase, result);
       });
@@ -150,6 +150,7 @@ function handleSubtitleUpdate(update: SubtitleUpdate): void {
     }
     currentSentence = update.event.text;
     currentPhrases = [];
+    overlay.setCurrentText(currentSentence);
     overlay.render();
     scheduleAICalls(currentSentence);
   } else {
@@ -160,6 +161,7 @@ function handleSubtitleUpdate(update: SubtitleUpdate): void {
     currentSentence = "";
     currentPhrases = [];
     subtitleHistory.length = 0;
+    overlay.setCurrentText(null);
     overlay.clear();
   }
 }

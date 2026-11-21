@@ -1,4 +1,5 @@
 import type { PlatformAdapter, ShowContext } from "./PlatformAdapter";
+import { extractSubtitleText } from "../subtitle/extractText";
 
 /**
  * Amazon Prime Video subtitle selectors.
@@ -32,7 +33,7 @@ export class PrimeVideoAdapter implements PlatformAdapter {
   }
 
   extractText(container: Element): string {
-    return extractTextFromNodes(container);
+    return extractSubtitleText(container);
   }
 
   getShowContext(): ShowContext {
@@ -71,30 +72,3 @@ function queryFirst(selectors: string[]): string | null {
   return null;
 }
 
-function extractTextFromNodes(root: Element): string {
-  const parts: string[] = [];
-  walkNodes(root, parts);
-  return parts.join("").replace(/\s+/g, " ").trim();
-}
-
-function walkNodes(node: Node, out: string[]): void {
-  if (node.nodeType === Node.TEXT_NODE) {
-    const t = node.textContent ?? "";
-    if (t) out.push(t);
-    return;
-  }
-  if (node.nodeType !== Node.ELEMENT_NODE) return;
-
-  const el = node as Element;
-  const display = getComputedStyle(el).display;
-  const isBlock = display === "block" || display === "flex" || display === "grid";
-  if (isBlock && out.length > 0 && !out[out.length - 1]?.endsWith(" ")) {
-    out.push(" ");
-  }
-  for (const child of Array.from(node.childNodes)) {
-    walkNodes(child, out);
-  }
-  if (isBlock && out.length > 0 && !out[out.length - 1]?.endsWith(" ")) {
-    out.push(" ");
-  }
-}

@@ -1,4 +1,5 @@
 import type { PlatformAdapter, ShowContext } from "./PlatformAdapter";
+import { extractSubtitleText } from "../subtitle/extractText";
 
 const SUBTITLE_CONTAINER_SELECTORS: readonly string[] = [
   ".player-timedtext",
@@ -21,7 +22,7 @@ export class NetflixAdapter implements PlatformAdapter {
   }
 
   extractText(container: Element): string {
-    return extractTextFromNodes(container);
+    return extractSubtitleText(container);
   }
 
   getShowContext(): ShowContext {
@@ -61,38 +62,3 @@ function queryFirst(selectors: string[]): string | null {
   return null;
 }
 
-/**
- * Walks child nodes rather than relying on textContent alone.
- * Some subtitle styles wrap each word in its own <span> with no space between
- * them — inserting a space at element boundaries recovers correct word spacing.
- */
-function extractTextFromNodes(root: Element): string {
-  const parts: string[] = [];
-  walkNodes(root, parts);
-  return parts.join("").replace(/\s+/g, " ").trim();
-}
-
-function walkNodes(node: Node, out: string[]): void {
-  if (node.nodeType === Node.TEXT_NODE) {
-    const t = node.textContent ?? "";
-    if (t) out.push(t);
-    return;
-  }
-  if (node.nodeType !== Node.ELEMENT_NODE) return;
-
-  const el = node as Element;
-  const display = getComputedStyle(el).display;
-  // Block / flex elements imply a visual line break — treat as a space.
-  const isBlock = display === "block" || display === "flex" || display === "grid";
-  if (isBlock && out.length > 0 && !out[out.length - 1]?.endsWith(" ")) {
-    out.push(" ");
-  }
-
-  for (const child of Array.from(node.childNodes)) {
-    walkNodes(child, out);
-  }
-
-  if (isBlock && out.length > 0 && !out[out.length - 1]?.endsWith(" ")) {
-    out.push(" ");
-  }
-}
