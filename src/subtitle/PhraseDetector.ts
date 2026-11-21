@@ -63,7 +63,7 @@ export class PhraseDetector {
       const parsed: unknown = JSON.parse(text);
       if (Array.isArray(parsed) && parsed.every((i) => typeof i === "string")) {
         const lower = sentence.toLowerCase();
-        phrases = (parsed as string[]).filter(
+        phrases = (parsed as unknown[]).map(String).filter(
           (p) => p.trim().includes(" ") && lower.includes(p.toLowerCase()),
         );
       }

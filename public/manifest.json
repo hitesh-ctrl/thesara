@@ -1,11 +1,18 @@
 {
   "manifest_version": 3,
   "name": "Thesara",
-  "version": "1.0.1",
-  "description": "Hover any subtitle word on Netflix to see its definition, synonyms, and AI-powered context. Supports your own free Groq key.",
+  "version": "1.1.0",
+  "description": "Hover any subtitle word on Netflix, Disney+, Prime Video, Max, or Apple TV+ to see its definition, synonyms, and AI-powered context.",
   "permissions": ["storage"],
   "host_permissions": [
     "https://www.netflix.com/*",
+    "https://www.disneyplus.com/*",
+    "https://www.hotstar.com/*",
+    "https://www.primevideo.com/*",
+    "https://www.amazon.com/*",
+    "https://tv.apple.com/*",
+    "https://www.max.com/*",
+    "https://www.hbomax.com/*",
     "https://api.dictionaryapi.dev/*",
     "https://api.groq.com/*",
     "https://thesara-proxy.thesara.workers.dev/*"
@@ -16,7 +23,21 @@
   "options_page": "options.html",
   "content_scripts": [
     {
-      "matches": ["https://www.netflix.com/watch/*"],
+      "matches": [
+        "https://www.netflix.com/watch/*",
+        "https://www.disneyplus.com/video/*",
+        "https://www.disneyplus.com/play/*",
+        "https://www.hotstar.com/*/watch/*",
+        "https://www.primevideo.com/detail/*",
+        "https://www.primevideo.com/player/*",
+        "https://www.amazon.com/gp/video/*",
+        "https://tv.apple.com/*/movie/*",
+        "https://tv.apple.com/*/show/*",
+        "https://tv.apple.com/*/episode/*",
+        "https://www.max.com/*/movie/*",
+        "https://www.max.com/*/episode/*",
+        "https://www.hbomax.com/*"
+      ],
       "js": ["content.js"],
       "run_at": "document_idle"
     }

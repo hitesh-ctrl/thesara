@@ -1,12 +1,11 @@
 import { tokenize, mergePhrasesIntoTokens } from "../subtitle/WordProcessor";
-import { findSubtitleContainer } from "../subtitle/netflixSelectors";
 import { injectStyles } from "./styles";
+import type { PlatformAdapter } from "../platforms/PlatformAdapter";
 import type { WordToken } from "../subtitle/types";
 
 type GetPhrasesFn = () => string[];
 
 const OVERLAY_ROOT_ID = "nva-overlay-root";
-const TEXT_CONTAINER_SELECTOR = ".player-timedtext-text-container";
 
 /**
  * How long to keep the overlay visible after a subtitle disappears.
@@ -15,58 +14,51 @@ const TEXT_CONTAINER_SELECTOR = ".player-timedtext-text-container";
 const CLEAR_GRACE_PERIOD_MS = 1500;
 
 /**
- * Renders interactive word spans in a fixed-position overlay outside Netflix's
- * React DOM tree.
+ * Renders interactive word spans in a fixed-position overlay outside the
+ * platform's player DOM tree.
  *
- * Why not inject directly into Netflix's subtitle DOM:
- *   Netflix's player is built on React. Its reconciler detects unexpected DOM
- *   mutations inside managed containers and immediately removes injected nodes.
+ * Platform-specific:
+ *   - lineSelector   — which child elements to treat as individual subtitle lines.
+ *   - hideSelector   — which element(s) to hide while the overlay is active.
  *
- * Overlay strategy:
- *   A fixed #nva-overlay-root div is appended to document.body. On each subtitle
- *   event, we measure each .player-timedtext-text-container with
- *   getBoundingClientRect() and mirror its position and font in the overlay.
- *   Netflix's original text is hidden via a body class so React cannot reset it.
- *
- * Grace period + hover freeze (solves rapid subtitle changes):
- *   When a subtitle clears, the overlay is NOT removed immediately. Instead:
- *   - A 1.5s grace period timer starts.
- *   - If a new subtitle arrives before the timer fires, it replaces the overlay.
- *   - If the user hovers a word before the timer fires, the timer is cancelled
- *     and the overlay stays frozen until the mouse leaves.
- *   - Only after both conditions are clear does the overlay actually disappear.
+ * Both are read from the PlatformAdapter so this class is platform-agnostic.
  */
 export class OverlayRenderer {
   private overlayRoot: HTMLDivElement | null = null;
   private rafHandle: number | null = null;
   private clearTimerId: ReturnType<typeof setTimeout> | null = null;
-
-  /** True while the mouse is over any word span in the current overlay. */
   private hoverActive = false;
-  /** True when clear() was called but deferred due to an active hover. */
   private pendingClear = false;
 
+  private subtitleContainer: Element | null = null;
+
+  private readonly adapter: PlatformAdapter;
   private readonly onWordHover: ((word: string, token: WordToken, spanEl: HTMLElement) => void) | null;
   private readonly getPhrases: GetPhrasesFn;
 
   constructor(
+    adapter: PlatformAdapter,
     onWordHover: ((word: string, token: WordToken, spanEl: HTMLElement) => void) | null = null,
     getPhrases: GetPhrasesFn = () => [],
   ) {
+    this.adapter = adapter;
     this.onWordHover = onWordHover;
     this.getPhrases = getPhrases;
-    injectStyles();
+    injectStyles(adapter.hideSelector);
     this.overlayRoot = this.createOverlayRoot();
   }
 
   /**
-   * Schedules a render on the next animation frame.
-   * Cancels any pending clear — a new subtitle always takes priority.
+   * Called by SubtitleObserver once the subtitle container is located.
+   * Keeps a reference so renderNow() can query line elements inside it.
    */
+  public setContainer(container: Element): void {
+    this.subtitleContainer = container;
+  }
+
   public render(): void {
     this.cancelClearTimer();
     this.pendingClear = false;
-
     if (this.rafHandle !== null) cancelAnimationFrame(this.rafHandle);
     this.rafHandle = requestAnimationFrame(() => {
       this.rafHandle = null;
@@ -74,23 +66,15 @@ export class OverlayRenderer {
     });
   }
 
-  /**
-   * Requests a clear with a grace period.
-   * If the user is hovering a word, the clear is deferred until they leave.
-   */
   public clear(): void {
     if (this.rafHandle !== null) {
       cancelAnimationFrame(this.rafHandle);
       this.rafHandle = null;
     }
-
     if (this.hoverActive) {
-      // Don't clear yet — user is interacting. Clear when hover ends.
       this.pendingClear = true;
       return;
     }
-
-    // Start grace period — keep overlay visible a little longer.
     this.cancelClearTimer();
     this.clearTimerId = setTimeout(() => {
       this.clearTimerId = null;
@@ -101,17 +85,28 @@ export class OverlayRenderer {
   // ─── Private ────────────────────────────────────────────────────────────────
 
   private renderNow(): void {
-    const container = findSubtitleContainer();
+    const container = this.subtitleContainer ?? this.adapter.findSubtitleContainer();
     if (container === null) return;
-
-    const textContainers = container.querySelectorAll<HTMLElement>(TEXT_CONTAINER_SELECTOR);
-    if (textContainers.length === 0) return;
 
     const root = this.ensureOverlayRoot();
     this.clearOverlayDOM();
 
-    for (const textContainer of Array.from(textContainers)) {
-      const line = this.buildLineElement(textContainer);
+    const lineSelector = this.adapter.lineSelector;
+    if (lineSelector !== null) {
+      const textContainers = container.querySelectorAll<HTMLElement>(lineSelector);
+      if (textContainers.length === 0) {
+        // lineSelector present but no matches yet — treat whole container as one line.
+        const line = this.buildLineElement(container as HTMLElement);
+        if (line !== null) root.appendChild(line);
+      } else {
+        for (const tc of Array.from(textContainers)) {
+          const line = this.buildLineElement(tc);
+          if (line !== null) root.appendChild(line);
+        }
+      }
+    } else {
+      // No line selector — treat the container itself as a single line.
+      const line = this.buildLineElement(container as HTMLElement);
       if (line !== null) root.appendChild(line);
     }
 
@@ -133,7 +128,7 @@ export class OverlayRenderer {
   }
 
   private buildLineElement(textContainer: HTMLElement): HTMLDivElement | null {
-    const text = textContainer.textContent?.trim() ?? "";
+    const text = (textContainer.textContent || "").trim();
     if (text === "") return null;
 
     const rect = textContainer.getBoundingClientRect();
@@ -145,13 +140,18 @@ export class OverlayRenderer {
       textContainer;
     const cs = getComputedStyle(styledSpan);
 
+    const left = String(rect.left);
+    const top = String(rect.top);
+    const width = String(rect.width);
+    const minHeight = String(rect.height);
+
     const line = document.createElement("div");
     line.style.cssText = [
       "position: fixed",
-      `left: ${rect.left}px`,
-      `top: ${rect.top}px`,
-      `width: ${rect.width}px`,
-      `min-height: ${rect.height}px`,
+      `left: ${left}px`,
+      `top: ${top}px`,
+      `width: ${width}px`,
+      `min-height: ${minHeight}px`,
       "pointer-events: none",
       "display: block",
       `font-family: ${cs.fontFamily}`,
@@ -164,9 +164,6 @@ export class OverlayRenderer {
       "z-index: 2147483640",
     ].join(";");
 
-    // Tokenize this container's text independently, then merge any detected
-    // phrases. Each container gets its own tokenization so multi-line subtitles
-    // (split across two containers) never bleed tokens into each other.
     const phrases = this.getPhrases();
     const tokens = mergePhrasesIntoTokens(tokenize(text), phrases);
 
@@ -209,7 +206,6 @@ export class OverlayRenderer {
   private createOverlayRoot(): HTMLDivElement {
     const existing = document.getElementById(OVERLAY_ROOT_ID);
     if (existing instanceof HTMLDivElement) return existing;
-
     const div = document.createElement("div");
     div.id = OVERLAY_ROOT_ID;
     div.style.cssText = [
@@ -221,7 +217,6 @@ export class OverlayRenderer {
       "pointer-events: none",
       "z-index: 2147483640",
     ].join(";");
-
     document.body.appendChild(div);
     return div;
   }

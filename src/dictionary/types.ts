@@ -48,12 +48,15 @@ export interface ApiEntry {
  */
 export function extractWordInfo(entries: ApiEntry[]): WordInfo | null {
   const entry = entries[0];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (entry === undefined) return null;
 
   const meaning = entry.meanings[0];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (meaning === undefined) return null;
 
   const definition = meaning.definitions[0];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (definition === undefined) return null;
 
   // Synonyms can live on the meaning or on the individual definition.

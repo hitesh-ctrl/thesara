@@ -1,5 +1,4 @@
 import { injectTooltipStyles } from "./styles";
-import { findSubtitleContainer } from "../subtitle/netflixSelectors";
 import type { DictionaryResult } from "../dictionary/types";
 import type { ContextResult } from "../context/ContextExplanationService";
 
@@ -25,6 +24,7 @@ export class TooltipRenderer {
   private readonly el: HTMLDivElement;
   private readonly onHide: (() => void) | null;
   private currentWord: string | null = null;
+  private getSubtitleContainer: (() => Element | null) = () => null;
 
   constructor(onHide: (() => void) | null = null) {
     this.onHide = onHide;
@@ -34,10 +34,18 @@ export class TooltipRenderer {
   }
 
   /**
+   * Provides a way to locate the subtitle container for tooltip positioning.
+   * Called by the entry point after the observer finds the container.
+   */
+  public setContainerFinder(fn: () => Element | null): void {
+    this.getSubtitleContainer = fn;
+  }
+
+  /**
    * Shows the tooltip immediately with just the word/phrase name.
    * Dictionary and context sections start as loading skeletons.
    */
-  public show(anchor: HTMLElement, word: string, _unused: DictionaryResult | null): void {
+  public show(anchor: HTMLElement, word: string): void {
     this.currentWord = word;
     this.el.innerHTML = "";
     this.el.appendChild(this.buildShell(word));
@@ -213,7 +221,7 @@ export class TooltipRenderer {
     const vh = window.innerHeight;
 
     // ── Vertical: above the subtitle container ──────────────────────────────
-    const subtitleContainer = findSubtitleContainer();
+    const subtitleContainer = this.getSubtitleContainer();
     let top: number;
 
     if (subtitleContainer !== null) {
@@ -232,8 +240,8 @@ export class TooltipRenderer {
     let left = anchorRect.left + anchorRect.width / 2 - tipW / 2;
     left = Math.max(VIEWPORT_PADDING, Math.min(left, vw - tipW - VIEWPORT_PADDING));
 
-    this.el.style.top = `${top}px`;
-    this.el.style.left = `${left}px`;
+    this.el.style.top = `${String(top)}px`;
+    this.el.style.left = `${String(left)}px`;
   }
 
   /**

@@ -95,7 +95,7 @@ export class AIProxy {
     if (!response.ok) return { ok: false, reason: "api_error" };
 
     try {
-      const data = await response.json();
+      const data: unknown = await response.json();
       return { ok: true, data };
     } catch {
       return { ok: false, reason: "api_error" };
@@ -131,7 +131,7 @@ export class AIProxy {
     if (!response.ok) return { ok: false, reason: "api_error" };
 
     try {
-      const data = await response.json();
+      const data: unknown = await response.json();
       return { ok: true, data };
     } catch {
       return { ok: false, reason: "api_error" };
@@ -142,7 +142,7 @@ export class AIProxy {
 
   private async readUserKey(): Promise<string | null> {
     return new Promise((resolve) => {
-      chrome.storage.local.get(USER_KEY_STORAGE_KEY, (result) => {
+      chrome.storage.local.get(USER_KEY_STORAGE_KEY, (result: Record<string, unknown>) => {
         const key = result[USER_KEY_STORAGE_KEY];
         resolve(typeof key === "string" && key.length > 0 ? key : null);
       });
@@ -151,7 +151,7 @@ export class AIProxy {
 
   private async isQuotaExhaustedToday(): Promise<boolean> {
     return new Promise((resolve) => {
-      chrome.storage.local.get(QUOTA_EXHAUSTED_KEY, (result) => {
+      chrome.storage.local.get(QUOTA_EXHAUSTED_KEY, (result: Record<string, unknown>) => {
         const stored = result[QUOTA_EXHAUSTED_KEY];
         resolve(stored === todayKey());
       });

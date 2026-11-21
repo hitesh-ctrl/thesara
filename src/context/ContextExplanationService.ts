@@ -1,4 +1,4 @@
-import type { NetflixContext } from "../player/NetflixContextDetector";
+import type { ShowContext } from "../platforms/PlatformAdapter";
 import { AIProxy } from "./AIProxy";
 import { BoundedCache } from "../util/BoundedCache";
 
@@ -19,14 +19,14 @@ export class ContextExplanationService {
     wordOrPhrase: string,
     sentence: string,
     recentLines: string[],
-    netflixContext: NetflixContext,
+    showContext: ShowContext,
   ): Promise<ContextResult> {
-    const cacheKey = `${wordOrPhrase.toLowerCase()}|||${sentence}|||${netflixContext.showTitle}`;
+    const cacheKey = `${wordOrPhrase.toLowerCase()}|||${sentence}|||${showContext.showTitle}`;
     const cached = this.cache.get(cacheKey);
     if (cached !== undefined) return { ok: true, explanation: cached };
 
     const isPhrase = wordOrPhrase.trim().includes(" ");
-    const body = buildGroqBody(wordOrPhrase, sentence, recentLines, netflixContext, isPhrase);
+    const body = buildGroqBody(wordOrPhrase, sentence, recentLines, showContext, isPhrase);
     const result = await this.proxy.call("/context", body);
 
     if (!result.ok) return result as ContextResult;
@@ -90,11 +90,11 @@ function buildGroqBody(
   wordOrPhrase: string,
   sentence: string,
   recentLines: string[],
-  netflixContext: NetflixContext,
+  showContext: ShowContext,
   isPhrase: boolean,
 ): unknown {
-  const episode = netflixContext.episodeTitle
-    ? ` (episode: "${netflixContext.episodeTitle}")`
+  const episode = showContext.episodeTitle
+    ? ` (episode: "${showContext.episodeTitle}")`
     : "";
 
   const recentContext =
@@ -105,7 +105,7 @@ function buildGroqBody(
   const label = isPhrase ? "Phrase" : "Word";
 
   const userText =
-    `Show: ${netflixContext.showTitle}${episode}\n` +
+    `Show: ${showContext.showTitle}${episode}\n` +
     recentContext +
     `Current line: "${sentence}"\n` +
     `${label}: "${wordOrPhrase}"`;

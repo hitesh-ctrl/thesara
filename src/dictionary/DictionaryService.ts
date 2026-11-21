@@ -59,7 +59,7 @@ export class DictionaryService {
         ok: false,
         error: {
           kind: "network_error",
-          message: `API returned ${response.status}`,
+          message: `API returned ${String(response.status)}`,
         },
       };
     }

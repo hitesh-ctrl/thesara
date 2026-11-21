@@ -85,7 +85,7 @@ export function mergePhrasesIntoTokens(
   if (phrases.length === 0) return tokens;
 
   // Work on a mutable copy; sort longest-first to avoid partial overlaps.
-  let result = [...tokens];
+  const result = [...tokens];
   const sorted = [...phrases].sort((a, b) => b.length - a.length);
 
   for (const phrase of sorted) {

@@ -1,3 +1,4 @@
+import { detectPlatform } from "../platforms/detectPlatform";
 import { SubtitleObserver } from "../subtitle/SubtitleObserver";
 import { OverlayRenderer } from "../overlay/OverlayRenderer";
 import { DictionaryService } from "../dictionary/DictionaryService";
@@ -5,7 +6,6 @@ import { ContextExplanationService } from "../context/ContextExplanationService"
 import { TooltipRenderer } from "../tooltip/TooltipRenderer";
 import { VideoController } from "../player/VideoController";
 import { isCommonWord } from "../subtitle/commonWords";
-import { detectNetflixContext } from "../player/NetflixContextDetector";
 import { PhraseDetector } from "../subtitle/PhraseDetector";
 import { QuotaDisclosureUI } from "../quota/QuotaDisclosureUI";
 import type { SubtitleUpdate } from "../subtitle/types";
@@ -15,13 +15,22 @@ console.log(
   "color: #e50914; font-weight: bold; font-size: 14px;",
 );
 
+// ── Platform detection ────────────────────────────────────────────────────────
+
+const adapter = detectPlatform();
+if (adapter === null) {
+  // Not a supported platform — bail out silently.
+  // eslint-disable-next-line no-throw-literal
+  throw new Error("[Thesara] Unsupported platform — extension will not activate.");
+}
+
+// ── Services ──────────────────────────────────────────────────────────────────
+
 const dictionary = new DictionaryService();
 const context = new ContextExplanationService();
 const phraseDetector = new PhraseDetector();
 const video = new VideoController();
 
-// Listens for quota_exceeded events from AIProxy and shows the full
-// disclosure screen so users can optionally add their own key.
 const quotaUI = new QuotaDisclosureUI();
 quotaUI.init();
 
@@ -29,27 +38,15 @@ const tooltip = new TooltipRenderer(() => {
   video.resume();
 });
 
-/** The subtitle line currently on screen — updated on every subtitle event. */
+// ── State ─────────────────────────────────────────────────────────────────────
+
 let currentSentence = "";
 
-/**
- * Rolling buffer of the last N subtitle lines for context.
- * Passed to the AI so it understands what was said before the hovered word.
- */
 const HISTORY_SIZE = 6;
 const subtitleHistory: string[] = [];
 
-/**
- * Detected phrases for the current subtitle line.
- * The overlay merges these into per-container tokens at render time,
- * so multi-line subtitles never get tokens from the wrong container.
- */
 let currentPhrases: string[] = [];
 
-/**
- * Debounced hide — prevents flickering when the mouse briefly passes over
- * gaps between word spans as it moves from one word to another.
- */
 let hideTimer: ReturnType<typeof setTimeout> | null = null;
 
 function scheduleHide(): void {
@@ -67,11 +64,6 @@ function cancelHide(): void {
   }
 }
 
-/**
- * Debounce timer for AI calls (context + phrase detection).
- * Fires 300ms after the subtitle settles — avoids blasting the API on
- * rapid-fire subtitles in fast-paced scenes.
- */
 let aiDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 const AI_DEBOUNCE_MS = 300;
 
@@ -79,7 +71,6 @@ function scheduleAICalls(sentence: string): void {
   if (aiDebounceTimer !== null) clearTimeout(aiDebounceTimer);
   aiDebounceTimer = setTimeout(() => {
     aiDebounceTimer = null;
-    // Only run if the sentence is still the current one.
     if (sentence !== currentSentence) return;
     void runPhraseDetection(sentence);
   }, AI_DEBOUNCE_MS);
@@ -93,31 +84,31 @@ async function runPhraseDetection(sentence: string): Promise<void> {
   }
 }
 
+// ── Overlay ───────────────────────────────────────────────────────────────────
+
 const overlay = new OverlayRenderer(
+  adapter,
   (wordOrPhrase, token, spanEl) => {
     cancelHide();
     video.pause();
 
     const sentence = currentSentence;
     const recentLines = [...subtitleHistory];
-    const netflixContext = detectNetflixContext();
+    const showContext = adapter.getShowContext();
     const isPhrase = token.isPhrase === true;
 
-    // Show tooltip immediately with loading state — no waiting.
-    tooltip.show(spanEl, wordOrPhrase, null);
+    tooltip.show(spanEl, wordOrPhrase);
 
-    // Phase 1 — update with dictionary data as soon as it arrives.
     if (!isPhrase) {
       void dictionary.lookup(wordOrPhrase).then((result) => {
         tooltip.updateDict(wordOrPhrase, result);
       });
     }
 
-    // Phase 2 — fill context explanation when AI responds.
     const contextPromise =
       !isPhrase && isCommonWord(wordOrPhrase)
         ? Promise.resolve(null)
-        : context.explain(wordOrPhrase, sentence, recentLines, netflixContext);
+        : context.explain(wordOrPhrase, sentence, recentLines, showContext);
 
     void contextPromise.then((contextResult) => {
       tooltip.setContext(wordOrPhrase, contextResult);
@@ -136,6 +127,8 @@ const overlay = new OverlayRenderer(
   () => currentPhrases,
 );
 
+// ── Global mouse handler ──────────────────────────────────────────────────────
+
 document.addEventListener("mouseover", (e: MouseEvent) => {
   const target = e.target;
   if (target instanceof HTMLElement) {
@@ -147,9 +140,10 @@ document.addEventListener("mouseover", (e: MouseEvent) => {
   }
 });
 
-async function handleSubtitleUpdate(update: SubtitleUpdate): Promise<void> {
+// ── Subtitle handling ─────────────────────────────────────────────────────────
+
+function handleSubtitleUpdate(update: SubtitleUpdate): void {
   if (update.kind === "subtitle") {
-    // Push previous sentence into history before updating current.
     if (currentSentence !== "") {
       subtitleHistory.push(currentSentence);
       if (subtitleHistory.length > HISTORY_SIZE) subtitleHistory.shift();
@@ -157,8 +151,6 @@ async function handleSubtitleUpdate(update: SubtitleUpdate): Promise<void> {
     currentSentence = update.event.text;
     currentPhrases = [];
     overlay.render();
-
-    // Async upgrade: re-render with phrase highlights after debounce settles.
     scheduleAICalls(currentSentence);
   } else {
     if (aiDebounceTimer !== null) {
@@ -172,7 +164,21 @@ async function handleSubtitleUpdate(update: SubtitleUpdate): Promise<void> {
   }
 }
 
-const observer = new SubtitleObserver((update) => {
-  void handleSubtitleUpdate(update);
+// ── Observer ──────────────────────────────────────────────────────────────────
+
+const observer = new SubtitleObserver(adapter, (update) => {
+  handleSubtitleUpdate(update);
 });
+
+// Wire the overlay and tooltip container references so they stay in sync with
+// the observer's ResizeObserver (fires on player resize / fullscreen toggle).
+let currentContainer: Element | null = null;
+observer.setOnContainerReady((container) => {
+  currentContainer = container;
+  overlay.setContainer(container);
+  overlay.render();
+});
+tooltip.setContainerFinder(() => currentContainer);
+
+observer.registerUnloadCleanup();
 observer.start();

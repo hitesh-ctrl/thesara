@@ -20,7 +20,7 @@ export class QuotaDisclosureUI {
   private readonly onKeydown: (e: KeyboardEvent) => void;
 
   constructor() {
-    this.onKeydown = (e: KeyboardEvent) => {
+    this.onKeydown = (e: KeyboardEvent): void => {
       if (e.key === "Escape") this.hide();
     };
   }
@@ -340,7 +340,7 @@ export class QuotaDisclosureUI {
     });
 
     // Focus the dismiss button so Escape/Enter works immediately.
-    requestAnimationFrame(() => dismissBtn.focus());
+    requestAnimationFrame((): void => { dismissBtn.focus(); });
 
     overlay.appendChild(card);
     return overlay;

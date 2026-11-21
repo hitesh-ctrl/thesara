@@ -1,7 +1,7 @@
 const STYLE_TAG_ID = "nva-styles";
 
-const CSS = `
-  /* Interactive word span — lives inside the fixed overlay outside Netflix's React tree */
+const BASE_CSS = `
+  /* Interactive word span — lives inside the fixed overlay */
   .nva-word {
     cursor: pointer;
     pointer-events: auto;
@@ -12,12 +12,11 @@ const CSS = `
     display: inline;
   }
 
-  /* Hover state — Netflix red underline */
   .nva-word:hover {
     border-bottom-color: #e50914;
   }
 
-  /* Phrase/idiom spans — dotted amber underline to signal they are multi-word units */
+  /* Phrase/idiom spans — dotted amber underline */
   .nva-word[data-nva-phrase="true"] {
     border-bottom: 2px dotted #f5a623;
   }
@@ -25,27 +24,38 @@ const CSS = `
   .nva-word[data-nva-phrase="true"]:hover {
     border-bottom-color: #f5a623;
   }
-
-  /*
-   * Hide Netflix's original subtitle container while our overlay is active.
-   * We toggle this class on document.body rather than setting inline styles on
-   * Netflix's elements — React reconciles inline style changes on its own nodes
-   * but cannot affect document.body's class list.
-   */
-  body.nva-overlay-active .player-timedtext {
-    opacity: 0 !important;
-  }
 `;
 
 /**
- * Injects the extension's CSS into the document <head> once.
- * Safe to call multiple times — subsequent calls are no-ops.
+ * Builds the platform-specific hide rule.
+ * While the overlay is active, we hide the platform's original subtitle element
+ * so only our interactive overlay is visible.
  */
-export function injectStyles(): void {
+function buildHideRule(hideSelector: string): string {
+  // The ::cue selector cannot be scoped to a body class — it must be global.
+  if (hideSelector.trim() === "::cue") {
+    return `
+  body.nva-overlay-active ::cue {
+    color: transparent !important;
+    text-shadow: none !important;
+  }`;
+  }
+  return `
+  body.nva-overlay-active ${hideSelector} {
+    opacity: 0 !important;
+  }`;
+}
+
+/**
+ * Injects the extension's CSS once per page, parameterised by the platform's
+ * subtitle hide selector. Safe to call multiple times — subsequent calls are
+ * no-ops if the style tag already exists.
+ */
+export function injectStyles(hideSelector: string): void {
   if (document.getElementById(STYLE_TAG_ID) !== null) return;
 
   const style = document.createElement("style");
   style.id = STYLE_TAG_ID;
-  style.textContent = CSS;
+  style.textContent = BASE_CSS + buildHideRule(hideSelector);
   document.head.appendChild(style);
 }
